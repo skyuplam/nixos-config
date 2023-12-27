@@ -6,7 +6,6 @@
     casks  = [
       "1password"
       "google-chrome"
-      "istat-menus"
       "utm"
     ];
   };
