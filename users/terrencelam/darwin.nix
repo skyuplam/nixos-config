@@ -1,11 +1,16 @@
-{ inputs, pkgs, ... }:
-
 {
+  inputs,
+  pkgs,
+  ...
+}: {
   homebrew = {
     enable = true;
-    casks  = [
+    casks = [
       "1password"
       "google-chrome"
+      "keepingyouawake"
+      "linearmouse"
+      "stats"
       "utm"
     ];
   };
