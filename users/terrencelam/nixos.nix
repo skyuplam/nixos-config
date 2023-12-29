@@ -1,6 +1,8 @@
-{ pkgs, inputs, ... }:
-
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   # Add ~/.local/bin to PATH
   environment.localBinInPath = true;
 
@@ -10,11 +12,7 @@
   users.users.tlam = {
     isNormalUser = true;
     home = "/home/terrencelam";
-    extraGroups = [ "docker" "wheel" ];
+    extraGroups = ["docker" "wheel" "video"];
     shell = pkgs.zsh;
   };
-
-  nixpkgs.overlays = import ../../lib/overlays.nix ++ [
-    (import ./vim.nix { inherit inputs; })
-  ];
 }

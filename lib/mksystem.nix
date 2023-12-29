@@ -45,8 +45,8 @@ in
 
       # Bring in WSL if this is a WSL build
       (
-        if isWSL
-        then inputs.nixos-wsl.nixosModules.wsl
+        if !isWSL && !darwin
+        then inputs.disko.nixosModules.disko
         else {}
       )
 
@@ -57,8 +57,8 @@ in
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.${user} = import userHMConfig {
-          isWSL = isWSL;
-          inputs = inputs;
+          inherit isWSL;
+          inherit inputs;
         };
       }
 
@@ -69,8 +69,8 @@ in
           currentSystem = system;
           currentSystemName = name;
           currentSystemUser = user;
-          isWSL = isWSL;
-          inputs = inputs;
+          inherit isWSL;
+          inherit inputs;
         };
       }
     ];

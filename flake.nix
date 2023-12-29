@@ -18,6 +18,11 @@
 
     zig.url = "github:mitchellh/zig-overlay";
     zls.url = "github:zigtools/zls";
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -29,7 +34,7 @@
     overlays = [
       inputs.neovim-nightly-overlay.overlay
       inputs.zig.overlays.default
-      (final: prev: {inherit zls;})
+      (_final: _prev: {inherit zls;})
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;

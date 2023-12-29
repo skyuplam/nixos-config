@@ -266,6 +266,29 @@ in {
     };
   };
 
+  wayland.windowManager.sway = {
+    enable = isLinux;
+    config = rec {
+      modifier = "Mod4";
+      terminal = "wezterm";
+      startup = [
+        # Launch Firefox on start
+        # {command = "firefox";}
+      ];
+    };
+  };
+
+  # Inferior performance
+  # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
+  security.pam.loginLimits = [
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
+  ];
+
   services.gpg-agent = {
     enable = isLinux;
     pinentryFlavor = "tty";

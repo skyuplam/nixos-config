@@ -3,6 +3,7 @@
   pkgs,
   ...
 }: {
+  # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;
     casks = [
