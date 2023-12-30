@@ -5,6 +5,12 @@
     ./disko-config-utm.nix
   ];
 
+  # Don't require password for sudo
+  security.sudo.wheelNeedsPassword = false;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.mutableUsers = false;
+
   # Define your hostname.
   networking.hostName = "dev";
 

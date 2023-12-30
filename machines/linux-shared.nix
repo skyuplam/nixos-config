@@ -30,21 +30,8 @@
   # replicates the default behaviour.
   networking.useDHCP = false;
 
-  # Don't require password for sudo
-  security.sudo.wheelNeedsPassword = false;
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security.polkit.enable = true;
-  # Inferior performance
-  # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
-  security.pam.loginLimits = [
-    {
-      domain = "@users";
-      item = "rtprio";
-      type = "-";
-      value = 1;
-    }
-  ];
-
   # Inferior performance
   # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
   security.pam.loginLimits = [
@@ -71,9 +58,6 @@
       ];
     };
   };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.mutableUsers = false;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
