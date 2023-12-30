@@ -43,10 +43,14 @@ in
       # the overlays are available globally.
       {nixpkgs.overlays = overlays;}
 
-      # Bring in WSL if this is a WSL build
       (
         if !isWSL && !darwin
         then inputs.disko.nixosModules.disko
+        else {}
+      )
+      (
+        if !isWSL && !darwin
+        then inputs.sops-nix.nixosModules.sops
         else {}
       )
 
