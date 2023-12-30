@@ -2,6 +2,7 @@
   imports = [
     ./hardware/vm-aarch64-utm.nix
     ./linux-shared.nix
+    ./disko-config-utm.nix
   ];
 
   # Define your hostname.

@@ -45,6 +45,17 @@
     }
   ];
 
+  # Inferior performance
+  # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
+  security.pam.loginLimits = [
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
+  ];
+
   # Virtualization settings
   virtualisation.docker.enable = true;
 
