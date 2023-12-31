@@ -28,7 +28,6 @@
     # Define your hostname.
     hostName = "dev";
     # Interface is this on my M2
-    interfaces.enp0s10.useDHCP = true;
   };
 
   # Qemu

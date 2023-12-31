@@ -15,7 +15,7 @@
     isNormalUser = true;
     home = "/home/terrencelam";
     group = "terrencelam";
-    extraGroups = ["docker" "wheel" "video"];
+    extraGroups = ["wheel" "video"];
     shell = pkgs.zsh;
     hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 

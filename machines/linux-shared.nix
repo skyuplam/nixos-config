@@ -25,11 +25,6 @@
   # Set your time zone.
   time.timeZone = "Europe/Oslo";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security.polkit.enable = true;
   # Inferior performance
@@ -42,9 +37,6 @@
       value = 1;
     }
   ];
-
-  # Virtualization settings
-  virtualisation.docker.enable = true;
 
   # Select internationalisation properties.
   i18n = {
@@ -74,8 +66,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.settings.PasswordAuthentication = true;
-  services.openssh.settings.PermitRootLogin = "no";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
