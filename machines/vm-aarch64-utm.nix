@@ -16,6 +16,14 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
 
+  sops = {
+    defaultSopsFile = ../secrets/user.yaml;
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    secrets.hashedPassword = {
+      neededForUsers = true;
+    };
+  };
+
   networking = {
     # Define your hostname.
     hostName = "dev";

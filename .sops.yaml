@@ -1,0 +1,7 @@
+keys:
+  - &terrencelam age1tgwzfyu6vnakq6t890q82hh83zhvhv2z3ac8qj30e4tva887m39sv7mtte
+creation_rules:
+  - path_regex: secrets/user\.yaml$
+    key_groups:
+      - age:
+        - *terrencelam

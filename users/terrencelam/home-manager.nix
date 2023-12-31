@@ -86,6 +86,7 @@ in {
     pkgs.qemu
     pkgs.sops
     pkgs.age
+    pkgs.mkpasswd
 
     # Dev stuff
     pkgs.jq

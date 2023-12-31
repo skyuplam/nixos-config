@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }: {
   # Add ~/.local/bin to PATH
@@ -16,6 +17,7 @@
     group = "terrencelam";
     extraGroups = ["docker" "wheel" "video"];
     shell = pkgs.zsh;
+    hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 
     openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIi4mBqMk32PKYVGFJZBXqM+b6vw8b3J0pSFBGAQm3ps TlamM2"];
   };
