@@ -11,7 +11,7 @@
               priority = 1;
               name = "ESP";
               start = "1M";
-              end = "128M";
+              end = "500M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -41,7 +41,7 @@
                   };
                   "/swap" = {
                     mountpoint = "/.swapvol";
-                    swap.swapfile.size = "20M";
+                    swap.swapfile.size = "40G";
                   };
                 };
               };

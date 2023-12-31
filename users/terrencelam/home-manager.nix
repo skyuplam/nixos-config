@@ -55,7 +55,6 @@ in {
     pkgs.libiconv
     pkgs.gitAndTools.delta
     pkgs.gnupg
-    pkgs.pinentry_mac
     pkgs.go
     pkgs.nb
     pkgs.lsd
@@ -85,8 +84,6 @@ in {
     pkgs.zigpkgs.master
     pkgs.zls
     pkgs.qemu
-    pkgs.skhd
-    pkgs.yabai
 
     # Dev stuff
     pkgs.jq

@@ -46,8 +46,13 @@ in
       (
         if !darwin && !isWSL
         then
-          inputs.sops-nix.nixosModules.sops
           inputs.disko.nixosModules.disko
+        else {}
+      )
+      (
+        if !darwin && !isWSL
+        then
+          inputs.sops-nix.nixosModules.sops
         else {}
       )
 
