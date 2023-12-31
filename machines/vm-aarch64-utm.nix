@@ -24,6 +24,7 @@
   };
 
   # Qemu
+  services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
 
   # For now, we need this since hardware acceleration does not work.
@@ -31,7 +32,6 @@
 
   # Lots of stuff that uses aarch64 that claims doesn't work, but actually works.
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnsupportedSystem = true;
 
   # Disable the firewall since we're in a VM and we want to make it
   # easy to visit stuff in here. We only use NAT networking anyways.
