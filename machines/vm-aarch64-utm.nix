@@ -1,7 +1,15 @@
-{ config, pkgs, modulesPath, ... }: {
+{
+  config,
+  pkgs,
+  modulesPath,
+  inputs,
+  ...
+}: {
   imports = [
     ./hardware/vm-aarch64-utm.nix
     ./linux-shared.nix
+    inputs.sops-nix.nixosModules.sops
+    inputs.disko.nixosModules.disko
     ./disko-config-utm.nix
   ];
 
@@ -11,11 +19,12 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
 
-  # Define your hostname.
-  networking.hostName = "dev";
-
-  # Interface is this on my M2
-  networking.interfaces.enp0s10.useDHCP = true;
+  networking = {
+    # Define your hostname.
+    hostName = "dev";
+    # Interface is this on my M2
+    networking.interfaces.enp0s10.useDHCP = true;
+  };
 
   # Qemu
   services.spice-vdagentd.enable = true;

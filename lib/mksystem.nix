@@ -43,17 +43,6 @@ in
       # the overlays are available globally.
       {nixpkgs.overlays = overlays;}
 
-      (
-        if !isWSL && !darwin
-        then inputs.disko.nixosModules.disko
-        else {}
-      )
-      (
-        if !isWSL && !darwin
-        then inputs.sops-nix.nixosModules.sops
-        else {}
-      )
-
       machineConfig
       userOSConfig
       home-manager.home-manager
