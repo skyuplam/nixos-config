@@ -2,14 +2,11 @@
   config,
   pkgs,
   modulesPath,
-  inputs,
   ...
 }: {
   imports = [
     ./hardware/vm-aarch64-utm.nix
     ./linux-shared.nix
-    inputs.sops-nix.nixosModules.sops
-    inputs.disko.nixosModules.disko
     ./disko-config-utm.nix
   ];
 

@@ -4,7 +4,6 @@
   lib,
   currentSystem,
   currentSystemName,
-  inputs,
   ...
 }: {
   nix = {
