@@ -46,8 +46,6 @@
   # Virtualization settings
   virtualisation.docker.enable = true;
 
-  users.groups.terrencelam = {};
-
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";

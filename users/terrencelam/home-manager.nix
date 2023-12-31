@@ -84,6 +84,8 @@ in {
     pkgs.zigpkgs.master
     pkgs.zls
     pkgs.qemu
+    pkgs.sops
+    pkgs.age
 
     # Dev stuff
     pkgs.jq

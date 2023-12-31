@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   ...
 }: {
   # Add ~/.local/bin to PATH
@@ -8,6 +7,8 @@
 
   # Since we're using fish as our shell
   programs.zsh.enable = true;
+
+  users.groups.terrencelam = {};
 
   users.users.terrencelam = {
     isNormalUser = true;
