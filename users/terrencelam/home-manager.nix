@@ -141,11 +141,14 @@ in {
 
   programs.zsh = {
     enable = true;
-    # enableAutosuggestions = true;
-    enableCompletion = false;
-    completionInit = "";
-    # enableSyntaxHighlighting = true;
-    initExtraBeforeCompInit = "[ -f $HOME/.zsh/init.zsh ] && source $HOME/.zsh/init.zsh";
+    enableAutosuggestions = true;
+    syntaxHighlighting.enable = true;
+    historySubstringSearch = {
+      enable = true;
+      searchUpKey = ["^[[A" "^P"];
+      searchDownKey = ["^[[B" "^N"];
+    };
+    enableCompletion = true;
   };
 
   programs.bat = {
@@ -277,6 +280,7 @@ in {
       MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
       Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
     '';
+    includes = ["./_config"];
   };
 
   wayland.windowManager.sway = {
