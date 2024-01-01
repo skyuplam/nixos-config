@@ -24,4 +24,5 @@ in {
     openssh.authorizedKeys.keys = keys;
   };
   users.users.root.openssh.authorizedKeys.keys = keys;
+  boot.initrd.network.ssh.authorizedKeys = keys;
 }

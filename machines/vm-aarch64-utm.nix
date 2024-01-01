@@ -1,7 +1,5 @@
 {
   config,
-  pkgs,
-  modulesPath,
   ...
 }: {
   imports = [
