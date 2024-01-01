@@ -20,13 +20,9 @@
   };
 
   networking = {
-    # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-    # Per-interface useDHCP will be mandatory in the future, so this generated config
-    # replicates the default behaviour.
     useDHCP = false;
-    interfaces.enp0s1.useDHCP = false;
+    interfaces.enp0s1.useDHCP = true;
 
-    networkmanager.enable = true;
     # Define your hostname.
     hostName = "dev";
     # Interface is this on my M2
