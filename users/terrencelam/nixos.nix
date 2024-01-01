@@ -13,16 +13,18 @@ in {
 
   users.groups.terrencelam = {};
 
-  users.users.terrencelam = {
-    isNormalUser = true;
-    home = "/home/terrencelam";
-    group = "terrencelam";
-    extraGroups = ["wheel" "video"];
-    shell = pkgs.zsh;
-    hashedPasswordFile = config.sops.secrets.hashedPassword.path;
+  users.users = {
+    terrencelam = {
+      isNormalUser = true;
+      home = "/home/terrencelam";
+      group = "terrencelam";
+      extraGroups = ["wheel" "video" "networkmanager"];
+      shell = pkgs.zsh;
+      hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 
-    openssh.authorizedKeys.keys = keys;
+      openssh.authorizedKeys.keys = keys;
+    };
+    root.openssh.authorizedKeys.keys = keys;
   };
-  users.users.root.openssh.authorizedKeys.keys = keys;
   boot.initrd.network.ssh.authorizedKeys = keys;
 }
