@@ -19,7 +19,7 @@
       sh -c 'col -bx | bat -l man -p'
     ''
     else ''
-      cat "$1" | col -bx | bat --language man --style plain
+      exec cat "$@" | col -bx | bat --language man --style plain --pager "$PAGER"
     ''
   );
 in {
@@ -149,6 +149,9 @@ in {
       searchDownKey = ["^[[B" "^N"];
     };
     enableCompletion = true;
+    envExtra = ''
+      export MANROFFOPT="-c"
+    '';
   };
 
   programs.bat = {
