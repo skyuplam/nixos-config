@@ -30,7 +30,9 @@ in {
   # a list of state version changes in each release.
   home.stateVersion = "23.11";
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+  };
 
   #---------------------------------------------------------------------
   # Packages
