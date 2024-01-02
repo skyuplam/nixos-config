@@ -162,11 +162,11 @@ in {
           # Homebrew
           export PATH="$PATH:/opt/homebrew/bin"
         '');
-        shellAliases = {
-          ls = "lsd";
-          ll = "ls -l";
-          lt = "ls --tree";
-        };
+      shellAliases = {
+        ls = "lsd";
+        ll = "ls -l";
+        lt = "ls --tree";
+      };
     };
 
     bat = {
@@ -304,12 +304,13 @@ in {
 
   wayland.windowManager.sway = {
     enable = isLinux;
+    extraOptions = ["--unsupported-gpu"];
+    wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
       terminal = "wezterm";
       startup = [
-        # Launch Firefox on start
-        # {command = "firefox";}
+        {command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK";}
       ];
     };
   };
