@@ -149,9 +149,22 @@ in {
         searchDownKey = ["^[[B" "^N"];
       };
       enableCompletion = true;
-      envExtra = ''
-        export MANROFFOPT="-c"
-      '';
+      envExtra =
+        ''
+          export MANROFFOPT="-c"
+          # Git
+          export REVIEW_BASE=main
+        ''
+        + (lib.optionals isDarwin ''
+          export HOMEBREW_NO_ANALYTICS=1
+          # Homebrew
+          export PATH="$PATH:/opt/homebrew/bin"
+        '');
+        shellAliases = {
+          ls = "lsd";
+          ll = "ls -l";
+          lt = "ls --tree";
+        };
     };
 
     bat = {
@@ -283,7 +296,7 @@ in {
         MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
         Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
       '';
-      includes = ["./_config"];
+      includes = ["./.config"];
     };
   };
 
