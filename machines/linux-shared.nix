@@ -27,6 +27,7 @@
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security.polkit.enable = true;
+  xdg.portal.wlr.enable = true;
   # Inferior performance
   # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
   security.pam.loginLimits = [
@@ -56,7 +57,7 @@
   environment.systemPackages = with pkgs; [
   ];
 
-  environment.pathsToLink = [ "/share/zsh" ];
+  environment.pathsToLink = ["/share/zsh"];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
