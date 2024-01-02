@@ -27,8 +27,8 @@
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security.polkit = {
-    polkit.enable = true;
-    polkit.extraConfig = ''
+    enable = true;
+    extraConfig = ''
       polkit.addRule(function(action, subject) {
         if (
           subject.isInGroup("users")
