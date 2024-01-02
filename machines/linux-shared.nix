@@ -26,7 +26,25 @@
   time.timeZone = "Europe/Oslo";
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
-  security.polkit.enable = true;
+  security.polkit = {
+    polkit.enable = true;
+    polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        if (
+          subject.isInGroup("users")
+            && (
+              action.id == "org.freedesktop.login1.reboot" ||
+              action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+              action.id == "org.freedesktop.login1.power-off" ||
+              action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+            )
+          )
+        {
+          return polkit.Result.YES;
+        }
+      })
+    '';
+  };
   xdg = {
     portal = {
       enable = true;
@@ -67,20 +85,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wezterm # gpu accelerated terminal
-    dbus # make dbus-update-activation-environment available in the path
-    dbus-sway-environment
-    configure-gtk
-    wayland
-    xdg-utils # for opening default programs when clicking links
-    swaylock
-    swayidle
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    bemenu # wayland clone of dmenu
-    mako # notification system developed by swaywm maintainer
-    wdisplays # tool to configure displays
   ];
 
   environment.pathsToLink = ["/share/zsh"];
