@@ -27,8 +27,17 @@
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security.polkit.enable = true;
-  xdg.portal.enable = true;
-  xdg.portal.wlr.enable = true;
+  xdg = {
+    portal = {
+      enable = true;
+      wlr.enable = true;
+      config = {
+        sway = {
+          default = ["wlr"];
+        };
+      };
+    };
+  };
   # Inferior performance
   # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
   security.pam.loginLimits = [
