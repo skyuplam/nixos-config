@@ -135,155 +135,156 @@ in {
   # Programs
   #---------------------------------------------------------------------
 
-  programs.bash = {
-    enable = true;
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableAutosuggestions = true;
-    syntaxHighlighting.enable = true;
-    historySubstringSearch = {
+  programs = {
+    bash = {
       enable = true;
-      searchUpKey = ["^[[A" "^P"];
-      searchDownKey = ["^[[B" "^N"];
     };
-    enableCompletion = true;
-    envExtra = ''
-      export MANROFFOPT="-c"
-    '';
-  };
-
-  programs.bat = {
-    enable = true;
-    config = {
-      style = "plain";
+    zsh = {
+      enable = true;
+      enableAutosuggestions = true;
+      syntaxHighlighting.enable = true;
+      historySubstringSearch = {
+        enable = true;
+        searchUpKey = ["^[[A" "^P"];
+        searchDownKey = ["^[[B" "^N"];
+      };
+      enableCompletion = true;
+      envExtra = ''
+        export MANROFFOPT="-c"
+      '';
     };
-  };
 
-  programs.git = {
-    enable = true;
-  };
-
-  programs.neovim = {
-    enable = true;
-    package = pkgs.neovim-nightly;
-
-    withPython3 = true;
-  };
-
-  programs.fzf = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.password-store = {
-    enable = true;
-    package = pkgs.pass;
-    settings = {PASSWORD_STORE_DIR = "$HOME/.password-store";};
-  };
-
-  programs.zellij = {
-    enable = true;
-  };
-
-  programs.zoxide.enable = true;
-
-  # Starship Prompt
-  # https://rycee.gitlab.io/home-manager/options.html#opt-programs.starship.enable
-  programs.starship = {
-    enable = true;
-    settings = {
-      command_timeout = 1000;
-      directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
-      directory.truncation_length = 2; # number of directories not to truncate
-      gcloud.disabled = true; # annoying to always have on
-      hostname.style = "bold green"; # don't like the default
-      memory_usage.disabled = true; # because it includes cached memory it's reported as full a lot
-      username.style_user = "bold blue"; # don't like the default
+    bat = {
+      enable = true;
+      config = {
+        style = "plain";
+      };
     };
-  };
 
-  programs.gpg = {
-    enable = true;
-    settings = {
-      # https://github.com/drduh/config/blob/master/gpg.conf
-      # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration-Options.html
-      # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Esoteric-Options.html
-      # 'gpg --version' to get capabilities
-      # Use AES256, 192, or 128 as cipher
-      personal-cipher-preferences = "AES256 AES192 AES";
-      # Use SHA512, 384, or 256 as digest
-      personal-digest-preferences = "SHA512 SHA384 SHA256";
-      # Use ZLIB, BZIP2, ZIP, or no compression
-      personal-compress-preferences = "ZLIB BZIP2 ZIP Uncompressed";
-      # Default preferences for new keys
-      default-preference-list = "SHA512 SHA384 SHA256 AES256 AES192 AES ZLIB BZIP2 ZIP Uncompressed";
-      # SHA512 as digest to sign keys
-      cert-digest-algo = "SHA512";
-      # SHA512 as digest for symmetric ops
-      s2k-digest-algo = "SHA512";
-      # AES256 as cipher for symmetric ops
-      s2k-cipher-algo = "AES256";
-      # UTF-8 support for compatibility
-      charset = "utf-8";
-      # Show Unix timestamps
-      fixed-list-mode = true;
-      # No comments in signature
-      no-comments = true;
-      # No version in output
-      no-emit-version = true;
-      # Disable banner
-      no-greeting = true;
-      # Long hexidecimal key format
-      keyid-format = "0xlong";
-      # Display UID validity
-      list-options = "show-uid-validity";
-      verify-options = "show-uid-validity";
-      # Display all keys and their fingerprints
-      with-fingerprint = true;
-      # Display key origins and updates
-      #with-key-origin
-      # Cross-certify subkeys are present and valid
-      require-cross-certification = true;
-      # Disable caching of passphrase for symmetrical ops
-      no-symkey-cache = true;
-      # Enable smartcard
-      use-agent = true;
-      # Disable recipient key ID in messages
-      throw-keyids = true;
-      # Default/trusted key ID to use (helpful with throw-keyids)
-      default-key = "0xD400A663D09CB107";
-      trusted-key = "0xD400A663D09CB107";
-      # Group recipient keys (preferred ID last)
-      #group keygroup = 0xFF00000000000001 0xFF00000000000002 0xFF3E7D88647EBCDB
-      # Keyserver URL
-      #keyserver hkps://keys.openpgp.org
-      #keyserver hkps://keyserver.ubuntu.com:443
-      #keyserver hkps://hkps.pool.sks-keyservers.net
-      #keyserver hkps://pgp.ocf.berkeley.edu
-      # Proxy to use for keyservers
-      #keyserver-options http-proxy=http://127.0.0.1:8118
-      #keyserver-options http-proxy=socks5-hostname://127.0.0.1:9050
-      # Verbose output
-      #verbose
-      # Show expired subkeys
-      #list-options = "show-unusable-subkeys";
+    git = {
+      enable = true;
     };
-  };
 
-  programs.ssh = {
-    enable = true;
-    hashKnownHosts = true;
-    extraConfig = ''
-      # Host keys the client accepts - order here is honored by OpenSSH
-      HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256
+    neovim = {
+      enable = true;
+      package = pkgs.neovim-nightly;
 
-      KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
-      MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
-      Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-    '';
-    includes = ["./_config"];
+      withPython3 = true;
+    };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    password-store = {
+      enable = true;
+      package = pkgs.pass;
+      settings = {PASSWORD_STORE_DIR = "$HOME/.password-store";};
+    };
+
+    zellij = {
+      enable = true;
+    };
+
+    zoxide.enable = true;
+
+    # Starship Prompt
+    # https://rycee.gitlab.io/home-manager/options.html#opt-programs.starship.enable
+    starship = {
+      enable = true;
+      settings = {
+        command_timeout = 1000;
+        directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
+        directory.truncation_length = 2; # number of directories not to truncate
+        gcloud.disabled = true; # annoying to always have on
+        hostname.style = "bold green"; # don't like the default
+        memory_usage.disabled = true; # because it includes cached memory it's reported as full a lot
+        username.style_user = "bold blue"; # don't like the default
+      };
+    };
+
+    gpg = {
+      enable = true;
+      settings = {
+        # https://github.com/drduh/config/blob/master/gpg.conf
+        # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Configuration-Options.html
+        # https://www.gnupg.org/documentation/manuals/gnupg/GPG-Esoteric-Options.html
+        # 'gpg --version' to get capabilities
+        # Use AES256, 192, or 128 as cipher
+        personal-cipher-preferences = "AES256 AES192 AES";
+        # Use SHA512, 384, or 256 as digest
+        personal-digest-preferences = "SHA512 SHA384 SHA256";
+        # Use ZLIB, BZIP2, ZIP, or no compression
+        personal-compress-preferences = "ZLIB BZIP2 ZIP Uncompressed";
+        # Default preferences for new keys
+        default-preference-list = "SHA512 SHA384 SHA256 AES256 AES192 AES ZLIB BZIP2 ZIP Uncompressed";
+        # SHA512 as digest to sign keys
+        cert-digest-algo = "SHA512";
+        # SHA512 as digest for symmetric ops
+        s2k-digest-algo = "SHA512";
+        # AES256 as cipher for symmetric ops
+        s2k-cipher-algo = "AES256";
+        # UTF-8 support for compatibility
+        charset = "utf-8";
+        # Show Unix timestamps
+        fixed-list-mode = true;
+        # No comments in signature
+        no-comments = true;
+        # No version in output
+        no-emit-version = true;
+        # Disable banner
+        no-greeting = true;
+        # Long hexidecimal key format
+        keyid-format = "0xlong";
+        # Display UID validity
+        list-options = "show-uid-validity";
+        verify-options = "show-uid-validity";
+        # Display all keys and their fingerprints
+        with-fingerprint = true;
+        # Display key origins and updates
+        #with-key-origin
+        # Cross-certify subkeys are present and valid
+        require-cross-certification = true;
+        # Disable caching of passphrase for symmetrical ops
+        no-symkey-cache = true;
+        # Enable smartcard
+        use-agent = true;
+        # Disable recipient key ID in messages
+        throw-keyids = true;
+        # Default/trusted key ID to use (helpful with throw-keyids)
+        default-key = "0xD400A663D09CB107";
+        trusted-key = "0xD400A663D09CB107";
+        # Group recipient keys (preferred ID last)
+        #group keygroup = 0xFF00000000000001 0xFF00000000000002 0xFF3E7D88647EBCDB
+        # Keyserver URL
+        #keyserver hkps://keys.openpgp.org
+        #keyserver hkps://keyserver.ubuntu.com:443
+        #keyserver hkps://hkps.pool.sks-keyservers.net
+        #keyserver hkps://pgp.ocf.berkeley.edu
+        # Proxy to use for keyservers
+        #keyserver-options http-proxy=http://127.0.0.1:8118
+        #keyserver-options http-proxy=socks5-hostname://127.0.0.1:9050
+        # Verbose output
+        #verbose
+        # Show expired subkeys
+        #list-options = "show-unusable-subkeys";
+      };
+    };
+
+    ssh = {
+      enable = true;
+      hashKnownHosts = true;
+      extraConfig = ''
+        # Host keys the client accepts - order here is honored by OpenSSH
+        HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256
+
+        KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+        MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+        Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+      '';
+      includes = ["./_config"];
+    };
   };
 
   wayland.windowManager.sway = {
