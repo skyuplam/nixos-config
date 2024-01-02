@@ -148,6 +148,7 @@ in {
     zsh = {
       enable = true;
       enableAutosuggestions = true;
+      defaultKeymap = "emacs";
       syntaxHighlighting.enable = true;
       historySubstringSearch = {
         enable = true;
