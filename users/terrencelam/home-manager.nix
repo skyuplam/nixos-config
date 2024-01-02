@@ -157,11 +157,15 @@ in {
           # Git
           export REVIEW_BASE=main
         ''
-        + (lib.optionals isDarwin ''
-          export HOMEBREW_NO_ANALYTICS=1
-          # Homebrew
-          export PATH="$PATH:/opt/homebrew/bin"
-        '');
+        + (
+          if isDarwin
+          then ''
+            export HOMEBREW_NO_ANALYTICS=1
+            # Homebrew
+            export PATH="$PATH:/opt/homebrew/bin"
+          ''
+          else ""
+        );
       shellAliases = {
         ls = "lsd";
         ll = "ls -l";
