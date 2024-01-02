@@ -24,6 +24,7 @@
 
   # Set your time zone.
   time.timeZone = "Europe/Oslo";
+  hardware.opengl.enable = true;
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security.polkit = {
