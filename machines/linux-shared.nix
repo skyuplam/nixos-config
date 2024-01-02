@@ -31,9 +31,11 @@
     portal = {
       enable = true;
       wlr.enable = true;
+      # gtk portal needed to make gtk apps happy
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
       config = {
         sway = {
-          default = ["wlr"];
+          default = ["wlr" "gtk"];
         };
       };
     };
@@ -65,6 +67,20 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    wezterm # gpu accelerated terminal
+    dbus # make dbus-update-activation-environment available in the path
+    dbus-sway-environment
+    configure-gtk
+    wayland
+    xdg-utils # for opening default programs when clicking links
+    swaylock
+    swayidle
+    grim # screenshot functionality
+    slurp # screenshot functionality
+    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
+    bemenu # wayland clone of dmenu
+    mako # notification system developed by swaywm maintainer
+    wdisplays # tool to configure displays
   ];
 
   environment.pathsToLink = ["/share/zsh"];
@@ -82,6 +98,14 @@
     enable = true;
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
+  };
+
+  services.dbus.enable = true;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
   };
 
   services.greetd = {
