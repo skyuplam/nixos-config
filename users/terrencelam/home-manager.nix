@@ -33,7 +33,7 @@ in {
   xdg = {
     enable = true;
     userDirs = {
-      enable = true;
+      enable = isLinux;
       createDirectories = true;
     };
   };
@@ -212,6 +212,11 @@ in {
     };
 
     zoxide.enable = true;
+
+    yazi = {
+      enable = true;
+      enableZshIntegration = true;
+    };
 
     # Starship Prompt
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.starship.enable
