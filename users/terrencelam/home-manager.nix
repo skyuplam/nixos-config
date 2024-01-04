@@ -8,8 +8,7 @@
   pkgs,
   ...
 }: let
-  isDarwin = pkgs.stdenv.isDarwin;
-  isLinux = pkgs.stdenv.isLinux;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
   # For our MANPAGER env var
   # https://github.com/sharkdp/bat/issues/1145
@@ -45,83 +44,84 @@ in {
   # Packages I always want installed. Most packages I install using
   # per-project flakes sourced with direnv and nix-shell, so this is
   # not a huge list.
-  home.packages = [
-    pkgs.aspell
-    pkgs.bat
-    pkgs.bottom # fancy version of `top` with ASCII graphs
-    pkgs.browsh # in terminal browser
-    pkgs.coreutils
-    pkgs.codespell
-    pkgs.curl
-    pkgs.chafa
-    pkgs.wezterm
-    pkgs.du-dust # fancy version of `du`
-    pkgs.fd # fancy version of `find`
-    (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
-    pkgs.libiconv
-    pkgs.gitAndTools.delta
-    pkgs.gnupg
-    pkgs.go
-    pkgs.nb
-    pkgs.lsd
-    pkgs.luajitPackages.luarocks
-    pkgs.lnav
-    pkgs.neovim-nightly
-    pkgs.ripgrep # better version of `grep`
-    pkgs.rsync
-    pkgs.sd
-    pkgs.sqlite
-    pkgs.stow
-    pkgs.tig
-    pkgs.tmux
-    pkgs.tree-sitter
-    pkgs.units
-    pkgs.wget
-    pkgs.wasm-pack
-    pkgs.yarn
-    pkgs.zellij
-    pkgs.mpv-unwrapped
-    pkgs.yt-dlp
-    pkgs.nmap
-    pkgs.presenterm
-    # https://github.com/mitchellh/zig-overlay
-    # latest nightly release
-    pkgs.zigpkgs.master
-    pkgs.zls
-    pkgs.qemu
-    pkgs.sops
-    pkgs.age
-    pkgs.mkpasswd
+  home.packages =
+    [
+      pkgs.aspell
+      pkgs.bat
+      pkgs.bottom # fancy version of `top` with ASCII graphs
+      pkgs.browsh # in terminal browser
+      pkgs.coreutils
+      pkgs.codespell
+      pkgs.curl
+      pkgs.chafa
+      pkgs.wezterm
+      pkgs.du-dust # fancy version of `du`
+      pkgs.fd # fancy version of `find`
+      (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
+      pkgs.libiconv
+      pkgs.gitAndTools.delta
+      pkgs.gnupg
+      pkgs.go
+      pkgs.nb
+      pkgs.lsd
+      pkgs.luajitPackages.luarocks
+      pkgs.lnav
+      pkgs.ripgrep # better version of `grep`
+      pkgs.rsync
+      pkgs.sd
+      pkgs.sqlite
+      pkgs.stow
+      pkgs.tig
+      pkgs.tmux
+      pkgs.tree-sitter
+      pkgs.units
+      pkgs.wget
+      pkgs.wasm-pack
+      pkgs.yarn
+      pkgs.zellij
+      pkgs.mpv-unwrapped
+      pkgs.yt-dlp
+      pkgs.nmap
+      pkgs.presenterm
+      # https://github.com/mitchellh/zig-overlay
+      # latest nightly release
+      pkgs.zigpkgs.master
+      pkgs.zls
+      pkgs.qemu
+      pkgs.sops
+      pkgs.age
+      pkgs.mkpasswd
 
-    # Dev stuff
-    pkgs.jq
-    pkgs.nodePackages.typescript-language-server
-    pkgs.nodePackages.yaml-language-server
-    pkgs.nodePackages.vim-language-server
-    pkgs.nodePackages.prettier
-    pkgs.nodePackages.write-good
-    pkgs.vscode-langservers-extracted
-    pkgs.lua-language-server
-    pkgs.efm-langserver
-    pkgs.rustup
-    pkgs.marksman
-    pkgs.gitlint
-    pkgs.stylua
-    pkgs.selene
-    pkgs.dotenv-linter
-    pkgs.statix
-    pkgs.deadnix
-    pkgs.alejandra
-    pkgs.typos
-    pkgs.dprint
-    pkgs.nixpkgs-fmt
-    pkgs.languagetool-rust
-    (pkgs.python3.withPackages (p: with p; [pip pynvim]))
-  ] ++ (lib.optionals (isLinux && !isWSL) [
-    pkgs.wlogout
-    pkgs.grim
-    pkgs.swayidle
-  ]);
+      # Dev stuff
+      pkgs.jq
+      pkgs.nodePackages.typescript-language-server
+      pkgs.nodePackages.yaml-language-server
+      pkgs.nodePackages.vim-language-server
+      pkgs.nodePackages.prettier
+      pkgs.nodePackages.write-good
+      pkgs.vscode-langservers-extracted
+      pkgs.lua-language-server
+      pkgs.efm-langserver
+      pkgs.rustup
+      pkgs.marksman
+      pkgs.gitlint
+      pkgs.stylua
+      pkgs.selene
+      pkgs.dotenv-linter
+      pkgs.statix
+      pkgs.deadnix
+      pkgs.alejandra
+      pkgs.typos
+      pkgs.dprint
+      pkgs.nixpkgs-fmt
+      pkgs.languagetool-rust
+      (pkgs.python3.withPackages (p: with p; [pip pynvim]))
+    ]
+    ++ (lib.optionals (isLinux && !isWSL) [
+      pkgs.wlogout
+      pkgs.grim
+      pkgs.swayidle
+    ]);
 
   #---------------------------------------------------------------------
   # Env vars and dotfiles
