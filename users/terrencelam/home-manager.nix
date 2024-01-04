@@ -119,11 +119,9 @@ in {
     pkgs.languagetool-rust
     (pkgs.python3.withPackages (p: with p; [pip pynvim]))
   ] ++ (lib.optionals (isLinux && !isWSL) [
-    pkgs.fuzzel
     pkgs.wlogout
     pkgs.grim
     pkgs.swayidle
-    pkgs.eww
   ]);
 
   #---------------------------------------------------------------------
@@ -230,6 +228,18 @@ in {
     yazi = {
       enable = true;
       enableZshIntegration = true;
+    };
+
+    fuzzel = {
+      enable = isLinux && !isWSL;
+    };
+
+    eww = {
+      enable = isLinux && !isWSL;
+      configDir = builtins.path {
+        name = "eww-config";
+        path = ./config/eww;
+      };
     };
 
     # Starship Prompt
