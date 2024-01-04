@@ -21,6 +21,11 @@
       exec cat "$@" | col -bx | bat --language man --style plain --pager "$PAGER"
     ''
   );
+
+  dotfilesPath = builtins.path {
+    name = "dotfiles-path";
+    path = ./config;
+  };
 in {
   # This value determines the Home Manager release that your configuration is compatible with. This
   # helps avoid breakage when a new Home Manager release introduces backwards incompatible changes.
@@ -115,7 +120,6 @@ in {
       pkgs.dprint
       pkgs.nixpkgs-fmt
       pkgs.languagetool-rust
-      (pkgs.python3.withPackages (p: with p; [pip pynvim]))
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
       pkgs.wlogout
@@ -137,6 +141,15 @@ in {
   };
 
   home.file.".inputrc".source = ./inputrc;
+
+  home.activation = {
+    linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      mkdir -p ~/.config/nvim
+      echo "linking neovim config to ~/.config/nvim"
+      cd ${dotfilesPath}
+      ${pkgs.stow}/bin/stow -t ~/.config/nvim -R nvim
+    '';
+  };
 
   fonts.fontconfig.enable = true;
 
