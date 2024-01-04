@@ -324,16 +324,41 @@ in {
     };
   };
 
-  wayland.windowManager.sway = {
-    enable = isLinux;
-    extraOptions = ["--unsupported-gpu"];
-    wrapperFeatures.gtk = true;
-    config = rec {
-      modifier = "Mod4";
-      terminal = "wezterm";
-      startup = [
-        {command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK";}
-      ];
+  wayland.windowManager = {
+    sway = {
+      # Disable sway as https://github.com/swaywm/sway/issues/6581
+      enable = false;
+      extraOptions = ["--unsupported-gpu"];
+      wrapperFeatures.gtk = true;
+      config = rec {
+        modifier = "Mod4";
+        terminal = "wezterm";
+        startup = [
+          {command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK";}
+        ];
+      };
+    };
+
+    hyprland = {
+      enable = isLinux;
+      settings = {
+        env = [
+          "NIXOS_OZONE_WL,1" # for any ozone-based browser & electron apps to run on wayland
+          "MOZ_ENABLE_WAYLAND,1" # for firefox to run on wayland
+          "MOZ_WEBRENDER,1"
+          # misc
+          "_JAVA_AWT_WM_NONREPARENTING,1"
+          "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+          "QT_QPA_PLATFORM,wayland"
+          "SDL_VIDEODRIVER,wayland"
+          "GDK_BACKEND,wayland"
+        ];
+      };
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      extraConfig = builtins.readFile (builtins.path {
+        name = "hyprland-conf";
+        path = ./config/hyprland.conf;
+      });
     };
   };
 

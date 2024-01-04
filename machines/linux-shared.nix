@@ -49,12 +49,14 @@
   xdg = {
     portal = {
       enable = true;
-      wlr.enable = true;
       # gtk portal needed to make gtk apps happy
-      extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      extraPortals = [pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk];
       config = {
         sway = {
           default = ["wlr" "gtk"];
+        };
+        Hyprland = {
+          default = ["hyprland" "gtk"];
         };
       };
     };
@@ -117,7 +119,7 @@
     enable = true;
     settings = rec {
       initial_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd sway";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
         user = "terrencelam";
       };
       default_session = initial_session;
