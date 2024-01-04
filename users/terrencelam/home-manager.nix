@@ -156,6 +156,14 @@ in {
         searchDownKey = ["^[[B" "^N"];
       };
       enableCompletion = true;
+      initExtraBeforeCompInit = builtins.readFile (builtins.path {
+        name = "zsh-init-completions";
+        path = ./config/init.zsh;
+      });
+      initExtra = builtins.readFile (builtins.path {
+        name = "zsh-config";
+        path = ./config/init.zsh;
+      });
       envExtra =
         ''
           export MANROFFOPT="-c"
