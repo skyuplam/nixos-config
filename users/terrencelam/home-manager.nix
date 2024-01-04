@@ -80,7 +80,6 @@ in {
     pkgs.wasm-pack
     pkgs.yarn
     pkgs.zellij
-    pkgs.xplr
     pkgs.mpv-unwrapped
     pkgs.yt-dlp
     pkgs.nmap
