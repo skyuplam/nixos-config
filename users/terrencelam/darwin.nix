@@ -10,6 +10,11 @@
       "stats"
       "utm"
     ];
+    onActivation = {
+      upgrade = true;
+      autoUpdate = true;
+      cleanup = "zap";
+    };
   };
 
   system = {
