@@ -144,10 +144,10 @@ in {
 
   home.activation = {
     linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      mkdir -p ~/.config/nvim
-      echo "linking neovim config to ~/.config/nvim"
-      cd ${dotfilesPath}
-      ${pkgs.stow}/bin/stow -t ~/.config/nvim -R nvim
+      rm -rf \$XDG_CONFIG_HOME/nvim
+      mkdir -p \$XDG_CONFIG_HOME/nvim
+      echo "linking neovim config to \$XDG_CONFIG_HOME/nvim"
+      ${pkgs.stow}/bin/stow -d ${dotfilesPath} -t \$XDG_CONFIG_HOME/nvim -S nvim
     '';
   };
 
