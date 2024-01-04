@@ -118,7 +118,13 @@ in {
     pkgs.nixpkgs-fmt
     pkgs.languagetool-rust
     (pkgs.python3.withPackages (p: with p; [pip pynvim]))
-  ];
+  ] ++ (lib.optionals (isLinux && !isWSL) [
+    pkgs.fuzzel
+    pkgs.wlogout
+    pkgs.grim
+    pkgs.swayidle
+    pkgs.eww
+  ]);
 
   #---------------------------------------------------------------------
   # Env vars and dotfiles
