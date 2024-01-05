@@ -90,6 +90,13 @@ in {
           path = ./config/tridactyl;
         };
       };
+      fuzzel = {
+        enable = true;
+        source = builtins.path {
+          name = "fuzzel";
+          path = ./config/fuzzel;
+        };
+      };
     };
   };
 
