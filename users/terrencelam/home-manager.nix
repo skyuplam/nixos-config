@@ -336,6 +336,7 @@ in {
 
     wezterm = {
       enable = true;
+      enableZshIntegration = true;
     };
 
     swaylock = {
