@@ -48,6 +48,13 @@ in {
           path = ./config/git;
         };
       };
+      tig = {
+        enable = true;
+        source = builtins.path {
+          name = "tig-config";
+          path = ./config/tig;
+        };
+      };
     };
   };
 
