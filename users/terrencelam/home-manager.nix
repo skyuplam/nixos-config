@@ -185,6 +185,7 @@ in {
       pkgs.nil
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
+      pkgs.foot
       pkgs.wlogout
       pkgs.grim
       pkgs.swayidle
