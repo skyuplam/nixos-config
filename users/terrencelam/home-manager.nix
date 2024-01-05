@@ -97,6 +97,13 @@ in {
           path = ./config/fuzzel;
         };
       };
+      foot = {
+        enable = isLinux && !isWSL;
+        source = builtins.path {
+          name = "foot-config";
+          path = ./config/foot;
+        };
+      };
       swaylock = {
         enable = true;
         source = builtins.path {
@@ -124,7 +131,6 @@ in {
       pkgs.codespell
       pkgs.curl
       pkgs.chafa
-      pkgs.wezterm
       pkgs.du-dust # fancy version of `du`
       pkgs.fd # fancy version of `find`
       (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
@@ -185,7 +191,6 @@ in {
       pkgs.nil
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
-      pkgs.foot
       pkgs.wlogout
       pkgs.grim
       pkgs.swayidle
@@ -315,6 +320,10 @@ in {
     };
 
     fuzzel = {
+      enable = isLinux && !isWSL;
+    };
+
+    foot = {
       enable = isLinux && !isWSL;
     };
 
