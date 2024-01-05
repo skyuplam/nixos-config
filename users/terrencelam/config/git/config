@@ -1,0 +1,195 @@
+# vim: set filetype=gitconfig :
+# set your user tokens as environment variables, such as ~/.secrets
+[init]
+  defaultBranch = main
+[color]
+  ui = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red
+  new = green
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+  # add
+  a = add                           # add
+  chunkyadd = add --patch           # stage commits chunk by chunk
+
+  # Log Graph
+  graph = log --graph --color --pretty=format:"%C(yellow)%H%C(green)%d%C(reset)%n%x20%cd%n%x20%cn%C(blue)%x20(%ce)%x20%C(cyan)[gpg:%GK%x20%G?]%C(reset)%n%x20%s%n"
+
+  # via http://blog.apiaxle.com/post/handy-git-tips-to-stop-you-getting-fired/
+  snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
+  snapshots = !git stash list --grep snapshot
+
+  #via http://stackoverflow.com/questions/5188320/how-can-i-get-a-list-of-git-branches-ordered-by-most-recent-commit
+  recent-branches = !git for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(refname:short)'
+
+  # branch
+  b = branch -v                     # branch (verbose)
+
+  # commit
+  c = commit -m                     # commit with message
+  ci = commit                       # commit
+  amend = commit --amend            # ammend your last commit
+  ammend = commit --amend           # ammend your last commit
+
+  # checkout
+  co = checkout                     # checkout
+  nb = checkout -b                  # create and switch to a new branch (mnemonic: "git new branch branchname...")
+
+  # cherry-pick
+  cp = cherry-pick -x               # grab a change from a branch
+
+  # diff
+  d = diff                          # diff unstaged changes
+  dc = diff --cached                # diff staged changes
+  last = diff HEAD^                 # diff last committed change
+  # list files which have changed since REVIEW_BASE
+  # (REVIEW_BASE defaults to 'main' in my zshrc)
+  files = !git diff --name-only $(git merge-base HEAD $REVIEW_BASE)
+  stat = !git diff --stat $(git merge-base HEAD $REVIEW_BASE)
+  # Open all files changed since REVIEW_BASE in Vim tabs
+  # Then, run fugitive's :Git diff in each tab, and finally
+  # tell vim-gitgutter to show +/- for changes since REVIEW_BASE
+  review = !$EDITOR -p $(git files) +\"tabdo Gitsigns diffthis '$REVIEW_BASE'\"
+  # Same as the above, except specify names of files as arguments,
+  # instead of opening all files:
+  # git reviewone foo.js bar.js
+  reviewone = !$EDITOR -p +\"tabdo Gitsigns diffthis '$REVIEW_BASE'\"
+
+  # log
+  # View abbreviated SHA, description, and history graph of the latest 20 commits
+  l = log --pretty='%C(red)%h %C(green)%cr%C(reset) %s%C(green)%d %C(blue)%aN%C(cyan)[gpg:%GK%x20%G?]%C(reset)' --graph -m --simplify-merges --color --date=relative --abbrev-commit
+  changes = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\" --name-status
+  short = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\"
+  simple = log --pretty=format:\" * %s\"
+  shortnocolor = log --pretty=format:\"%h %cr %cn %s\"
+
+  # pull
+  pl = pull                         # pull
+
+  # push
+  ps = push                         # push
+
+  # rebase
+  rc = rebase --continue            # continue rebase
+  rs = rebase --skip                # skip rebase
+
+  # remote
+  r = remote -v                     # show remotes (verbose)
+
+  # reset
+  unstage = reset HEAD              # remove files from index (tracking)
+  uncommit = reset --soft HEAD^     # go back before last commit, with files in uncommitted state
+  filelog = log -u                  # show changes to a file
+  mt = mergetool                    # fire up the merge tool
+
+  # stash
+  ss = stash                        # stash changes
+  sl = stash list                   # list stashes
+  sa = stash apply                  # apply stash (restore changes)
+  sd = stash drop                   # drop stashes (destory changes)
+
+  # status
+  s = status -s                     # status
+  st = status -s                    # status
+
+  # tag
+  t = tag -n                        # show tags with <n> lines of each tag message
+
+  # svn helpers
+  svnr = svn rebase
+  svnd = svn dcommit
+  svnl = svn log --oneline --show-commit
+[format]
+  pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
+[diff]
+  tool = vimdiff2
+  trustExitCode = true
+  algorithm = patience
+  colorMoved = "default"
+  colorMovedWS = "allow-indentation-change"
+[difftool "vimdiff2"]
+  cmd = $EDITOR -d $LOCAL $REMOTE
+[merge]
+  summary = true
+  verbosity = 1
+  tool = vimdiff4
+  conflictstyle = diff3
+[mergetool]
+  prompt = false
+[mergetool "vimdiff4"]
+  trustExitCode = true
+  cmd = $EDITOR -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[mergetool "nfugitive"]
+  cmd = $EDITOR -f -c "Git diff" "$MERGED"
+[commit]
+  gpgsign = true
+  verbose = true
+[apply]
+  whitespace = nowarn
+[branch]
+  autosetupmerge = true
+[pull]
+  rebase = false
+[push]
+  # 'git push' will push the current branch to its tracking branch
+  # the usual default is to push all branches
+  default = upstream
+  followTags = true
+  autoSetupRemote = true
+[core]
+  autocrlf = false
+  excludesfile = ~/.gitignore_global
+  pager = delta
+[interactive]
+    diffFilter = delta --color-only --features=interactive
+[advice]
+  statusHints = false
+[rerere]
+  # Remember my merges
+  # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
+  enabled = true
+[include]
+  path = ./user.gitconfig
+  path = ./tokyonight_storm.gitconfig
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  required = true
+[user]
+  email = terrence@tlam.dev
+  name = Terrence Lam
+	signingkey = D400A663D09CB107
+[delta]
+  navigate                      = true    # use n and N to move between diff sections
+  light                         = false      # set to true if you're in a terminal w/ a light background color (e.g. the default macOS terminal)
+  features                      = side-by-side line-numbers decorations
+  whitespace-error-style        = 22 reverse
+  # TokyoNight color scheme https://github.com/folke/tokyonight.nvim/blob/main/extras/delta/tokyonight_storm.gitconfig
+  minus-style                   = syntax "#3f2d3d"
+  minus-non-emph-style          = syntax "#3f2d3d"
+  minus-emph-style              = syntax "#763842"
+  minus-empty-line-marker-style = syntax "#3f2d3d"
+  line-numbers-minus-style      = "#b2555b"
+  plus-style                    = syntax "#283b4d"
+  plus-non-emph-style           = syntax "#283b4d"
+  plus-emph-style               = syntax "#316172"
+  plus-empty-line-marker-style  = syntax "#283b4d"
+  line-numbers-plus-style       = "#266d6a"
+  line-numbers-zero-style       = "#3b4261"
+[delta "decorations"]
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
+[delta "decorations"]
+  keep-plus-minus-markers = false

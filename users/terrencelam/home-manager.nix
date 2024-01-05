@@ -40,6 +40,15 @@ in {
       enable = isLinux;
       createDirectories = true;
     };
+    configFile = {
+      git = {
+        enable = true;
+        source = builtins.path {
+          name = "git-config";
+          path = ./config/git;
+        };
+      };
+    };
   };
 
   #---------------------------------------------------------------------
@@ -64,7 +73,6 @@ in {
       pkgs.fd # fancy version of `find`
       (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
       pkgs.libiconv
-      pkgs.gitAndTools.delta
       pkgs.gnupg
       pkgs.go
       pkgs.nb
@@ -140,7 +148,10 @@ in {
     MANPAGER = "${manpager}/bin/manpager";
   };
 
-  home.file.".inputrc".source = ./inputrc;
+  home.file.".inputrc".source = builtins.path {
+    name = "inputrc-config";
+    path = ./config/inputrc;
+  };
 
   home.activation = {
     linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -190,7 +201,7 @@ in {
       envExtra =
         ''
           export MANROFFOPT="-c"
-          # Git
+          # Git Review Env var
           export REVIEW_BASE=main
         ''
         + (
@@ -211,13 +222,11 @@ in {
 
     bat = {
       enable = true;
-      config = {
-        style = "plain";
-      };
     };
 
     git = {
       enable = true;
+      delta.enable = true;
     };
 
     neovim = {
