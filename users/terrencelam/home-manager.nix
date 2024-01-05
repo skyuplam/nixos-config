@@ -76,6 +76,13 @@ in {
           path = ./config/yabai;
         };
       };
+      zellij = {
+        enable = true;
+        source = builtins.path {
+          name = "zellij";
+          path = ./config/zellij;
+        };
+      };
     };
   };
 
@@ -119,7 +126,6 @@ in {
       pkgs.wget
       pkgs.wasm-pack
       pkgs.yarn
-      pkgs.zellij
       pkgs.mpv-unwrapped
       pkgs.yt-dlp
       pkgs.nmap
