@@ -104,6 +104,13 @@ in {
           path = ./config/foot;
         };
       };
+      wezterm = {
+        enable = true;
+        source = builtins.path {
+          name = "wezterm-config";
+          path = ./config/wezterm;
+        };
+      };
       swaylock = {
         enable = true;
         source = builtins.path {
@@ -325,6 +332,10 @@ in {
 
     foot = {
       enable = isLinux && !isWSL;
+    };
+
+    wezterm = {
+      enable = true;
     };
 
     swaylock = {
