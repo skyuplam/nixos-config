@@ -69,6 +69,13 @@ in {
           path = ./config/skhd;
         };
       };
+      yabai = {
+        enable = isDarwin;
+        source = builtins.path {
+          name = "yabai-config";
+          path = ./config/yabai;
+        };
+      };
     };
   };
 
