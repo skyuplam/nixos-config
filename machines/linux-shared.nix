@@ -55,7 +55,7 @@
         sway = {
           default = ["wlr" "gtk"];
         };
-        Hyprland = {
+        hyprland = {
           default = ["hyprland" "gtk"];
         };
       };

@@ -433,7 +433,7 @@ in {
       enable = false;
       extraOptions = ["--unsupported-gpu"];
       wrapperFeatures.gtk = true;
-      config = rec {
+      config = {
         modifier = "Mod4";
         terminal = "wezterm";
         startup = [
@@ -445,6 +445,7 @@ in {
     hyprland = {
       enable = isLinux && !isWSL;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      systemd.enable = false;
     };
   };
 
