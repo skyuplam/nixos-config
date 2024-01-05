@@ -79,8 +79,15 @@ in {
       zellij = {
         enable = true;
         source = builtins.path {
-          name = "zellij";
+          name = "zellij-config";
           path = ./config/zellij;
+        };
+      };
+      tridactyl = {
+        enable = true;
+        source = builtins.path {
+          name = "tridactyl-config";
+          path = ./config/tridactyl;
         };
       };
     };
