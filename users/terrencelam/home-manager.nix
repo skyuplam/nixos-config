@@ -93,8 +93,15 @@ in {
       fuzzel = {
         enable = true;
         source = builtins.path {
-          name = "fuzzel";
+          name = "fuzzel-config";
           path = ./config/fuzzel;
+        };
+      };
+      swaylock = {
+        enable = true;
+        source = builtins.path {
+          name = "swaylock-config";
+          path = ./config/swaylock;
         };
       };
     };
@@ -307,6 +314,10 @@ in {
     };
 
     fuzzel = {
+      enable = isLinux && !isWSL;
+    };
+
+    swaylock = {
       enable = isLinux && !isWSL;
     };
 
