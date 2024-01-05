@@ -12,7 +12,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "virtio_fs" "virtio_console" "virtio_balloon" "virtio_blk" "virtio_pci" "virtio_ring" "virtio_gpu" "usbhid" "usb_storage" "sr_mod"];
+  boot.initrd.availableKernelModules = ["xhci_pci" "virtio_balloon" "virtio_blk" "virtio_pci" "virtio_ring" "virtio_gpu" "usbhid" "usb_storage" "sr_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
