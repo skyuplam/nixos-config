@@ -1,0 +1,114 @@
+# hotkey       = <mode> '<' <action> | <action>
+# 
+# mode         = 'name of mode' | <mode> ',' <mode>
+# 
+# action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
+#                <keysym> ':' <command>          | <keysym> '->' ':' <command>
+#                <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
+# 
+# keysym       = <mod> '-' <key> | <key>
+# 
+# mod          = 'modifier keyword' | <mod> '+' <mod>
+# 
+# key          = <literal> | <keycode>
+# 
+# literal      = 'single letter or built-in keyword'
+# 
+# keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
+# 
+# proc_map_lst = * <proc_map>
+# 
+# proc_map     = <string> ':' <command> | <string>     '~' |
+#                '*'      ':' <command> | '*'          '~'
+# 
+# string       = '"' 'sequence of characters' '"'
+# 
+# command      = command is executed through '$SHELL -c' and
+#                follows valid shell syntax. if the $SHELL environment
+#                variable is not set, it will default to '/bin/bash'.
+#                when bash is used, the ';' delemetter can be specified
+#                to chain commands.
+# 
+#                to allow a command to extend into multiple lines,
+#                prepend '\' at the end of the previous line.
+# 
+#                an EOL character signifies the end of the bind.
+# 
+# ->           = keypress is not consumed by skhd
+# 
+# *            = matches every application not specified in <proc_map_lst>
+# 
+# ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
+# Global hotkeys
+cmd - return : open -na wezterm   # Launch Alacritty
+# Focus window
+cmd - h : yabai -m window --focus west || yabai -m display --focus west
+cmd - j : yabai -m window --focus south
+cmd - k : yabai -m window --focus north
+cmd - l : yabai -m window --focus east || yabai -m display --focus east
+
+# Focus display
+shift + ctrl + alt - h: yabai -m display --focus west
+shift + ctrl + alt - l: yabai -m display --focus east
+
+# Focus space
+ctrl - 1 : yabai -m space --focus 1
+ctrl - 2 : yabai -m space --focus 2
+ctrl - 3 : yabai -m space --focus 3
+ctrl - 4 : yabai -m space --focus 4
+ctrl - 5 : yabai -m space --focus 5
+ctrl - 6 : yabai -m space --focus 6
+ctrl - 7 : yabai -m space --focus 7
+ctrl - 8 : yabai -m space --focus 8
+
+# swap managed windows
+shift + cmd + ctrl - h : yabai -m window --swap west
+shift + cmd + ctrl - j : yabai -m window --swap south
+shift + cmd + ctrl - k : yabai -m window --swap north
+shift + cmd + ctrl - l : yabai -m window --swap east
+
+# move managed windows
+shift + cmd - h : yabai -m window --warp west || \
+                 (yabai -m window --display west; yabai -m window --focus recent);
+shift + cmd - j : yabai -m window --warp south
+shift + cmd - k : yabai -m window --warp north
+shift + cmd - l : yabai -m window --warp east || \
+                 (yabai -m window --display east; yabai -m window --focus recent);
+
+# move managed space
+shift + cmd + ctrl - 1 : yabai -m window --space 1; \
+                         yabai -m space --focus 1
+shift + cmd + ctrl - 2 : yabai -m window --space 2; \
+                         yabai -m space --focus 2
+shift + cmd + ctrl - 3 : yabai -m window --space 3; \
+                         yabai -m space --focus 3
+shift + cmd + ctrl - 4 : yabai -m window --space 4; \
+                         yabai -m space --focus 4
+shift + cmd + ctrl - 5 : yabai -m window --space 5; \
+                         yabai -m space --focus 5
+shift + cmd + ctrl - 6 : yabai -m window --space 6; \
+                         yabai -m space --focus 6
+shift + cmd + ctrl - 7 : yabai -m window --space 7; \
+                         yabai -m space --focus 7
+shift + cmd + ctrl - 8 : yabai -m window --space 8; \
+                         yabai -m space --focus 8
+
+# Toggle float
+alt - t : yabai -m window --toggle float;\
+          yabai -m window --grid 4:4:1:1:2:2
+
+# Toggle gap for the current space
+shift + alt - p : yabai -m space --toggle padding; \
+                  yabai -m space --toggle gap;
+
+# Balance layout
+alt - b : yabai -m space --balance
+alt - b : yabai -m space --balance
+alt - space: yabai -m window --toggle split
+# Zoom parent
+alt - f : yabai -m window --toggle zoom-parent
+
+# prevents skhd from monitoring events for listed processes.
+.blacklist [
+    "UTM"
+]

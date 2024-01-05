@@ -37,7 +37,7 @@ in {
   xdg = {
     enable = true;
     userDirs = {
-      enable = isLinux;
+      enable = isLinux && !isWSL;
       createDirectories = true;
     };
     configFile = {
@@ -60,6 +60,13 @@ in {
         source = builtins.path {
           name = "hypr-config";
           path = ./config/hypr;
+        };
+      };
+      skhd = {
+        enable = isDarwin;
+        source = builtins.path {
+          name = "skhd-config";
+          path = ./config/skhd;
         };
       };
     };
@@ -398,7 +405,7 @@ in {
     };
 
     hyprland = {
-      enable = isLinux;
+      enable = isLinux && !isWSL;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
   };
