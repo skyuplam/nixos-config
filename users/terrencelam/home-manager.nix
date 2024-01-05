@@ -144,10 +144,17 @@ in {
 
   home.activation = {
     linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      rm -rf \$XDG_CONFIG_HOME/nvim
-      mkdir -p \$XDG_CONFIG_HOME/nvim
-      echo "linking neovim config to \$XDG_CONFIG_HOME/nvim"
-      ${pkgs.stow}/bin/stow -d ${dotfilesPath} -t \$XDG_CONFIG_HOME/nvim -S nvim
+      #!/bin/bash
+      XDG_CONFIG_HOME=~/.config
+      NVIM_CONFIG_HOME=$XDG_CONFIG_HOME/nvim
+      LAZY_LOCK_FILE=$NVIM_CONFIG_HOME/lazy-lock.json
+
+      # Ensure the folder is there
+      mkdir -p $NVIM_CONFIG_HOME
+      # Perform unrestricted find all the symbolic links in the foler to execute rm
+      ${pkgs.fd}/bin/fd -u -t l . $NVIM_CONFIG_HOME -x rm
+      echo "linking neovim config to $NVIM_CONFIG_HOME"
+      ${pkgs.stow}/bin/stow -d ${dotfilesPath} -t $NVIM_CONFIG_HOME -S nvim
     '';
   };
 
