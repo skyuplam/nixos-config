@@ -181,8 +181,8 @@ in {
       pkgs.alejandra
       pkgs.typos
       pkgs.dprint
-      pkgs.nixpkgs-fmt
       pkgs.languagetool-rust
+      pkgs.nil
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
       pkgs.wlogout

@@ -203,7 +203,6 @@ if has_null_ls then
       null_ls.builtins.diagnostics.write_good,
       null_ls.builtins.formatting.clang_format,
       null_ls.builtins.formatting.dprint,
-      null_ls.builtins.formatting.nixpkgs_fmt,
       null_ls.builtins.formatting.alejandra,
       null_ls.builtins.formatting.stylua,
       null_ls.builtins.formatting.zigfmt,
@@ -463,6 +462,15 @@ local servers = {
   vimls = {},
   marksman = {},
   zls = {},
+  nil_ls = {
+    settings = {
+      ['nil'] = {
+        formatting = {
+          command = { 'alejandra' },
+        },
+      },
+    },
+  },
   lua_ls = {
     settings = {
       Lua = {
