@@ -8,7 +8,6 @@
       "keepingyouawake"
       "linearmouse"
       "stats"
-      "utm"
     ];
     onActivation = {
       upgrade = true;
