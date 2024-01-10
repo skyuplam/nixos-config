@@ -110,5 +110,4 @@ alt - f : yabai -m window --toggle zoom-parent
 
 # prevents skhd from monitoring events for listed processes.
 .blacklist [
-    "UTM"
 ]

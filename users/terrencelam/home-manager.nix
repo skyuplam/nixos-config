@@ -252,7 +252,10 @@ in {
       enable = true;
       enableAutosuggestions = true;
       defaultKeymap = "emacs";
-      syntaxHighlighting.enable = true;
+      syntaxHighlighting = {
+        enable = true;
+        highlighters = ["main" "brackets"];
+      };
       historySubstringSearch = {
         enable = true;
         searchUpKey = ["^[[A" "^P"];
@@ -265,7 +268,7 @@ in {
       });
       initExtra = builtins.readFile (builtins.path {
         name = "zsh-config";
-        path = ./config/init.zsh;
+        path = ./config/config.zsh;
       });
       envExtra =
         ''
