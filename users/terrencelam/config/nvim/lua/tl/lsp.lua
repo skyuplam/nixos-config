@@ -180,6 +180,7 @@ if has_null_ls then
       null_ls.builtins.completion.spell,
       null_ls.builtins.completion.tags,
       null_ls.builtins.diagnostics.shellcheck,
+      null_ls.builtins.diagnostics.zsh,
       null_ls.builtins.diagnostics.deadnix,
       null_ls.builtins.diagnostics.dotenv_linter,
       null_ls.builtins.diagnostics.gitlint,
