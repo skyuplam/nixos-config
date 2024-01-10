@@ -196,6 +196,7 @@ in {
       pkgs.dprint
       pkgs.languagetool-rust
       pkgs.nil
+      pkgs.shellcheck
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
       pkgs.wlogout
