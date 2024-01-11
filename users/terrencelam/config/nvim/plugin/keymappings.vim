@@ -15,7 +15,7 @@ nnoremap <leader>nt :bo 15sp +term<CR>
 " CamelCaseMotion
 let g:camelcasemotion_key = '<leader>'
 
-" Mappings to move lines
+" Mappings to move lines for macOS
 nnoremap ∆ :m .+1<CR>==
 nnoremap ˚ :m .-2<CR>==
 inoremap ∆ <A-j> <Esc>:m .+1<CR>==gi
@@ -45,10 +45,6 @@ vnoremap <silent> # :<C-U>
 " vim-slash https://github.com/junegunn/vim-slash
 " Places the current match at the center of the window
 noremap <plug>(slash-after) zz
-
-" Vim
-nnoremap <Leader>ev :tabe $MYINITVIM<CR>
-nnoremap <Leader>rv :source $MYINITVIM<CR>
 
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
 " The `zzzv` keeps search matches in the middle of the window.
@@ -109,32 +105,4 @@ nmap [L :llast<CR>
 map <Leader>1 :diffget LOCAL<CR>
 map <Leader>2 :diffget BASE<CR>
 map <Leader>3 :diffget REMOTE<CR>
-
-" FZF completion mappings
-" Mapping selecting mappings
-" nmap <leader><tab> <plug>(fzf-maps-n)
-" xmap <leader><tab> <plug>(fzf-maps-x)
-" omap <leader><tab> <plug>(fzf-maps-o)
-
-" Insert mode completion
-" imap <c-x><c-k> <plug>(fzf-complete-word)
-" imap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
-" imap <c-x><c-l> <plug>(fzf-complete-line)
-
-" nmap <silent> <leader>zz <Plug>(zoom)
-
-" ----------------------------------------------------------------------------
-" Notes
-" ----------------------------------------------------------------------------
-command! -nargs=* Zet call local#zettel#edit(<f-args>)
-" New note
-nmap <expr><leader>nz ':Zet '
-" Search note file names
-" nmap <expr><leader>nf ':Files ' . expand(g:zettel_note_dir). '<CR>'
-" Rg note contents with fzf
-" command! -nargs=* -bang ZG call local#zettel#RgFzfZettel(<q-args>, <bang>0)
-" nmap <expr><leader>ng ':ZG '
-" note tag completion with fzf
-" inoremap <expr> <c-x><c-z> fzf#vim#complete('rg tags $NOTES_DIR \| teip -og "\".\w+\",*" -v -- sed "s/.*//g" \| tr , "\n" \| sort -u')
-
 " }}}
