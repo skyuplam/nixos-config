@@ -365,6 +365,13 @@ return require('lazy').setup({
           },
         },
       })
+      local map = require('tl.common').map
+      map(
+        'n',
+        '<leader>nn',
+        ':Neorg workspace notes<cr>',
+        { desc = 'Neorg notes' }
+      )
       -- temp workaround for ft issue
       vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
         pattern = { '*.norg' },
