@@ -24,11 +24,11 @@
 
   boot = {
     loader.systemd-boot.enable = lib.mkForce false;
-    boot.lanzaboote = {
+    lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
     };
   };
 
-  networking.hostname = "tlamws";
+  networking.hostName = "tlamws";
 }
