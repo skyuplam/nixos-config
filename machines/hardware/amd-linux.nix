@@ -40,8 +40,8 @@
             umount -R /crypt
           '';
           gpgCard = {
-            encryptedPass = ../../crypt/crypt_key.luks.gpg;
-            publicKey = ../../crypt/keys/pubkey.asc;
+            encryptedPass = /crypt/keys/crypt_key.luks.gpg;
+            publicKey = /crypt/keys/pubkey.asc;
           };
         };
       };
