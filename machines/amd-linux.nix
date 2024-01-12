@@ -12,7 +12,7 @@
 
   sops = {
     defaultSopsFile = ../secrets/user.yaml;
-    age.keyFile = "/var/lib/sops-nix/key.txt";
+    age.keyFile = "/var/lib/sops-nix/keys.txt";
     secrets.hashedPassword = {
       neededForUsers = true;
     };
