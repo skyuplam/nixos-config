@@ -23,25 +23,25 @@
           preLVM = true;
 
           # Commands that should be run right before we try to mount our LUKS device
-          preOpenCommands = lib.mkAfter ''
-            # Mount the drive containing the public key and LUKS keyfile
-            # A place to store crypto things
-            # A ramfs is used here to ensure that the file used to update
-            # the key slot with cryptsetup will never get swapped out.
-            # Warning: Do NOT replace with tmpfs!
-            mkdir -p /crypt
-            mount -t ramfs none /crypt
-            # Mount keys to /crypt/keys
-            mkdir -p /crypt/keys
-            mount /dev/disk/by-uuid/9eceabb7-e42e-46d4-bdc0-1a0c490adbeb /crypt/keys
-          '';
-          postOpenCommands = lib.mkAfter ''
-            # Unmount /crypt
-            umount -R /crypt
-          '';
+          # preOpenCommands = lib.mkAfter ''
+          #   # Mount the drive containing the public key and LUKS keyfile
+          #   # A place to store crypto things
+          #   # A ramfs is used here to ensure that the file used to update
+          #   # the key slot with cryptsetup will never get swapped out.
+          #   # Warning: Do NOT replace with tmpfs!
+          #   mkdir -p /crypt
+          #   mount -t ramfs none /crypt
+          #   # Mount keys to /crypt/keys
+          #   mkdir -p /crypt/keys
+          #   mount /dev/disk/by-uuid/9eceabb7-e42e-46d4-bdc0-1a0c490adbeb /crypt/keys
+          # '';
+          # postOpenCommands = lib.mkAfter ''
+          #   # Unmount /crypt
+          #   umount -R /crypt
+          # '';
           gpgCard = {
-            encryptedPass = /crypt/keys/crypt_key.luks.gpg;
-            publicKey = /crypt/keys/pubkey.asc;
+            encryptedPass = /crypt/crypt_key.luks.gpg;
+            publicKey = /crypt/pubkey.asc;
           };
         };
       };
@@ -53,6 +53,11 @@
       device = "/dev/disk/by-uuid/977f983a-5baf-492c-b6fa-8db98aeae7ee";
       fsType = "btrfs";
       options = ["subvol=@"];
+    };
+
+    "/crypt" = {
+      device = "/dev/disk/by-uuid/9eceabb7-e42e-46d4-bdc0-1a0c490adbeb";
+      fsType = "ext4";
     };
 
     "/boot" = {
