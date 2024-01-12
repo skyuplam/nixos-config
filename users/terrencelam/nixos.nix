@@ -11,20 +11,22 @@ in {
   # Since we're using zsh as our shell
   programs.zsh.enable = true;
 
-  users.groups.terrencelam = {};
+  users = {
+    mutableUsers = false;
+    groups.terrencelam = {};
+    users = {
+      terrencelam = {
+        isNormalUser = true;
+        home = "/home/terrencelam";
+        group = "terrencelam";
+        extraGroups = ["wheel" "video" "networkmanager"];
+        shell = pkgs.zsh;
+        hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 
-  users.users = {
-    terrencelam = {
-      isNormalUser = true;
-      home = "/home/terrencelam";
-      group = "terrencelam";
-      extraGroups = ["wheel" "video" "networkmanager"];
-      shell = pkgs.zsh;
-      hashedPasswordFile = config.sops.secrets.hashedPassword.path;
-
-      openssh.authorizedKeys.keys = keys;
+        openssh.authorizedKeys.keys = keys;
+      };
+      root.openssh.authorizedKeys.keys = keys;
     };
-    root.openssh.authorizedKeys.keys = keys;
   };
   boot.initrd.network.ssh.authorizedKeys = keys;
 }
