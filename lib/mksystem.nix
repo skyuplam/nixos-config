@@ -45,14 +45,17 @@ in
 
       (
         if !darwin && !isWSL
-        then
-          inputs.disko.nixosModules.disko
+        then inputs.disko.nixosModules.disko
         else {}
       )
       (
         if !darwin && !isWSL
-        then
-          inputs.sops-nix.nixosModules.sops
+        then inputs.sops-nix.nixosModules.sops
+        else {}
+      )
+      (
+        if !darwin && !isWSL
+        then inputs.lanzaboote.nixosModules.lanzaboote
         else {}
       )
 
@@ -60,11 +63,13 @@ in
       userOSConfig
       home-manager.home-manager
       {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.users.${user} = import userHMConfig {
-          inherit isWSL;
-          inherit inputs;
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          users.${user} = import userHMConfig {
+            inherit isWSL;
+            inherit inputs;
+          };
         };
       }
 
