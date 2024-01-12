@@ -61,7 +61,7 @@
       ];
     };
 
-    nixosConfigurations.vm-aarch64-utm = mkSystem "vm-aarch64-utm" rec {
+    nixosConfigurations.vm-aarch64-utm = mkSystem "vm-aarch64-utm" {
       system = "aarch64-linux";
       user = "terrencelam";
     };
