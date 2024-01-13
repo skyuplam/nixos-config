@@ -197,6 +197,8 @@ in {
       pkgs.languagetool-rust
       pkgs.nil
       pkgs.shellcheck
+      pkgs.gnumake
+      pkgs.gcc
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
       pkgs.wlogout
