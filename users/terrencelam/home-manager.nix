@@ -358,6 +358,7 @@ in {
 
     eww = {
       enable = isLinux && !isWSL;
+      package = pkgs.eww-wayland;
       configDir = builtins.path {
         name = "eww-config";
         path = ./config/eww;
