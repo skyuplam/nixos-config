@@ -145,7 +145,6 @@
           user = "terrencelam";
         };
       };
-      vt = 7;
     };
   };
 
