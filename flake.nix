@@ -3,40 +3,35 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-
     zig.url = "github:mitchellh/zig-overlay";
     zls.url = "github:zigtools/zls";
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     hyprland = {
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.3.0";
-      # Optional but recommended to limit the size of your system closure.
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    codeium = {
+      url = "github:Exafunction/codeium.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -50,6 +45,7 @@
       inputs.neovim-nightly-overlay.overlay
       inputs.zig.overlays.default
       (_final: _prev: {inherit zls;})
+      (_final: prev: {inherit (inputs.codeium.packages.${prev.system}) codeium-lsp;})
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;

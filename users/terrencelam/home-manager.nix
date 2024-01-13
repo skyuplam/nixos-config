@@ -199,6 +199,7 @@ in {
       pkgs.shellcheck
       pkgs.gnumake
       pkgs.gcc
+      pkgs.codeium-lsp
     ]
     ++ (lib.optionals (isLinux && !isWSL) [
       pkgs.wlogout
@@ -222,6 +223,7 @@ in {
       then "dylib"
       else "so"
     }";
+    CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
   };
 
   home.file.".inputrc".source = builtins.path {
