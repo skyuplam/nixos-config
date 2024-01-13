@@ -1,9 +1,7 @@
 {
-  config,
   pkgs,
   lib,
-  currentSystem,
-  currentSystemName,
+  inputs,
   ...
 }: {
   nix = {
@@ -14,16 +12,19 @@
       keep-outputs = true
       keep-derivations = true
     '';
+    settings = {
+      auto-optimise-store = true;
+    };
+    registry.nixpkgs.flake = inputs.nixpkgs;
+    # do garbage collection weekly to keep disk usage low
+    gc = {
+      automatic = lib.mkDefault true;
+      dates = lib.mkDefault "weekly";
+      options = lib.mkDefault "--delete-older-than 7d";
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
-
-  # do garbage collection weekly to keep disk usage low
-  nix.gc = {
-    automatic = lib.mkDefault true;
-    dates = lib.mkDefault "weekly";
-    options = lib.mkDefault "--delete-older-than 7d";
-  };
 
   boot = {
     # Be careful updating this.
@@ -144,6 +145,7 @@
           user = "terrencelam";
         };
       };
+      vt = 7;
     };
   };
 
