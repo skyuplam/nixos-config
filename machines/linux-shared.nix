@@ -18,6 +18,13 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # do garbage collection weekly to keep disk usage low
+  nix.gc = {
+    automatic = lib.mkDefault true;
+    dates = lib.mkDefault "weekly";
+    options = lib.mkDefault "--delete-older-than 7d";
+  };
+
   boot = {
     # Be careful updating this.
     kernelPackages = pkgs.linuxPackages_latest;
@@ -37,24 +44,37 @@
   };
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
-  security.polkit = {
-    enable = true;
-    extraConfig = ''
-      polkit.addRule(function(action, subject) {
-        if (
-          subject.isInGroup("users")
-            && (
-              action.id == "org.freedesktop.login1.reboot" ||
-              action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-              action.id == "org.freedesktop.login1.power-off" ||
-              action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+  security = {
+    polkit = {
+      enable = true;
+      extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (
+            subject.isInGroup("users")
+              && (
+                action.id == "org.freedesktop.login1.reboot" ||
+                action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
+                action.id == "org.freedesktop.login1.power-off" ||
+                action.id == "org.freedesktop.login1.power-off-multiple-sessions"
+              )
             )
-          )
-        {
-          return polkit.Result.YES;
-        }
-      })
-    '';
+          {
+            return polkit.Result.YES;
+          }
+        })
+      '';
+    };
+    pam.services.swaylock = {};
+    # Inferior performance
+    # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
+    pam.loginLimits = [
+      {
+        domain = "@users";
+        item = "rtprio";
+        type = "-";
+        value = 1;
+      }
+    ];
   };
   xdg = {
     portal = {
@@ -71,17 +91,6 @@
       };
     };
   };
-  # Inferior performance
-  # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
-  security.pam.loginLimits = [
-    {
-      domain = "@users";
-      item = "rtprio";
-      type = "-";
-      value = 1;
-    }
-  ];
-
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -97,8 +106,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-  ];
+  # environment.systemPackages = with pkgs; [
+  # ];
 
   environment.pathsToLink = ["/share/zsh"];
 
@@ -127,12 +136,11 @@
 
     greetd = {
       enable = true;
-      settings = rec {
-        initial_session = {
+      settings = {
+        default_session = {
           command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
           user = "terrencelam";
         };
-        default_session = initial_session;
       };
     };
   };
