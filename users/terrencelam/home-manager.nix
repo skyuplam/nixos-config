@@ -215,6 +215,11 @@ in {
     EDITOR = "nvim";
     PAGER = "less -FirSwX";
     MANPAGER = "${manpager}/bin/manpager";
+    SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
+      if isDarwin
+      then "dylib"
+      else "so"
+    }";
   };
 
   home.file.".inputrc".source = builtins.path {

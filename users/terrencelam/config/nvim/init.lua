@@ -1,7 +1,5 @@
 vim.g.os = vim.loop.os_uname().sysname
-vim.g.sqlite_clib_path = vim.g.os == 'Darwin'
-    and '/usr/lib/sqlite3/libtclsqlite3.dylib'
-  or nil
+vim.g.sqlite_clib_path = vim.fn.expand('$SQLITE_CLIB_PATH')
 -------------------------------------------------------------------------------
 -- SKIP VIM PLUGINS {{{
 -------------------------------------------------------------------------------
