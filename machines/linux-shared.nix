@@ -45,6 +45,7 @@
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
   security = {
+    rtkit.enable = true;
     polkit = {
       enable = true;
       extraConfig = ''
@@ -132,6 +133,7 @@
       enable = true;
       alsa.enable = true;
       pulse.enable = true;
+      wireplumber.enable = true;
     };
 
     greetd = {
