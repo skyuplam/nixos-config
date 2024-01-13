@@ -463,7 +463,7 @@ in {
 
     # GUI
     firefox = {
-      enable = true;
+      enable = isLinux && !isWSL;
       package = pkgs.firefox-nightly-bin;
     };
   };
