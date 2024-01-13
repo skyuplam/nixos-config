@@ -460,6 +460,12 @@ in {
       '';
       includes = ["./.config"];
     };
+
+    # GUI
+    firefox = {
+      enable = true;
+      package = pkgs.firefox-nightly-bin;
+    };
   };
 
   wayland.windowManager = {

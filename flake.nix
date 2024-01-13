@@ -34,6 +34,10 @@
       url = "github:Exafunction/codeium.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    firefox-nightly = {
+      url = "github:nix-community/flake-firefox-nightly";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -46,6 +50,7 @@
       inputs.zig.overlays.default
       (_final: _prev: {inherit zls;})
       (_final: prev: {inherit (inputs.codeium.packages.${prev.system}) codeium-lsp;})
+      (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;
