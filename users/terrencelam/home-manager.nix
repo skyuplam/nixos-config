@@ -21,19 +21,7 @@
       exec cat "$@" | col -bx | bat --language man --style plain --pager "$PAGER"
     ''
   );
-
-  dotfilesPath = builtins.path {
-    name = "dotfiles-path";
-    path = ./config;
-  };
 in {
-  # This value determines the Home Manager release that your configuration is compatible with. This
-  # helps avoid breakage when a new Home Manager release introduces backwards incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See the Home Manager release notes for
-  # a list of state version changes in each release.
-  home.stateVersion = "23.11";
-
   xdg = {
     enable = true;
     userDirs = {
@@ -53,13 +41,6 @@ in {
         source = builtins.path {
           name = "tig-config";
           path = ./config/tig;
-        };
-      };
-      hypr = {
-        enable = true;
-        source = builtins.path {
-          name = "hypr-config";
-          path = ./config/hypr;
         };
       };
       skhd = {
@@ -121,130 +102,142 @@ in {
     };
   };
 
-  #---------------------------------------------------------------------
-  # Packages
-  #---------------------------------------------------------------------
+  home = {
+    # This value determines the Home Manager release that your configuration is compatible with. This
+    # helps avoid breakage when a new Home Manager release introduces backwards incompatible changes.
+    #
+    # You can update Home Manager without changing this value. See the Home Manager release notes for
+    # a list of state version changes in each release.
+    stateVersion = "23.11";
 
-  # Packages I always want installed. Most packages I install using
-  # per-project flakes sourced with direnv and nix-shell, so this is
-  # not a huge list.
-  home.packages =
-    [
-      pkgs.aspell
-      pkgs.bat
-      pkgs.bottom # fancy version of `top` with ASCII graphs
-      pkgs.browsh # in terminal browser
-      pkgs.coreutils
-      pkgs.codespell
-      pkgs.curl
-      pkgs.chafa
-      pkgs.du-dust # fancy version of `du`
-      pkgs.fd # fancy version of `find`
-      (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
-      pkgs.libiconv
-      pkgs.gnupg
-      pkgs.go
-      pkgs.nb
-      pkgs.lsd
-      pkgs.luajitPackages.luarocks
-      pkgs.lnav
-      pkgs.ripgrep # better version of `grep`
-      pkgs.rsync
-      pkgs.sd
-      pkgs.sqlite
-      pkgs.stow
-      pkgs.tig
-      pkgs.tmux
-      pkgs.tree-sitter
-      pkgs.units
-      pkgs.wget
-      pkgs.wasm-pack
-      pkgs.yarn
-      pkgs.mpv-unwrapped
-      pkgs.yt-dlp
-      pkgs.nmap
-      pkgs.presenterm
-      # https://github.com/mitchellh/zig-overlay
-      # latest nightly release
-      pkgs.zigpkgs.master
-      pkgs.zls
-      pkgs.qemu
-      pkgs.sops
-      pkgs.age
-      pkgs.mkpasswd
+    sessionVariables = {
+      LANG = "en_US.UTF-8";
+      LC_CTYPE = "en_US.UTF-8";
+      LC_ALL = "en_US.UTF-8";
+      EDITOR = "nvim";
+      PAGER = "less -FirSwX";
+      MANPAGER = "${manpager}/bin/manpager";
+      SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
+        if isDarwin
+        then "dylib"
+        else "so"
+      }";
+      CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
+    };
 
-      # Dev stuff
-      pkgs.jq
-      pkgs.nodePackages.typescript-language-server
-      pkgs.nodePackages.yaml-language-server
-      pkgs.nodePackages.vim-language-server
-      pkgs.nodePackages.prettier
-      pkgs.nodePackages.write-good
-      pkgs.vscode-langservers-extracted
-      pkgs.lua-language-server
-      pkgs.efm-langserver
-      pkgs.rustup
-      pkgs.marksman
-      pkgs.gitlint
-      pkgs.stylua
-      pkgs.selene
-      pkgs.dotenv-linter
-      pkgs.statix
-      pkgs.deadnix
-      pkgs.alejandra
-      pkgs.typos
-      pkgs.dprint
-      pkgs.languagetool-rust
-      pkgs.nil
-      pkgs.shellcheck
-      pkgs.gnumake
-      pkgs.gcc
-      pkgs.codeium-lsp
-    ]
-    ++ (lib.optionals (isLinux && !isWSL) [
-      pkgs.wlogout
-      pkgs.grim
-      pkgs.swayidle
-    ]);
+    file.".inputrc".source = builtins.path {
+      name = "inputrc-config";
+      path = ./config/inputrc;
+    };
 
-  #---------------------------------------------------------------------
-  # Env vars and dotfiles
-  #---------------------------------------------------------------------
+    # activation = {
+    #   linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    #     #!/bin/bash
+    #
+    #     stow_config() {
+    #       if [ "$#" -lt 1 ]
+    #       then
+    #         echo "stow_config requires at least 1 argument"
+    #         exit 1
+    #       fi
+    #
+    #       local CONFIG_HOME=~/.config
+    #       local TARGET=$CONFIG_HOME/$1
+    #
+    #       echo "linking $1 config to $TARGET"
+    #       # Ensure the folder is there
+    #       mkdir -p $TARGET
+    #       # Perform unrestricted find all the symbolic links in the foler to execute rm
+    #       ${pkgs.fd}/bin/fd -u -t l . $TARGET -x rm
+    #       ${pkgs.stow}/bin/stow -d ${dotfilesPath} -t $TARGET -S $1
+    #     }
+    #
+    #     stow_config "nvim"
+    #     stow_config "eww"
+    #     stow_config "hypr"
+    #   '';
+    # };
 
-  home.sessionVariables = {
-    LANG = "en_US.UTF-8";
-    LC_CTYPE = "en_US.UTF-8";
-    LC_ALL = "en_US.UTF-8";
-    EDITOR = "nvim";
-    PAGER = "less -FirSwX";
-    MANPAGER = "${manpager}/bin/manpager";
-    SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
-      if isDarwin
-      then "dylib"
-      else "so"
-    }";
-    CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
-  };
+    packages =
+      [
+        pkgs.aspell
+        pkgs.bat
+        pkgs.bottom # fancy version of `top` with ASCII graphs
+        pkgs.browsh # in terminal browser
+        pkgs.coreutils
+        pkgs.codespell
+        pkgs.curl
+        pkgs.chafa
+        pkgs.du-dust # fancy version of `du`
+        pkgs.fd # fancy version of `find`
+        (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
+        pkgs.libiconv
+        pkgs.gnupg
+        pkgs.go
+        pkgs.nb
+        pkgs.lsd
+        pkgs.luajitPackages.luarocks
+        pkgs.lnav
+        pkgs.ripgrep # better version of `grep`
+        pkgs.rsync
+        pkgs.sd
+        pkgs.sqlite
+        pkgs.stow
+        pkgs.tig
+        pkgs.tmux
+        pkgs.tree-sitter
+        pkgs.units
+        pkgs.wget
+        pkgs.wasm-pack
+        pkgs.yarn
+        pkgs.mpv-unwrapped
+        pkgs.yt-dlp
+        pkgs.nmap
+        pkgs.presenterm
+        # https://github.com/mitchellh/zig-overlay
+        # latest nightly release
+        pkgs.zigpkgs.master
+        pkgs.zls
+        pkgs.qemu
+        pkgs.sops
+        pkgs.age
+        pkgs.mkpasswd
 
-  home.file.".inputrc".source = builtins.path {
-    name = "inputrc-config";
-    path = ./config/inputrc;
-  };
-
-  home.activation = {
-    linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      #!/bin/bash
-      XDG_CONFIG_HOME=~/.config
-      NVIM_CONFIG_HOME=$XDG_CONFIG_HOME/nvim
-      LAZY_LOCK_FILE=$NVIM_CONFIG_HOME/lazy-lock.json
-
-      # Ensure the folder is there
-      mkdir -p $NVIM_CONFIG_HOME
-      # Perform unrestricted find all the symbolic links in the foler to execute rm
-      ${pkgs.fd}/bin/fd -u -t l . $NVIM_CONFIG_HOME -x rm
-      echo "linking neovim config to $NVIM_CONFIG_HOME"
-      ${pkgs.stow}/bin/stow -d ${dotfilesPath} -t $NVIM_CONFIG_HOME -S nvim
-    '';
+        # Dev stuff
+        pkgs.jq
+        pkgs.nodePackages.typescript-language-server
+        pkgs.nodePackages.yaml-language-server
+        pkgs.nodePackages.vim-language-server
+        pkgs.nodePackages.prettier
+        pkgs.nodePackages.write-good
+        pkgs.vscode-langservers-extracted
+        pkgs.lua-language-server
+        pkgs.efm-langserver
+        pkgs.rustup
+        pkgs.marksman
+        pkgs.gitlint
+        pkgs.stylua
+        pkgs.selene
+        pkgs.dotenv-linter
+        pkgs.statix
+        pkgs.deadnix
+        pkgs.alejandra
+        pkgs.typos
+        pkgs.dprint
+        pkgs.languagetool-rust
+        pkgs.nil
+        pkgs.shellcheck
+        pkgs.gnumake
+        pkgs.gcc
+        pkgs.codeium-lsp
+      ]
+      ++ (lib.optionals (isLinux && !isWSL) [
+        pkgs.wlogout
+        pkgs.grim
+        pkgs.swayidle
+        pkgs.wl-clipboard
+        pkgs.eww-wayland
+      ]);
   };
 
   fonts.fontconfig.enable = true;
@@ -356,15 +349,6 @@ in {
       enable = isLinux && !isWSL;
     };
 
-    eww = {
-      enable = isLinux && !isWSL;
-      package = pkgs.eww-wayland;
-      configDir = builtins.path {
-        name = "eww-config";
-        path = ./config/eww;
-      };
-    };
-
     # Starship Prompt
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.starship.enable
     starship = {
@@ -467,6 +451,10 @@ in {
       enable = isLinux && !isWSL;
       package = pkgs.firefox-nightly-bin;
     };
+
+    wpaperd = {
+      enable = isLinux && !isWSL;
+    };
   };
 
   wayland.windowManager = {
@@ -487,12 +475,31 @@ in {
     hyprland = {
       enable = isLinux && !isWSL;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      settings = {
+        source = "./hypr.conf";
+      };
       systemd.enable = false;
     };
   };
 
-  services.gpg-agent = {
-    enable = isLinux;
-    pinentryFlavor = "tty";
+  services = {
+    gpg-agent = {
+      enable = isLinux;
+      pinentryFlavor = "tty";
+    };
+
+    udiskie = {
+      enable = isLinux && !isWSL;
+    };
+
+    dunst = {
+      enable = isLinux && !isWSL;
+    };
+
+    wlsunset = {
+      enable = isLinux && !isWSL;
+      latitude = "59.8";
+      longitude = "10.8";
+    };
   };
 }
