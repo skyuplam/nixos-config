@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 #define icons for workspaces 1-9
 ic=(0         )

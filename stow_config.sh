@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 stow_config() {
   if [ "$#" -lt 1 ]
@@ -7,8 +7,8 @@ stow_config() {
     exit 1
   fi
 
-  CONFIG_HOME=~/.config
-  TARGET=$CONFIG_HOME/$1
+  local CONFIG_HOME=~/.config
+  local TARGET=$CONFIG_HOME/$1
 
   echo "linking $1 config to $TARGET"
   # Ensure the folder is there

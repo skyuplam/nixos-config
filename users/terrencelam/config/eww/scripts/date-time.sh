@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 DaySuffix() {
   case `date +%-d` in
     1|21|31) echo "st";;

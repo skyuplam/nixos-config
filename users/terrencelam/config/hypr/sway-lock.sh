@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
  
 # Dependencies:
 # imagemagick
@@ -9,7 +9,7 @@
 IMAGE=/tmp/i3lock.png
 LOCKARGS=""
 
-for OUTPUT in `hyprctl -j monitors | jq -r '.[] | .name'`
+for OUTPUT in $(hyprctl -j monitors | jq -r '.[] | .name')
 do
     IMAGE=/tmp/$OUTPUT-lock.png
     grim -o $OUTPUT $IMAGE

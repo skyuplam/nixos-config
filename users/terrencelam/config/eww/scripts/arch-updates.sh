@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function CheckUpdates() {
-updates="$(checkupdates;paru -Qum)"
+# updates="$(checkupdates;paru -Qum)"
 arch="$(checkupdates | wc -l)"
 aur="$(paru -Qum | wc -l)"
 number=$((arch+aur))

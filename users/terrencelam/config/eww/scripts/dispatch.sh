@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
 activemonitor=$(hyprctl monitors -j | jq '.[] | select(.focused == true).id')
 passivemonitor=$(hyprctl monitors -j | jq '.[] | select(.focused == false).id')

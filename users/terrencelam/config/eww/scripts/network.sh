@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script requires dnsutils aka bind to fetch the WAN IP address
 
