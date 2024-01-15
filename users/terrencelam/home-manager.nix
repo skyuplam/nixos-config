@@ -125,9 +125,13 @@ in {
       CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
     };
 
-    file.".inputrc".source = builtins.path {
-      name = "inputrc-config";
-      path = ./config/inputrc;
+    file = {
+      ".inputrc".source = builtins.path {
+        name = "inputrc-config";
+        path = ./config/inputrc;
+      };
+
+      ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
     };
 
     packages =
