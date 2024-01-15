@@ -142,7 +142,18 @@ in {
         pkgs.chafa
         pkgs.du-dust # fancy version of `du`
         pkgs.fd # fancy version of `find`
+
+        # Fonts
         (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
+        pkgs.noto-fonts
+        pkgs.noto-fonts-cjk
+        pkgs.noto-fonts-emoji
+        pkgs.noto-fonts-extra
+        pkgs.source-sans
+        pkgs.source-serif
+        pkgs.source-han-sans
+        pkgs.source-han-serif
+
         pkgs.libiconv
         pkgs.gnupg
         pkgs.go
