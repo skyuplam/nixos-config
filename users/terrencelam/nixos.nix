@@ -19,7 +19,7 @@ in {
         isNormalUser = true;
         home = "/home/terrencelam";
         group = "terrencelam";
-        extraGroups = ["wheel" "video" "networkmanager"];
+        extraGroups = ["wheel" "video"];
         shell = pkgs.zsh;
         hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 

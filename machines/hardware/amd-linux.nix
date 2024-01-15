@@ -28,6 +28,26 @@
           };
         };
       };
+      systemd = {
+        network = {
+          enable = true;
+          networks = {
+            "10-enp39s0" = {
+              matchConfig.Name = "enp39s0";
+              networkConfig = {
+                networkConfig = {
+                  # start a DHCP Client for IPv4 Addressing/Routing
+                  DHCP = "ipv4";
+                  # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
+                  IPv6AcceptRA = true;
+                };
+                # make routing on this interface a dependency for network-online.target
+                linkConfig.RequiredForOnline = "routable";
+              };
+            };
+          };
+        };
+      };
     };
   };
 
@@ -103,8 +123,8 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   # networking.useDHCP = lib.mkDefault true;
-  networking.interfaces.enp38s0.useDHCP = lib.mkDefault true;
-  networking.interfaces.enp39s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp38s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp39s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
