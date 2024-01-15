@@ -176,6 +176,7 @@ in {
         pkgs.mkpasswd
         pkgs.socat
         pkgs.drill
+        pkgs.qmk
 
         # Dev stuff
         pkgs.jq
