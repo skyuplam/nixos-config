@@ -447,6 +447,17 @@ in {
     firefox = {
       enable = isLinux && !isWSL;
       package = pkgs.firefox-nightly-bin;
+      profiles.terrencelam = {
+        isDefault = true;
+        settings = {
+          "extensions.pocket.enabled" = false;
+          "browser.crashReports.unsubmittedCheck.enabled" = false;
+        };
+        extraConfig = builtins.readFile (builtins.path {
+          name = "userjs";
+          path = ./config/user.js;
+        });
+      };
     };
 
     wpaperd = {

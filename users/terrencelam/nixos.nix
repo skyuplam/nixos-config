@@ -9,7 +9,9 @@ in {
   environment.localBinInPath = true;
 
   # Since we're using zsh as our shell
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+  };
 
   users = {
     mutableUsers = false;
