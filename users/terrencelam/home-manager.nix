@@ -289,6 +289,12 @@ in {
       delta.enable = true;
     };
 
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      enableZshIntegration = true;
+    };
+
     neovim = {
       enable = true;
       package = pkgs.neovim-nightly;
