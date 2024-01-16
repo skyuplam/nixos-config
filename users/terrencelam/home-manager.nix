@@ -561,8 +561,12 @@ in {
       enable = isLinux && !isWSL;
     };
 
-    dunst = {
+    mako = {
       enable = isLinux && !isWSL;
+      extraConfig = builtins.readFile (builtins.path {
+        name = "mako-config";
+        path = ./config/mako/config;
+      });
     };
 
     wlsunset = {
