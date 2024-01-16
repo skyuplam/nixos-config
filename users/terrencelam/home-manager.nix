@@ -536,7 +536,10 @@ in {
   services = {
     gpg-agent = {
       enable = isLinux;
-      pinentryFlavor = "tty";
+      pinentryFlavor = "gnome3";
+      enableScDaemon = true;
+      enableZshIntegration = true;
+      enableSshSupport = true;
     };
 
     udiskie = {
