@@ -6,7 +6,9 @@
   lib,
   modulesPath,
   ...
-}: {
+}: let
+  dns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+in {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -31,25 +33,79 @@
       systemd = {
         network = {
           enable = true;
+          wait-online = {
+            enable = true;
+            anyInterface = true;
+            timeout = 30;
+          };
           networks = {
-            "10-enp39s0" = {
+            "10-wan" = {
               matchConfig.Name = "enp39s0";
               networkConfig = {
-                networkConfig = {
-                  # start a DHCP Client for IPv4 Addressing/Routing
-                  DHCP = "ipv4";
-                  # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
-                  IPv6AcceptRA = true;
-                };
-                # make routing on this interface a dependency for network-online.target
-                linkConfig.RequiredForOnline = "routable";
+                # start a DHCP Client for IPv4 Addressing/Routing
+                DHCP = "ipv4";
+                LinkLocalAddressing = "ipv4";
+                IPv6AcceptRA = false;
+                DNSOverTLS = true;
+                DNSSEC = true;
+                DNS = dns;
               };
+              # make routing on this interface a dependency for network-online.target
+              linkConfig.RequiredForOnline = "routable";
             };
           };
         };
       };
     };
   };
+
+  networking = {
+    useDHCP = lib.mkDefault false;
+    interfaces = {
+      enp38s0.useDHCP = lib.mkDefault false;
+      enp39s0.useDHCP = lib.mkDefault false;
+      wlo1.useDHCP = lib.mkDefault false;
+    };
+    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+  };
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = ["~."];
+    fallbackDns = dns;
+    extraConfig = ''
+      DNSOverTLS=yes
+    '';
+  };
+
+  systemd = {
+    network = {
+      enable = true;
+      wait-online = {
+        enable = true;
+        anyInterface = true;
+        timeout = 30;
+      };
+      networks = {
+        "10-wan" = {
+          matchConfig.Name = "enp39s0";
+          networkConfig = {
+            # start a DHCP Client for IPv4 Addressing/Routing
+            DHCP = "ipv4";
+            LinkLocalAddressing = "ipv4";
+            IPv6AcceptRA = false;
+            DNSOverTLS = true;
+            DNSSEC = true;
+            DNS = dns;
+          };
+          # make routing on this interface a dependency for network-online.target
+          linkConfig.RequiredForOnline = "routable";
+        };
+      };
+    };
+  };
+  # systemd.services."systemd-networkd".environment.SYSTEMD_LOG_LEVEL = "debug";
 
   fileSystems = {
     "/" = {
