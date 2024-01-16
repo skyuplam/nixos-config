@@ -7,3 +7,5 @@
 [ -d /usr/local/share/zsh/site-functions ] && fpath=(/usr/local/share/zsh/site-functions $fpath)
 [ -d /opt/homebrew/share/zsh/site-functions ] && fpath=(/opt/homebrew/share/zsh/site-functions(N) ${fpath})
 
+# Completion with case-insensitive
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
