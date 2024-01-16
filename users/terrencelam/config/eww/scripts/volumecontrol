@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # You can call this script like this:
 # volumecontrol up
@@ -36,7 +36,7 @@ notify-send -i "$icon_name" -r 5556 -u normal "$volume"
         fi
     fi
 fi
-bar=$(seq -s "─" $(($volume/5)) | sed 's/[0-9]//g')
+bar=$(seq -s "─" $((volume/5)) | sed 's/[0-9]//g')
 # Send the notification
 notify-send -i "$icon_name" -r 5556 -u normal "$bar  $volume"
 }

@@ -8,10 +8,10 @@ function toggle {
 		notify-send -r 5556 -u normal "  Swayidle Inactive"
 	else
 		systemd-cat --identifier=swayidle swayidle -w \
-			timeout 300 '~/.config/hypr/sway-lock.sh' \
-			timeout 600 'hyprctl dispatch dpms off' \
-			resume 'hyprctl dispatch dpms on' \
-			before-sleep '~/.config/hypr/sway-lock.sh'
+			timeout 300 "$HOME/.config/hypr/sway-lock.sh" \
+			timeout 600 "hyprctl dispatch dpms off" \
+			resume "hyprctl dispatch dpms on" \
+			before-sleep "$HOME/.config/hypr/sway-lock.sh"
 		notify-send -r 5556 -u normal "  Swayidle Active"
 	fi
 }

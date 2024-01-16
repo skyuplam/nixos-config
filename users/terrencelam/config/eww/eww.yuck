@@ -16,9 +16,6 @@
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-   (updates)
-   (scratchpad-indicator)
-   (language)
    (idleinhibit)
    (audio)
    (net)
@@ -35,18 +32,6 @@
 
 (defwidget workspaces1 []
   (literal :content workspace1))
-
-(defwidget language []
-  (box :class "language"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/keyboardlayout.sh toggle"
-        language)
-))
 
 (defwidget clock []
   (box :class "clock"
@@ -73,32 +58,6 @@
         volume)
 ))
 
-(defwidget updates []
-  (box 
-       :class "${matches(arch-updates, '^\s*$')?'paru-empty':'paru'}"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "foot bash -c 'paru; ~/.config/eww/scripts/arch-updates.sh Refresh'&"
-        arch-updates)
-))
-
-(defwidget scratchpad-indicator []
-  (box 
-       :class "${matches(scratchpad, '^\s*$')?'scratchpad-empty':'scratchpad'}"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/scratchpad-indicator.sh ShowInfo"
-        scratchpad)
-))
-
 (defwidget idleinhibit []
   (box :class "idle"
        :orientation "h"
@@ -123,20 +82,11 @@
         network)
 ))
 
-(defpoll scratchpad :interval "1s"
-  "scripts/scratchpad-indicator.sh Update || echo null")
-
-(defpoll language :interval "1s"
-  "scripts/keyboardlayout.sh")
-
 (defpoll network :interval "1s"
   "scripts/network.sh")
 
 (defpoll idle :interval "1s"
   "scripts/idleinhibit.sh")
-
-(defpoll arch-updates :interval "600s"
-  "scripts/arch-updates.sh")
 
 (defpoll volume :interval "1s"
   "scripts/volumecontrol")
