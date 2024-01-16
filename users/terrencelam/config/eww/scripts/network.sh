@@ -13,7 +13,7 @@
 # nmcli connection show --active | grep 'wifi' | awk '{ print $4 }' FS=' '
 
 function ShowInfo {
-	if [[ ! -z "$(networkctl status | grep -ohE '(online|partial)')" ]]; then
+	if networkctl status | grep -qE '(online|partial)'; then
 		wan="$(drill ch txt whoami.cloudflare @1.1.1.1 | grep -e "^whoami" | awk '{ print $5 }' | tr -d '"' )"
 		connection="$(networkctl status | grep Address | awk '{ print $4 }'): $(networkctl status | grep Address | awk '{ print $2 }') / $wan"
 	else
@@ -23,7 +23,7 @@ function ShowInfo {
 }
 
 function IconUpdate() {
-	if [[ ! -z "$(networkctl status | grep -ohE '(online|partial)')" ]]; then
+	if networkctl status | grep -qE '(online|partial)'; then
 		icon="󰈀"
 	else
 		icon="󰲜"

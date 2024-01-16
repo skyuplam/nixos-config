@@ -200,7 +200,7 @@ in {
           pkgs.age
           pkgs.mkpasswd
           pkgs.socat
-          pkgs.drill
+          pkgs.ldns
           pkgs.qmk
 
           # Dev stuff
@@ -238,6 +238,7 @@ in {
           pkgs.swayidle
           pkgs.wl-clipboard
           pkgs.eww-wayland
+          pkgs.libnotify
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
