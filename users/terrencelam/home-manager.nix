@@ -147,7 +147,6 @@ in {
       packages =
         [
           pkgs.aspell
-          pkgs.bat
           pkgs.bottom # fancy version of `top` with ASCII graphs
           pkgs.browsh # in terminal browser
           pkgs.coreutils
@@ -330,6 +329,22 @@ in {
 
     bat = {
       enable = true;
+      config = {
+        pager = "less -FR";
+        theme = "catppuccin-mocha";
+      };
+      themes = {
+        # https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme
+        catppuccin-mocha = {
+          src = pkgs.fetchFromGitHub {
+            owner = "catppuccin";
+            repo = "bat";
+            rev = "master";
+            sha256 = "6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
+          };
+          file = "Catppuccin-mocha.tmTheme";
+        };
+      };
     };
 
     git = {
