@@ -125,14 +125,19 @@ in {
       CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
     };
 
-    file = {
-      ".inputrc".source = builtins.path {
-        name = "inputrc-config";
-        path = ./config/inputrc;
+    file =
+      {
+        ".inputrc".source = builtins.path {
+          name = "inputrc-config";
+          path = ./config/inputrc;
+        };
+      }
+      // lib.optionalAttrs (isLinux && !isWSL) {
+        ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+      }
+      // lib.optionalAttrs isDarwin {
+        "Library/Application Support/Mozilla/NativeMessagingHosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
       };
-
-      ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
-    };
 
     packages =
       [
