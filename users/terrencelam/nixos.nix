@@ -11,6 +11,8 @@ in {
   # Since we're using zsh as our shell
   programs = {
     zsh.enable = true;
+    # Needed to enable gtk
+    dconf.enable = true;
   };
 
   users = {

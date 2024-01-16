@@ -102,138 +102,171 @@ in {
     };
   };
 
-  home = {
-    # This value determines the Home Manager release that your configuration is compatible with. This
-    # helps avoid breakage when a new Home Manager release introduces backwards incompatible changes.
-    #
-    # You can update Home Manager without changing this value. See the Home Manager release notes for
-    # a list of state version changes in each release.
-    stateVersion = "23.11";
+  home =
+    {
+      # This value determines the Home Manager release that your configuration is compatible with. This
+      # helps avoid breakage when a new Home Manager release introduces backwards incompatible changes.
+      #
+      # You can update Home Manager without changing this value. See the Home Manager release notes for
+      # a list of state version changes in each release.
+      stateVersion = "23.11";
 
-    sessionVariables = {
-      LANG = "en_US.UTF-8";
-      LC_CTYPE = "en_US.UTF-8";
-      LC_ALL = "en_US.UTF-8";
-      EDITOR = "nvim";
-      PAGER = "less -FirSwX";
-      MANPAGER = "${manpager}/bin/manpager";
-      SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
-        if isDarwin
-        then "dylib"
-        else "so"
-      }";
-      CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
-    };
-
-    file =
-      {
-        ".inputrc".source = builtins.path {
-          name = "inputrc-config";
-          path = ./config/inputrc;
-        };
-      }
-      // lib.optionalAttrs (isLinux && !isWSL) {
-        ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
-      }
-      // lib.optionalAttrs isDarwin {
-        "Library/Application Support/Mozilla/NativeMessagingHosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+      sessionVariables = {
+        LANG = "en_US.UTF-8";
+        LC_CTYPE = "en_US.UTF-8";
+        LC_ALL = "en_US.UTF-8";
+        EDITOR = "nvim";
+        PAGER = "less -FirSwX";
+        MANPAGER = "${manpager}/bin/manpager";
+        SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
+          if isDarwin
+          then "dylib"
+          else "so"
+        }";
+        CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
       };
 
-    packages =
-      [
-        pkgs.aspell
-        pkgs.bat
-        pkgs.bottom # fancy version of `top` with ASCII graphs
-        pkgs.browsh # in terminal browser
-        pkgs.coreutils
-        pkgs.codespell
-        pkgs.curl
-        pkgs.chafa
-        pkgs.du-dust # fancy version of `du`
-        pkgs.fd # fancy version of `find`
+      file =
+        {
+          ".inputrc".source = builtins.path {
+            name = "inputrc-config";
+            path = ./config/inputrc;
+          };
+        }
+        // lib.optionalAttrs (isLinux && !isWSL) {
+          ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+        }
+        // lib.optionalAttrs isDarwin {
+          "Library/Application Support/Mozilla/NativeMessagingHosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+        };
 
-        # Fonts
-        (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
-        pkgs.noto-fonts
-        pkgs.noto-fonts-cjk
-        pkgs.noto-fonts-emoji
-        pkgs.noto-fonts-extra
-        pkgs.source-sans
-        pkgs.source-serif
-        pkgs.source-han-sans
-        pkgs.source-han-serif
+      packages =
+        [
+          pkgs.aspell
+          pkgs.bat
+          pkgs.bottom # fancy version of `top` with ASCII graphs
+          pkgs.browsh # in terminal browser
+          pkgs.coreutils
+          pkgs.codespell
+          pkgs.curl
+          pkgs.chafa
+          pkgs.du-dust # fancy version of `du`
+          pkgs.fd # fancy version of `find`
 
-        pkgs.libiconv
-        pkgs.gnupg
-        pkgs.go
-        pkgs.nb
-        pkgs.lsd
-        pkgs.luajitPackages.luarocks
-        pkgs.lnav
-        pkgs.ripgrep # better version of `grep`
-        pkgs.rsync
-        pkgs.sd
-        pkgs.sqlite
-        pkgs.stow
-        pkgs.tig
-        pkgs.tmux
-        pkgs.tree-sitter
-        pkgs.units
-        pkgs.wget
-        pkgs.wasm-pack
-        pkgs.yarn
-        pkgs.mpv-unwrapped
-        pkgs.yt-dlp
-        pkgs.nmap
-        pkgs.presenterm
-        # https://github.com/mitchellh/zig-overlay
-        # latest nightly release
-        pkgs.zigpkgs.master
-        pkgs.zls
-        pkgs.qemu
-        pkgs.sops
-        pkgs.age
-        pkgs.mkpasswd
-        pkgs.socat
-        pkgs.drill
-        pkgs.qmk
+          # Fonts
+          (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
+          pkgs.noto-fonts
+          pkgs.noto-fonts-cjk
+          pkgs.noto-fonts-emoji
+          pkgs.noto-fonts-extra
+          pkgs.source-sans
+          pkgs.source-serif
+          pkgs.source-han-sans
+          pkgs.source-han-serif
 
-        # Dev stuff
-        pkgs.jq
-        pkgs.nodejs_18
-        pkgs.nodePackages.typescript-language-server
-        pkgs.nodePackages.yaml-language-server
-        pkgs.nodePackages.vim-language-server
-        pkgs.nodePackages.prettier
-        pkgs.nodePackages.write-good
-        pkgs.vscode-langservers-extracted
-        pkgs.lua-language-server
-        pkgs.efm-langserver
-        pkgs.rustup
-        pkgs.marksman
-        pkgs.gitlint
-        pkgs.stylua
-        pkgs.selene
-        pkgs.dotenv-linter
-        pkgs.statix
-        pkgs.deadnix
-        pkgs.alejandra
-        pkgs.typos
-        pkgs.dprint
-        pkgs.languagetool-rust
-        pkgs.nil
-        pkgs.shellcheck
-        pkgs.gnumake
-        pkgs.gcc
-        pkgs.codeium-lsp
-      ]
-      ++ (lib.optionals (isLinux && !isWSL) [
-        pkgs.wlogout
-        pkgs.grim
-        pkgs.swayidle
-        pkgs.wl-clipboard
-        pkgs.eww-wayland
-      ]);
+          pkgs.libiconv
+          pkgs.gnupg
+          pkgs.go
+          pkgs.nb
+          pkgs.lsd
+          pkgs.luajitPackages.luarocks
+          pkgs.lnav
+          pkgs.ripgrep # better version of `grep`
+          pkgs.rsync
+          pkgs.sd
+          pkgs.sqlite
+          pkgs.stow
+          pkgs.tig
+          pkgs.tmux
+          pkgs.tree-sitter
+          pkgs.units
+          pkgs.wget
+          pkgs.wasm-pack
+          pkgs.yarn
+          pkgs.mpv-unwrapped
+          pkgs.yt-dlp
+          pkgs.nmap
+          pkgs.presenterm
+          # https://github.com/mitchellh/zig-overlay
+          # latest nightly release
+          pkgs.zigpkgs.master
+          pkgs.zls
+          pkgs.qemu
+          pkgs.sops
+          pkgs.age
+          pkgs.mkpasswd
+          pkgs.socat
+          pkgs.drill
+          pkgs.qmk
+
+          # Dev stuff
+          pkgs.jq
+          pkgs.nodejs_18
+          pkgs.nodePackages.typescript-language-server
+          pkgs.nodePackages.yaml-language-server
+          pkgs.nodePackages.vim-language-server
+          pkgs.nodePackages.prettier
+          pkgs.nodePackages.write-good
+          pkgs.vscode-langservers-extracted
+          pkgs.lua-language-server
+          pkgs.efm-langserver
+          pkgs.rustup
+          pkgs.marksman
+          pkgs.gitlint
+          pkgs.stylua
+          pkgs.selene
+          pkgs.dotenv-linter
+          pkgs.statix
+          pkgs.deadnix
+          pkgs.alejandra
+          pkgs.typos
+          pkgs.dprint
+          pkgs.languagetool-rust
+          pkgs.nil
+          pkgs.shellcheck
+          pkgs.gnumake
+          pkgs.gcc
+          pkgs.codeium-lsp
+        ]
+        ++ (lib.optionals (isLinux && !isWSL) [
+          pkgs.wlogout
+          pkgs.grim
+          pkgs.swayidle
+          pkgs.wl-clipboard
+          pkgs.eww-wayland
+        ]);
+    }
+    // lib.optionalAttrs (isLinux && !isWSL) {
+      pointerCursor = {
+        gtk.enable = true;
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Original-Classic";
+        size = 24;
+      };
+    };
+
+  gtk = {
+    enable = isLinux && !isWSL;
+
+    font = {
+      name = "Noto Sans";
+      package = pkgs.noto-fonts;
+      size = 11;
+    };
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+    theme = {
+      name = "Catppuccin-Macchiato-Compact-Pink-Dark";
+      # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/data/themes/catppuccin-gtk/default.nix
+      package = pkgs.catppuccin-gtk.override {
+        accents = ["sky"];
+        size = "compact";
+        tweaks = ["rimless" "black"];
+        variant = "macchiato";
+      };
+    };
   };
 
   fonts.fontconfig.enable = true;
