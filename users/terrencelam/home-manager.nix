@@ -191,6 +191,7 @@ in {
 
         # Dev stuff
         pkgs.jq
+        pkgs.nodejs_18
         pkgs.nodePackages.typescript-language-server
         pkgs.nodePackages.yaml-language-server
         pkgs.nodePackages.vim-language-server
