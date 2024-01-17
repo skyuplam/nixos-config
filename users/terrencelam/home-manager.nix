@@ -86,7 +86,7 @@ in {
         };
       };
       wezterm = {
-        enable = true;
+        enable = isDarwin;
         source = builtins.path {
           name = "wezterm-config";
           path = ./config/wezterm;
@@ -395,7 +395,7 @@ in {
     };
 
     wezterm = {
-      enable = true;
+      enable = isDarwin;
       enableZshIntegration = true;
     };
 
@@ -530,7 +530,7 @@ in {
       wrapperFeatures.gtk = true;
       config = {
         modifier = "Mod4";
-        terminal = "wezterm";
+        terminal = "foot";
         startup = [
           {command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK";}
         ];
