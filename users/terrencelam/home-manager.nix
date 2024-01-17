@@ -115,7 +115,6 @@ in {
         LANG = "en_US.UTF-8";
         LC_CTYPE = "en_US.UTF-8";
         LC_ALL = "en_US.UTF-8";
-        EDITOR = "nvim";
         PAGER = "less -FirSwX";
         MANPAGER = "${manpager}/bin/manpager";
         SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
@@ -168,7 +167,6 @@ in {
           pkgs.source-han-serif
 
           pkgs.libiconv
-          pkgs.gnupg
           pkgs.go
           pkgs.nb
           pkgs.lsd
