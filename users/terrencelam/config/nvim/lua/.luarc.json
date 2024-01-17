@@ -111,6 +111,7 @@
         "${3rd}/luv/library"
     ],
     "diagnostics.globals": [
-        "tl"
+        "tl",
+        "vim"
     ]
 }

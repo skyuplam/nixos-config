@@ -601,7 +601,10 @@ return require('lazy').setup({
   -- Terminal filemanager
   {
     'Rolv-Apneseth/tfm.nvim',
-    opts = {},
+    opts = {
+      -- Possible choices: "ranger" | "nnn" | "lf" | "yazi" (default)
+      file_manager = 'yazi',
+    },
     config = function()
       local map = require('tl.common').map
       local tfm = require('tfm')
@@ -615,9 +618,11 @@ return require('lazy').setup({
         },
       })
       -- Set keymap so you can open the default terminal file manager (yazi)
-      map('n', '<C-e>', tfm.open, {
+      map('n', '<C-e>', function()
+        tfm.open(vim.fn.expand('%:p:h'))
+      end, {
         noremap = true,
-        desc = 'Open Yazi',
+        desc = 'Open Yazi follow current buffer',
       })
     end,
   },
