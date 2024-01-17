@@ -11,7 +11,6 @@ end
 
 local has_lspsignature, lspsignature = pcall(require, 'lsp_signature')
 local has_schemastore, schemastore = pcall(require, 'schemastore')
-local has_rust_tools, rust_tools = pcall(require, 'rust-tools')
 local has_cmp_lsp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
 local has_neodev, neodev = pcall(require, 'neodev')
 local has_null_ls, null_ls = pcall(require, 'null-ls')
@@ -132,16 +131,7 @@ local on_attach = function(client, bufnr)
     vim.diagnostic.setloclist,
     attach_opts('Open diagnostics list')
   )
-  if has_rust_tools and client.name == 'rust_analyzer' then
-    map(
-      'n',
-      'K',
-      rust_tools.hover_actions.hover_actions,
-      attach_opts('Hover actions')
-    )
-  else
-    map('n', 'K', lsp_buf.hover, attach_opts('Hover'))
-  end
+  map('n', 'K', lsp_buf.hover, attach_opts('Hover'))
   -- map('n', 'gi', lsp_buf.implementation,
   --                attach_opts('Goto implementation'))
   map('n', '<C-s>', lsp_buf.signature_help, attach_opts('Signature help'))
@@ -289,26 +279,35 @@ if has_neodev then
   })
 end
 
-local rust_tool_setup = function()
-  if not has_rust_tools then
-    return
-  end
-  local extension_path = vim.env.HOME
-    .. '/.vscode/extensions/vadimcn.vscode-lldb-1.8.1/'
-  if vim.fn.isdirectory('/usr/lib/codelldb/') == 1 then
-    extension_path = '/usr/lib/codelldb/'
-  end
+vim.g.rustaceanvim = function()
+  local extension_path = os.getenv('VSCODE_LLDB_PATH')
+  local this_os = vim.uv.os_uname().sysname
 
   local codelldb_path = extension_path .. 'adapter/codelldb'
-  local liblldb_path = extension_path .. 'lldb/lib/liblldb.so'
+  local liblldb_path = extension_path
+    .. 'lldb/lib/liblldb'
+    .. (this_os == 'Linux' and '.so' or '.dylib')
 
-  rust_tools.setup({
+  local rustLsp = require('rustaceanvim')
+  local cfg = require('rustaceanvim.config')
+
+  return {
     tools = {
       runnables = { use_telescope = true },
       debuggables = { use_telescope = true },
     },
     server = {
       cmd = { 'rustup', 'run', 'stable', 'rust-analyzer' },
+      on_attach = function(client, bufnr)
+        on_attach(client, bufnr)
+        -- Override hover action
+        map(
+          'n',
+          'K',
+          rustLsp.hover_actions.hover_actions,
+          { silent = true, buffer = bufnr, desc = 'Hover actions' }
+        )
+      end,
       settings = {
         ['rust-analyzer'] = {
           diagnostics = {
@@ -389,19 +388,12 @@ local rust_tool_setup = function()
         },
       },
       standalone = false,
-
-      on_attach = on_attach,
     },
     dap = {
-      adapter = require('rust-tools.dap').get_codelldb_adapter(
-        codelldb_path,
-        liblldb_path
-      ),
+      adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
     },
-  })
+  }
 end
-
-rust_tool_setup()
 
 local jsons = {}
 local yamls = {}

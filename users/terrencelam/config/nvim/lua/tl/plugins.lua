@@ -394,8 +394,7 @@ return require('lazy').setup({
     end,
     dependencies = {
       { 'lbrayner/vim-rzip' }, -- https://yarnpkg.com/getting-started/editor-sdks#supporting-go-to-definition-et-al
-      { 'simrat39/rust-tools.nvim' },
-      -- {'onsails/lspkind-nvim', config=function() require'lspkind'.init() end},
+      { 'mrcjkb/rustaceanvim', version = '^3', ft = 'rust' },
       { 'ray-x/lsp_signature.nvim' },
       { 'folke/lsp-colors.nvim' },
       { 'b0o/schemastore.nvim' },

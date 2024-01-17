@@ -123,6 +123,7 @@ in {
           else "so"
         }";
         CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
+        VSCODE_LLDB_PATH = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/";
       };
 
       file =
