@@ -40,7 +40,19 @@
     yabai = {
       enable = true;
       package = pkgs.yabai;
+      enableScriptingAddition = true;
+      extraConfig = builtins.readFile (builtins.path {
+        name = "skhd-config";
+        path = ./config/yabai/yabairc;
+      });
     };
-    skhd.enable = true;
+    skhd = {
+      enable = true;
+      package = pkgs.skhd;
+      skhdConfig = builtins.readFile (builtins.path {
+        name = "skhd-config";
+        path = ./config/skhd/skhdrc;
+      });
+    };
   };
 }

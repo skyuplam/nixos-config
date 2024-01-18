@@ -43,20 +43,6 @@ in {
           path = ./config/tig;
         };
       };
-      skhd = {
-        enable = isDarwin;
-        source = builtins.path {
-          name = "skhd-config";
-          path = ./config/skhd;
-        };
-      };
-      yabai = {
-        enable = isDarwin;
-        source = builtins.path {
-          name = "yabai-config";
-          path = ./config/yabai;
-        };
-      };
       zellij = {
         enable = true;
         source = builtins.path {
@@ -123,7 +109,11 @@ in {
           else "so"
         }";
         CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
-        VSCODE_LLDB_PATH = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/";
+        # Failed to build target aarch64-darwin
+        VSCODE_LLDB_PATH =
+          if isDarwin
+          then ""
+          else "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/";
       };
 
       file =
@@ -360,6 +350,7 @@ in {
     neovim = {
       enable = true;
       package = pkgs.neovim-nightly;
+      defaultEditor = true;
 
       withPython3 = true;
     };
