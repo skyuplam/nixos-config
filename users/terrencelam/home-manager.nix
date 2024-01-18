@@ -190,6 +190,7 @@ in {
           pkgs.socat
           pkgs.ldns
           pkgs.qmk
+          pkgs.imagemagick
 
           # Dev stuff
           pkgs.jq
@@ -221,7 +222,6 @@ in {
           pkgs.codeium-lsp
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
-          pkgs.wlogout
           pkgs.grim
           pkgs.swayidle
           pkgs.wl-clipboard
@@ -334,6 +334,52 @@ in {
           file = "Catppuccin-mocha.tmTheme";
         };
       };
+    };
+
+    imv = {
+      enable = isLinux && !isWSL;
+    };
+
+    wlogout = {
+      enable = isLinux && !isWSL;
+      layout = [
+        {
+          label = "lock";
+          action = "~/.config/hypr/sway-lock.sh";
+          text = "Lock";
+          keybind = "l";
+        }
+        {
+          label = "hibernate";
+          action = "systemctl hibernate";
+          text = "Hibernate";
+          keybind = "h";
+        }
+        {
+          label = "logout";
+          action = "loginctl terminate-user $USER";
+          text = "Logout";
+          keybind = "e";
+        }
+        {
+          label = "shutdown";
+          action = "systemctl poweroff";
+          text = "Shutdown";
+          keybind = "s";
+        }
+        {
+          label = "suspend";
+          action = "systemctl suspend";
+          text = "Suspend";
+          keybind = "u";
+        }
+        {
+          label = "reboot";
+          action = "systemctl reboot";
+          text = "Reboot";
+          keybind = "r";
+        }
+      ];
     };
 
     git = {
