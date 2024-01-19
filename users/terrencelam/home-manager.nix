@@ -556,6 +556,12 @@ in {
 
     wpaperd = {
       enable = isLinux && !isWSL;
+      settings = {
+        default = {
+          path = "~/Pictures/Wallpapers/";
+          duration = "30m";
+        };
+      };
     };
   };
 
