@@ -191,6 +191,7 @@ in {
           pkgs.ldns
           pkgs.qmk
           pkgs.imagemagick
+          pkgs.libsecret
 
           # Dev stuff
           pkgs.jq
@@ -598,6 +599,8 @@ in {
       enableZshIntegration = true;
       # enableSshSupport = true;
     };
+
+    gnome-keyring.enable = true;
 
     udiskie = {
       enable = isLinux && !isWSL;
