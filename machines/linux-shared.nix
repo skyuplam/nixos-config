@@ -66,17 +66,22 @@
         })
       '';
     };
-    pam.services.swaylock = {};
-    # Inferior performance
-    # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
-    pam.loginLimits = [
-      {
-        domain = "@users";
-        item = "rtprio";
-        type = "-";
-        value = 1;
-      }
-    ];
+    pam = {
+      # Inferior performance
+      # https://nixos.wiki/wiki/Sway#Inferior_performance_compared_to_other_distributions
+      loginLimits = [
+        {
+          domain = "@users";
+          item = "rtprio";
+          type = "-";
+          value = 1;
+        }
+      ];
+      services = {
+        swaylock = {};
+        greetd.enableGnomeKeyring = true;
+      };
+    };
   };
   xdg = {
     portal = {
@@ -84,6 +89,13 @@
       # gtk portal needed to make gtk apps happy
       extraPortals = [pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk];
       config = {
+        common = {
+          default = ["gtk"];
+          # except for the secret portal, which is handled by gnome-keyring
+          "org.freedesktop.impl.portal.Secret" = [
+            "gnome-keyring"
+          ];
+        };
         sway = {
           default = ["wlr" "gtk"];
         };
@@ -128,7 +140,11 @@
       settings.KbdInteractiveAuthentication = false;
     };
 
-    dbus.enable = true;
+    dbus = {
+      enable = true;
+      packages = [pkgs.gcr];
+    };
+    gnome.gnome-keyring.enable = true;
 
     pipewire = {
       enable = true;
