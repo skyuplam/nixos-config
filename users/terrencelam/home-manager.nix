@@ -596,7 +596,7 @@ in {
       pinentryFlavor = "gnome3";
       enableScDaemon = true;
       enableZshIntegration = true;
-      enableSshSupport = true;
+      # enableSshSupport = true;
     };
 
     udiskie = {
