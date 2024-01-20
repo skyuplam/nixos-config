@@ -199,7 +199,6 @@ in {
           pkgs.qmk
           pkgs.imagemagick
           pkgs.libsecret
-          pkgs.foliate
 
           # Dev stuff
           pkgs.jq
@@ -237,6 +236,7 @@ in {
           pkgs.eww-wayland
           pkgs.libnotify
           pkgs.sound-theme-freedesktop
+          pkgs.foliate
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
@@ -438,7 +438,7 @@ in {
     };
 
     anyrun = {
-      enable = true;
+      enable = isLinux && !isWSL;
       config = {
         plugins = with inputs.anyrun.packages.${pkgs.system}; [
           applications
@@ -583,7 +583,7 @@ in {
 
     mpv = {
       enable = true;
-      package = pkgs.wrapMpv (pkgs.mpv-unwrapped.override {vapoursynthSupport = true;}) {youtubeSupport = true;};
+      package = pkgs.wrapMpv (pkgs.mpv-unwrapped.override {vapoursynthSupport = isLinux && !isWSL;}) {youtubeSupport = true;};
     };
 
     yt-dlp = {
