@@ -87,6 +87,13 @@ in {
           path = ./config/swaylock;
         };
       };
+      mpv = {
+        enable = true;
+        source = builtins.path {
+          name = "mpv";
+          path = ./config/mpv;
+        };
+      };
     };
   };
 
@@ -177,8 +184,6 @@ in {
           pkgs.wget
           pkgs.wasm-pack
           pkgs.yarn
-          pkgs.mpv-unwrapped
-          pkgs.yt-dlp
           pkgs.nmap
           pkgs.presenterm
           # https://github.com/mitchellh/zig-overlay
@@ -576,6 +581,15 @@ in {
       '';
     };
 
+    mpv = {
+      enable = true;
+      package = pkgs.wrapMpv (pkgs.mpv-unwrapped.override {vapoursynthSupport = true;}) {youtubeSupport = true;};
+    };
+
+    yt-dlp = {
+      enable = true;
+    };
+
     # Starship Prompt
     # https://rycee.gitlab.io/home-manager/options.html#opt-programs.starship.enable
     starship = {
@@ -747,7 +761,7 @@ in {
           path = ./config/mako/config;
         })
         + ''
-          on-notify=exec ${pkgs.mpv} ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
+          on-notify=exec ${pkgs.mpv}/bin/mpv ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
         '';
     };
 
