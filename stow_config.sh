@@ -15,5 +15,7 @@ stow_config() {
   mkdir -p "$TARGET"
   # Perform unrestricted find all the symbolic links in the foler to execute rm
   # ${pkgs.fd}/bin/fd -u -t l . $TARGET -x rm
-  stow -d ./users/terrencelam/config -t "$TARGET" "$1"
+  stow -d ./users/terrencelam/config -t "$TARGET" -S "$1"
 }
+
+stow_config "$@"

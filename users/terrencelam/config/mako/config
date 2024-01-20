@@ -11,9 +11,9 @@ on-button-right=dismiss-all
 on-touch=dismiss
 
 # STYLE OPTIONS
-font=JetBrains Mono 10
-width=300
-height=100
+font=JetBrainsMono Nerd Font 10
+width=250
+height=300
 margin=10
 padding=15
 border-size=2
