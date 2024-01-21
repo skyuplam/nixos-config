@@ -59,13 +59,6 @@ in {
           path = ./config/tridactyl;
         };
       };
-      fuzzel = {
-        enable = true;
-        source = builtins.path {
-          name = "fuzzel-config";
-          path = ./config/fuzzel;
-        };
-      };
       foot = {
         enable = isLinux && !isWSL;
         source = builtins.path {
@@ -237,6 +230,7 @@ in {
           pkgs.libnotify
           pkgs.sound-theme-freedesktop
           pkgs.foliate
+          pkgs.xdg-utils
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
@@ -433,27 +427,55 @@ in {
       enableZshIntegration = true;
     };
 
-    fuzzel = {
-      enable = isLinux && !isWSL;
-    };
-
     anyrun = {
       enable = isLinux && !isWSL;
       config = {
         plugins = with inputs.anyrun.packages.${pkgs.system}; [
           applications
-          randr
           rink
           shell
-          symbols
           translate
           dictionary
           websearch
         ];
         width.fraction = 0.3;
-        y.absolute = 15;
+        y.fraction = 0.02;
         hidePluginInfo = true;
         closeOnClick = true;
+        maxEntries = 10;
+      };
+      extraConfigFiles = {
+        "applications.ron".text = ''
+          Config(
+            // Also show the Desktop Actions defined in the desktop files, e.g. "New Window" from LibreWolf
+            desktop_actions: true,
+            max_entries: 10,
+            // The terminal used for running terminal based desktop entries, if left as `None` a static list of terminals is used
+            // to determine what terminal to use.
+            terminal: Some("footclient"),
+          )
+        '';
+        "websearch.ron".text = ''
+          Config(
+            prefix: "?",
+            // Options: Google, Ecosia, Bing, DuckDuckGo, Custom
+            //
+            // Custom engines can be defined as such:
+            // Custom(
+            //   name: "Searx",
+            //   url: "searx.be/?q={}",
+            // )
+            //
+            // NOTE: `{}` is replaced by the search query and `https://` is automatically added in front.
+            engines: [Google]
+          )
+        '';
+        "dictionary.ron".text = ''
+          Config(
+            prefix: ":def",
+            max_entries: 5,
+          )
+        '';
       };
       # custom css for anyrun, based on catppuccin-mocha
       extraCss = ''
@@ -518,6 +540,7 @@ in {
 
     foot = {
       enable = isLinux && !isWSL;
+      server.enable = isLinux && !isWSL;
     };
 
     wezterm = {
