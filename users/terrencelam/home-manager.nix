@@ -255,13 +255,13 @@ in {
       package = pkgs.papirus-icon-theme;
     };
     theme = {
-      name = "Catppuccin-Macchiato-Compact-Pink-Dark";
+      name = "Catppuccin-Mocha-Compact-Sky-Dark";
       # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/data/themes/catppuccin-gtk/default.nix
       package = pkgs.catppuccin-gtk.override {
         accents = ["sky"];
         size = "compact";
         tweaks = ["rimless" "black"];
-        variant = "macchiato";
+        variant = "mocha";
       };
     };
   };
