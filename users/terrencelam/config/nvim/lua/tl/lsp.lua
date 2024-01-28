@@ -13,8 +13,6 @@ local has_lspsignature, lspsignature = pcall(require, 'lsp_signature')
 local has_schemastore, schemastore = pcall(require, 'schemastore')
 local has_cmp_lsp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
 local has_neodev, neodev = pcall(require, 'neodev')
-local has_null_ls, null_ls = pcall(require, 'null-ls')
-local command_resolver = require('null-ls.helpers.command_resolver')
 local map = require('tl.common').map
 local lsp = vim.lsp
 local lsp_buf = lsp.buf
@@ -32,43 +30,8 @@ function lsp_util.open_floating_preview(contents, syntax, opts, ...)
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
--- https://github.com/nvimtools/none-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts#avoid-breaking-formatexpr-ie-gq
-local function is_null_ls_formatting_enabled(bufnr)
-  local file_type = vim.api.nvim_buf_get_option(bufnr, 'filetype')
-  local generators = require('null-ls.generators').get_available(
-    file_type,
-    require('null-ls.methods').internal.FORMATTING
-  )
-  return #generators > 0
-end
-
-local lsp_formatting = function(param)
-  lsp_buf.format({
-    filter = function(client)
-      -- apply whatever logic you want (in this example, we'll only use null-ls)
-      return client.name == 'null-ls'
-    end,
-    timeout_ms = 3000,
-    bufnr = param.bufnr or 0,
-  })
-end
--- if you want to set up formatting on save, you can use this as a callback
-local LspFormattingAUGroup = vim_api.nvim_create_augroup('LspFormatting', {})
-
 if has_lspsignature then
   lspsignature.setup({ bind = true, handler_opts = { border = 'rounded' } })
-end
-
-local function supports_format(client)
-  if
-    client.config
-    and client.config.capabilities
-    and client.config.capabilities.documentFormattingProvider == false
-  then
-    return false
-  end
-  return client.supports_method('textDocument/formatting')
-    or client.supports_method('textDocument/rangeFormatting')
 end
 
 local on_attach = function(client, bufnr)
@@ -76,18 +39,6 @@ local on_attach = function(client, bufnr)
     return { silent = true, buffer = bufnr, desc = desc }
   end
   vim_api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Format
-  if supports_format(client) then
-    vim_api.nvim_clear_autocmds({ group = LspFormattingAUGroup, buffer = bufnr })
-    vim_api.nvim_create_autocmd('BufWritePre', {
-      group = LspFormattingAUGroup,
-      buffer = bufnr,
-      callback = function()
-        lsp_formatting({ bufnr = bufnr })
-      end,
-    })
-  end
 
   -- Inlay hint
   local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
@@ -99,22 +50,22 @@ local on_attach = function(client, bufnr)
   end
 
   -- Key Mappings.
-  if client.server_capabilities.documentFormattingProvider then
-    if
-      client.name == 'null-ls' and is_null_ls_formatting_enabled(bufnr)
-      or client.name ~= 'null-ls'
-    then
-      vim.bo[bufnr].formatexpr = 'v:lua.vim.lsp.formatexpr()'
-      map(
-        'n',
-        '<leader>gq',
-        '<cmd>lua vim.lsp.buf.format({ async = true })<CR>',
-        attach_opts('LSP Format')
-      )
-    else
-      vim.bo[bufnr].formatexpr = nil
-    end
-  end
+  -- if client.server_capabilities.documentFormattingProvider then
+  --   if
+  --     client.name == 'null-ls' and is_null_ls_formatting_enabled(bufnr)
+  --     or client.name ~= 'null-ls'
+  --   then
+  --     vim.bo[bufnr].formatexpr = 'v:lua.vim.lsp.formatexpr()'
+  --     map(
+  --       'n',
+  --       '<leader>gq',
+  --       '<cmd>lua vim.lsp.buf.format({ async = true })<CR>',
+  --       attach_opts('LSP Format')
+  --     )
+  --   else
+  --     vim.bo[bufnr].formatexpr = nil
+  --   end
+  -- end
   map('n', 'gd', lsp.buf.definition, attach_opts('Goto definition'))
   map('n', 'gD', lsp_buf.declaration, attach_opts('Goto declaration'))
   map(
@@ -159,73 +110,6 @@ local on_attach = function(client, bufnr)
   end, { expr = true })
   map('n', '<leader>ca', lsp_buf.code_action, attach_opts('Code action'))
 end
-
-if has_null_ls then
-  null_ls.setup({
-    sources = {
-      null_ls.builtins.code_actions.gitsigns,
-      null_ls.builtins.code_actions.ltrs,
-      null_ls.builtins.code_actions.shellcheck,
-      null_ls.builtins.completion.luasnip,
-      null_ls.builtins.completion.spell,
-      null_ls.builtins.completion.tags,
-      null_ls.builtins.diagnostics.shellcheck,
-      null_ls.builtins.diagnostics.zsh,
-      null_ls.builtins.diagnostics.deadnix,
-      null_ls.builtins.diagnostics.dotenv_linter,
-      null_ls.builtins.diagnostics.gitlint,
-      null_ls.builtins.diagnostics.ltrs.with({
-        filetypes = { 'markdown' },
-      }),
-      null_ls.builtins.diagnostics.selene,
-      null_ls.builtins.diagnostics.statix,
-      null_ls.builtins.diagnostics.stylelint,
-      null_ls.builtins.diagnostics.typos.with({
-        filetypes = {
-          'lua',
-          'javascript',
-          'javascriptreact',
-          'typescript',
-          'typescriptreact',
-          'json',
-          'markdown',
-          'toml',
-          'rust',
-        },
-      }),
-      null_ls.builtins.diagnostics.write_good,
-      null_ls.builtins.formatting.clang_format,
-      null_ls.builtins.formatting.dprint,
-      null_ls.builtins.formatting.alejandra,
-      null_ls.builtins.formatting.stylua,
-      null_ls.builtins.formatting.zigfmt,
-      null_ls.builtins.formatting.prettier.with({
-        dynamic_command = command_resolver.from_yarn_pnp(),
-      }),
-      null_ls.builtins.formatting.rustfmt.with({
-        -- Read from Cargo.toml for edition
-        extra_args = function(params)
-          local Path = require('plenary.path')
-          local cargo_toml = Path:new(params.root .. '/' .. 'Cargo.toml')
-
-          if cargo_toml:exists() and cargo_toml:is_file() then
-            for _, line in ipairs(cargo_toml:readlines()) do
-              local edition = line:match([[^edition%s*=%s*%"(%d+)%"]])
-              if edition then
-                return { '--edition=' .. edition }
-              end
-            end
-          end
-          -- default edition when we don't find `Cargo.toml` or the `edition` in it.
-          return { '--edition=2021' }
-        end,
-      }),
-      null_ls.builtins.formatting.yq,
-    },
-  })
-end
-
-vim_api.nvim_create_user_command('Format', lsp_formatting, {})
 
 local select_symbol = function(cursor_pos, symbol)
   if symbol.valueRange then

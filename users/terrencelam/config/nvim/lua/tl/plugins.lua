@@ -437,8 +437,100 @@ return require('lazy').setup({
   },
 
   {
-    'nvimtools/none-ls.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    keys = {
+      {
+        -- Customize or remove this keymap to your liking
+        '<leader>lf',
+        function()
+          require('conform').format({ async = true, lsp_fallback = true })
+        end,
+        mode = '',
+        desc = 'Format buffer',
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        -- https://github.com/JohnnyMorganz/StyLua
+        lua = { 'stylua' },
+        -- https://github.com/ziglang/zig
+        zig = { 'zigfmt' },
+        nix = { 'alejandra' },
+        javascript = { { 'prettier', 'biome' } },
+        typescript = { 'prettier', 'biome' },
+        javascriptreact = { { 'prettier', 'biome' } },
+        typescriptreact = { { 'prettier', 'biome' } },
+        json = { { 'prettier', 'biome' } },
+        jsonc = { { 'prettier', 'biome' } },
+        markdown = { { 'prettier', 'biome' } },
+        c = { 'clang-format' },
+        cpp = { 'clang-format' },
+        rust = { 'rustfmt' },
+        -- Use the "*" filetype to run formatters on all filetypes.
+        ['*'] = { 'codespell' },
+        -- Use the "_" filetype to run formatters on filetypes that don't
+        -- have other formatters configured.
+        ['_'] = { 'trim_whitespace' },
+      },
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+      -- Map of treesitter language to file extension
+      -- A temporary file name with this extension will be generated during formatting
+      -- because some formatters care about the filename.
+      lang_to_ext = {
+        bash = 'sh',
+        javascript = 'js',
+        julia = 'jl',
+        latex = 'tex',
+        markdown = 'md',
+        python = 'py',
+        rust = 'rs',
+        typescript = 'ts',
+      },
+    },
+    init = function()
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+      -- Format command
+      vim.api.nvim_create_user_command('Format', function(args)
+        local range = nil
+        if args.count ~= -1 then
+          local end_line =
+            vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+          range = {
+            start = { args.line1, 0 },
+            ['end'] = { args.line2, end_line:len() },
+          }
+        end
+        require('conform').format({
+          async = true,
+          lsp_fallback = true,
+          range = range,
+        })
+      end, { range = true })
+    end,
+  },
+
+  {
+    'mfussenegger/nvim-lint',
+    opts = {},
+    config = function()
+      require('lint').linters_by_ft = {
+        sh = { 'shellcheck' },
+        nix = { { 'statix', 'deadnix' } },
+        c = { 'clang_check' },
+        cpp = { 'clang_check' },
+      }
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          require('lint').try_lint()
+        end,
+      })
+    end,
   },
 
   {

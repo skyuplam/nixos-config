@@ -192,6 +192,7 @@ in {
           pkgs.qmk
           pkgs.imagemagick
           pkgs.libsecret
+          pkgs.biome # toolchain for the web
 
           # Dev stuff
           pkgs.jq
@@ -207,7 +208,7 @@ in {
           pkgs.rustup
           pkgs.marksman
           pkgs.gitlint
-          pkgs.stylua
+          pkgs.stylua # Lua formatter
           pkgs.selene
           pkgs.dotenv-linter
           pkgs.statix
