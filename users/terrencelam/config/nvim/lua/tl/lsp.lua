@@ -257,6 +257,13 @@ vim.diagnostic.config({
   },
 })
 
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  pattern = '*.wgsl',
+  callback = function()
+    vim.bo.filetype = 'wgsl'
+  end,
+})
+
 -- Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- nvim-cmp
@@ -457,6 +464,10 @@ local servers = {
   vimls = {},
   marksman = {},
   zls = {},
+  wgsl_analyzer = {
+    cmd = { 'wgsl_analyzer' },
+    filetypes = { 'wgsl' },
+  },
   nil_ls = {
     settings = {
       ['nil'] = {
@@ -493,7 +504,6 @@ local servers = {
     },
   },
   glslls = {},
-  wgsl_analyzer = {},
   tsserver = {
     on_attach = on_attach,
     init_options = {
