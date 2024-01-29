@@ -474,6 +474,11 @@ return require('lazy').setup({
         -- have other formatters configured.
         ['_'] = { 'trim_whitespace' },
       },
+      formatters = {
+        rustfmt = {
+          prepend_args = { '--edition=2021' },
+        },
+      },
       format_on_save = {
         -- These options will be passed to conform.format()
         timeout_ms = 500,
@@ -612,6 +617,10 @@ return require('lazy').setup({
         callback = M.debounce(100, M.lint),
       })
     end,
+  },
+
+  {
+    'github/copilot.vim',
   },
 
   {
