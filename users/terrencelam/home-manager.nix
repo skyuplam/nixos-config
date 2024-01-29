@@ -200,7 +200,6 @@ in {
           pkgs.nodePackages.typescript-language-server
           pkgs.nodePackages.yaml-language-server
           pkgs.nodePackages.vim-language-server
-          pkgs.nodePackages.prettier
           pkgs.nodePackages.write-good
           pkgs.vscode-langservers-extracted
           pkgs.lua-language-server
@@ -485,7 +484,7 @@ in {
           no-emit-version = true;
           # Disable banner
           no-greeting = true;
-          # Long hexidecimal key format
+          # Long hexadecimal key format
           keyid-format = "0xlong";
           # Display UID validity
           list-options = "show-uid-validity";
@@ -613,6 +612,8 @@ in {
           "--ozone-platform=wayland"
           # make it use text-input-v1, which works for kwin 5.27 and weston
           "--enable-wayland-ime"
+          "--enable-features=Vulkan"
+          "--enable-unsafe-webgpu"
         ];
       };
       # wallpaper
@@ -707,7 +708,7 @@ in {
             background-color: @bg-col;
           }
 
-          /* anyrun's ouput matches entries - Base */
+          /* anyrun's output matches entries - Base */
           #match {
             color: @fg-col;
             background: @bg-col;
