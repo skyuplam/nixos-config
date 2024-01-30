@@ -451,53 +451,64 @@ return require('lazy').setup({
         desc = 'Format buffer',
       },
     },
-    opts = {
-      formatters_by_ft = {
-        -- https://github.com/JohnnyMorganz/StyLua
-        lua = { 'stylua' },
-        -- https://github.com/ziglang/zig
-        zig = { 'zigfmt' },
-        nix = { 'alejandra' },
-        javascript = { { 'prettier', 'biome' } },
-        typescript = { 'prettier', 'biome' },
-        javascriptreact = { { 'prettier', 'biome' } },
-        typescriptreact = { { 'prettier', 'biome' } },
-        json = { { 'prettier', 'biome' } },
-        jsonc = { { 'prettier', 'biome' } },
-        markdown = { { 'prettier', 'biome' } },
-        c = { 'clang-format' },
-        cpp = { 'clang-format' },
-        rust = { 'rustfmt' },
-        -- Use the "*" filetype to run formatters on all filetypes.
-        ['*'] = { 'codespell' },
-        -- Use the "_" filetype to run formatters on filetypes that don't
-        -- have other formatters configured.
-        ['_'] = { 'trim_whitespace' },
-      },
-      formatters = {
-        rustfmt = {
-          prepend_args = { '--edition=2021' },
+    opts = function()
+      local is_pnp = vim.fn.findfile('.pnp.cjs', '.;') ~= ''
+
+      local prettier = require('conform.formatters.prettier')
+      if is_pnp then
+        local yarn_bin = vim.fn.system('yarn bin prettier'):gsub('%s+', '')
+        prettier.command = 'node'
+        prettier.prepend_args = { yarn_bin }
+      end
+      return {
+        formatters_by_ft = {
+          -- https://github.com/JohnnyMorganz/StyLua
+          lua = { 'stylua' },
+          -- https://github.com/ziglang/zig
+          zig = { 'zigfmt' },
+          nix = { 'alejandra' },
+          javascript = { { 'prettier', 'biome' } },
+          typescript = { { 'prettier', 'biome' } },
+          javascriptreact = { { 'prettier', 'biome' } },
+          typescriptreact = { { 'prettier', 'biome' } },
+          json = { { 'prettier', 'biome' } },
+          jsonc = { { 'prettier', 'biome' } },
+          markdown = { { 'prettier', 'biome' } },
+          c = { 'clang-format' },
+          cpp = { 'clang-format' },
+          rust = { 'rustfmt' },
+          -- Use the "*" filetype to run formatters on all filetypes.
+          ['*'] = { 'codespell' },
+          -- Use the "_" filetype to run formatters on filetypes that don't
+          -- have other formatters configured.
+          ['_'] = { 'trim_whitespace' },
         },
-      },
-      format_on_save = {
-        -- These options will be passed to conform.format()
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
-      -- Map of treesitter language to file extension
-      -- A temporary file name with this extension will be generated during formatting
-      -- because some formatters care about the filename.
-      lang_to_ext = {
-        bash = 'sh',
-        javascript = 'js',
-        julia = 'jl',
-        latex = 'tex',
-        markdown = 'md',
-        python = 'py',
-        rust = 'rs',
-        typescript = 'ts',
-      },
-    },
+        formatters = {
+          rustfmt = {
+            prepend_args = { '--edition=2021' },
+          },
+          prettier = prettier,
+        },
+        format_on_save = {
+          -- These options will be passed to conform.format()
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+        -- Map of treesitter language to file extension
+        -- A temporary file name with this extension will be generated during formatting
+        -- because some formatters care about the filename.
+        lang_to_ext = {
+          bash = 'sh',
+          javascript = 'js',
+          julia = 'jl',
+          latex = 'tex',
+          markdown = 'md',
+          python = 'py',
+          rust = 'rs',
+          typescript = 'ts',
+        },
+      }
+    end,
     init = function()
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
       -- Format command
@@ -782,22 +793,9 @@ return require('lazy').setup({
   -- Terminal filemanager
   {
     'Rolv-Apneseth/tfm.nvim',
-    opts = {
-      -- Possible choices: "ranger" | "nnn" | "lf" | "yazi" (default)
-      file_manager = 'yazi',
-    },
     config = function()
       local map = require('tl.common').map
       local tfm = require('tfm')
-      tfm.setup({
-        ui = {
-          border = 'rounded',
-          height = 1,
-          width = 1,
-          x = 0.5,
-          y = 0.5,
-        },
-      })
       -- Set keymap so you can open the default terminal file manager (yazi)
       map('n', '<C-e>', function()
         tfm.open(vim.fn.expand('%:p:h'))
