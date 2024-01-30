@@ -221,6 +221,7 @@ in {
           pkgs.gnumake
           pkgs.gcc
           pkgs.codeium-lsp
+          pkgs.wgsl-analyzer
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
@@ -453,6 +454,11 @@ in {
         };
       };
 
+      # Matrix client
+      nheko = {
+        enable = true;
+      };
+
       gpg = {
         enable = true;
         settings = {
@@ -612,6 +618,7 @@ in {
           "--ozone-platform=wayland"
           # make it use text-input-v1, which works for kwin 5.27 and weston
           "--enable-wayland-ime"
+          # WebGPU support
           "--enable-features=Vulkan"
           "--enable-unsafe-webgpu"
         ];
