@@ -299,7 +299,6 @@ if has_schemastore then
       'babelrc.json',
       'lerna.json',
       'JSON Resume',
-      '.stylelintrc',
     },
   })
 
@@ -311,7 +310,6 @@ if has_schemastore then
       'GitHub Workflow Template Properties',
       'GitHub Action',
       'prettierrc.json',
-      '.stylelintrc',
     },
     extra = {
       {
