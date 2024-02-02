@@ -1,6 +1,7 @@
 local has_cmp, cmp = pcall(require, 'cmp')
 local has_lspkind, lspkind = pcall(require, 'lspkind')
 local has_luasnip, luasnip = pcall(require, 'luasnip')
+local copilot_cmp = require('copilot_cmp')
 
 local M = {}
 
@@ -85,9 +86,16 @@ M.setup = function()
     return
   end
 
+  copilot_cmp.setup()
+  vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
   cmp.setup({
     completion = {
       completeopt = 'menu,menuone,noinsert',
+    },
+    experimental = {
+      ghost_text = {
+        hl_group = 'CmpGhostText',
+      },
     },
     formatting = { format = format },
     sorting = {
@@ -120,8 +128,16 @@ M.setup = function()
       documentation = cmp.config.window.bordered(cmp_window),
     },
     mapping = cmp.mapping.preset.insert({
-      ['<C-n>'] = cmp.mapping(next, { 'i', 's', 'c' }),
-      ['<C-p>'] = cmp.mapping(prev, { 'i', 's', 'c' }),
+      ['<C-n>'] = cmp.mapping.select_next_item({
+        behavior = cmp.SelectBehavior.Insert,
+      }),
+      ['<C-p>'] = cmp.mapping.select_prev_item({
+        behavior = cmp.SelectBehavior.Insert,
+      }),
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
       ['<C-g>'] = cmp.mapping(function()
         if cmp.visible_docs() then
           cmp.close_docs()
@@ -129,10 +145,6 @@ M.setup = function()
           cmp.open_docs()
         end
       end),
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
       ['<CR>'] = cmp.mapping({
         i = function(fallback)
           if cmp.visible() then
@@ -155,6 +167,14 @@ M.setup = function()
           select = true,
         }),
       }),
+      ['<S-CR>'] = cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = true,
+      }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<C-CR>'] = function(fallback)
+        cmp.abort()
+        fallback()
+      end,
       ['<Tab>'] = cmp.mapping({
         i = next,
         s = next,
@@ -194,7 +214,16 @@ M.setup = function()
       }),
     }),
     sources = cmp.config.sources({
-      { name = 'codeium' },
+      {
+        name = 'codeium',
+        group_index = 1,
+        priority = 100,
+      },
+      {
+        name = 'copilot',
+        group_index = 1,
+        priority = 100,
+      },
       { name = 'nvim_lsp' },
       { name = 'nvim_lsp_document_symbol' },
       { name = 'nvim_lsp_signature_help' },

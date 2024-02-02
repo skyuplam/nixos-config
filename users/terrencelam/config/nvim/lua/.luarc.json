@@ -112,6 +112,7 @@
     ],
     "diagnostics.globals": [
         "tl",
-        "vim"
+        "vim",
+        "zoom"
     ]
 }

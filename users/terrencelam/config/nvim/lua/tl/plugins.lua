@@ -282,7 +282,8 @@ return require('lazy').setup({
       },
       {
         'numToStr/Comment.nvim',
-        opts = {},
+        opts = {
+        },
       },
     },
   },
@@ -298,6 +299,8 @@ return require('lazy').setup({
 
   {
     'Exafunction/codeium.nvim',
+    cmd = 'Codeium',
+    build = ':Codeium Auth',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'hrsh7th/nvim-cmp',
@@ -631,11 +634,23 @@ return require('lazy').setup({
   },
 
   {
-    'github/copilot.vim',
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
+    build = ':Copilot auth',
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+    },
   },
 
   {
     'hrsh7th/nvim-cmp',
+    version = false,
+    event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lsp-document-symbol',
@@ -651,6 +666,11 @@ return require('lazy').setup({
       'dmitmel/cmp-cmdline-history',
       'f3fora/cmp-spell',
       'lukas-reineke/cmp-rg',
+      -- copilot cmp source
+      {
+        'zbirenbaum/copilot-cmp',
+        dependencies = 'copilot.lua',
+      },
     },
   },
 

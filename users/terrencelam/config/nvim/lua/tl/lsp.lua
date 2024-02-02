@@ -138,6 +138,7 @@ vim.diagnostic.config({
     spacing = 4,
     source = 'if_many',
     only_current_line = true,
+    prefix = 'icons',
   },
 })
 
