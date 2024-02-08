@@ -39,8 +39,7 @@
   # commit
   c = commit -m                     # commit with message
   ci = commit                       # commit
-  amend = commit --amend            # ammend your last commit
-  ammend = commit --amend           # ammend your last commit
+  amend = commit --amend            # amend your last commit
 
   # checkout
   co = checkout                     # checkout
@@ -97,7 +96,7 @@
   ss = stash                        # stash changes
   sl = stash list                   # list stashes
   sa = stash apply                  # apply stash (restore changes)
-  sd = stash drop                   # drop stashes (destory changes)
+  sd = stash drop                   # drop stashes (destroy changes)
 
   # status
   s = status -s                     # status
@@ -139,6 +138,9 @@
   whitespace = nowarn
 [branch]
   autosetupmerge = true
+  sort = -committerdate
+[column]
+  ui = auto
 [pull]
   rebase = false
 [push]
