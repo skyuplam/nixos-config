@@ -113,7 +113,7 @@ M.setup = function()
       },
     },
     view = {
-      docs = { auto_open = false },
+      docs = { auto_open = true },
     },
     snippet = {
       expand = function(args)
