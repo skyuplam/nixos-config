@@ -232,6 +232,10 @@ in {
           pkgs.sound-theme-freedesktop
           pkgs.foliate
           pkgs.xdg-utils
+          pkgs.qt6.qtwayland
+          pkgs.libsForQt5.qt5.qtwayland
+          pkgs.freecad
+          pkgs.slurp
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
