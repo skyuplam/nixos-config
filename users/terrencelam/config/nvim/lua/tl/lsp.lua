@@ -134,12 +134,7 @@ vim.diagnostic.config({
   signs = true,
   underline = true,
   update_in_insert = false,
-  virtual_text = {
-    spacing = 4,
-    source = 'if_many',
-    only_current_line = true,
-    prefix = 'icons',
-  },
+  virtual_text = false,
 })
 
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {

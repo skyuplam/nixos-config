@@ -282,8 +282,7 @@ return require('lazy').setup({
       },
       {
         'numToStr/Comment.nvim',
-        opts = {
-        },
+        opts = {},
       },
     },
   },
@@ -402,6 +401,12 @@ return require('lazy').setup({
       { 'folke/lsp-colors.nvim' },
       { 'b0o/schemastore.nvim' },
       { 'p00f/clangd_extensions.nvim' },
+      {
+        'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+        config = function()
+          require('lsp_lines').setup()
+        end,
+      },
       {
         'VidocqH/lsp-lens.nvim',
         config = function()
