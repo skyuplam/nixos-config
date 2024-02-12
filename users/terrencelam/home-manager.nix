@@ -236,6 +236,7 @@ in {
           pkgs.libsForQt5.qt5.qtwayland
           pkgs.freecad
           pkgs.slurp
+          pkgs.glxinfo
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
