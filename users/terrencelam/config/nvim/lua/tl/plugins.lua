@@ -296,22 +296,22 @@ return require('lazy').setup({
     end,
   },
 
-  {
-    'Exafunction/codeium.nvim',
-    cmd = 'Codeium',
-    build = ':Codeium Auth',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'hrsh7th/nvim-cmp',
-    },
-    config = function()
-      require('codeium').setup({
-        tools = {
-          language_server = vim.fn.expand('$CODEIUM_PATH'),
-        },
-      })
-    end,
-  },
+  -- {
+  --   'Exafunction/codeium.nvim',
+  --   cmd = 'Codeium',
+  --   build = ':Codeium Auth',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'hrsh7th/nvim-cmp',
+  --   },
+  --   config = function()
+  --     require('codeium').setup({
+  --       tools = {
+  --         language_server = vim.fn.expand('$CODEIUM_PATH'),
+  --       },
+  --     })
+  --   end,
+  -- },
 
   {
     'nvim-neorg/neorg',

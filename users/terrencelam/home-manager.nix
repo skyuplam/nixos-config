@@ -110,7 +110,7 @@ in {
           then "dylib"
           else "so"
         }";
-        CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
+        # CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
         # Failed to build target aarch64-darwin
         VSCODE_LLDB_PATH =
           if isDarwin
@@ -220,8 +220,9 @@ in {
           pkgs.shellcheck
           pkgs.gnumake
           pkgs.gcc
-          pkgs.codeium-lsp
+          # pkgs.codeium-lsp
           pkgs.wgsl-analyzer
+          pkgs.unzip
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
