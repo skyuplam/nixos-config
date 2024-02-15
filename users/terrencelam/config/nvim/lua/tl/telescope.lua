@@ -69,7 +69,6 @@ local function setup()
   if not has_telescope then
     return
   end
-
   telescope.setup({
     defaults = {
       layout_strategy = 'flex',
@@ -104,24 +103,9 @@ local function setup()
         -- the default case_mode is "smart_case"
       },
       ['ui-select'] = {
-
         require('telescope.themes').get_dropdown({
           -- even more opts
         }),
-
-        -- pseudo code / specification for writing custom displays, like the one
-        -- for "codeactions"
-        -- specific_opts = {
-        --   [kind] = {
-        --     make_indexed = function(items) -> indexed_items, width,
-        --     make_displayer = function(widths) -> displayer
-        --     make_display = function(displayer) -> function(e)
-        --     make_ordinal = function(e) -> string
-        --   },
-        --   -- for example to disable the custom builtin "codeactions" display
-        --      do the following
-        --   codeactions = false,
-        -- }
       },
       frecency = {},
       live_grep_raw = {
@@ -132,7 +116,7 @@ local function setup()
         -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
         filetypes = { 'png', 'webp', 'jpg', 'jpeg' },
         -- find command (defaults to `fd`)
-        find_cmd = 'rg',
+        find_cmd = 'fd',
       },
     },
   })
@@ -151,9 +135,20 @@ local function setup()
   map('n', '<leader>ff', function()
     builtin.find_files()
   end, { desc = 'Find files' })
-  map('n', '<leader>fg', function()
+  map('n', '<leader>fgg', function()
     require('telescope').extensions.live_grep_args.live_grep_args()
   end, { desc = 'Live grep files' })
+  map('n', '<leader>fgG', function()
+    require('telescope').extensions.live_grep_args.live_grep_args({
+      search_dirs = { '%:p:h' },
+    })
+  end, { desc = 'Live grep files from the current buffer directory' })
+  map('n', '<leader>fgk', function()
+    require('telescope-live-grep-args.shortcuts').grep_word_under_cursor()
+  end, { desc = 'Start live grep with word under cursor' })
+  map('v', '<leader>fgk', function()
+    require('telescope-live-grep-args.shortcuts').grep_visual_selection()
+  end, { desc = 'Start live grep with selection' })
   map('n', '<leader>fb', function()
     builtin.buffers()
   end, { desc = 'Find buffers' })
