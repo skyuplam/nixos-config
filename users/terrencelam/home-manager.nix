@@ -21,6 +21,7 @@
       exec cat "$@" | col -bx | bat --language man --style plain --pager "$PAGER"
     ''
   );
+  nodejs = pkgs.nodejs_18;
 in {
   imports = [inputs.anyrun.homeManagerModules.default];
 
@@ -176,7 +177,7 @@ in {
           pkgs.units
           pkgs.wget
           pkgs.wasm-pack
-          pkgs.yarn
+          (pkgs.yarn.override {inherit nodejs;})
           pkgs.nmap
           pkgs.presenterm
           # https://github.com/mitchellh/zig-overlay
@@ -196,7 +197,7 @@ in {
 
           # Dev stuff
           pkgs.jq
-          pkgs.nodejs_18
+          nodejs
           pkgs.nodePackages.typescript-language-server
           pkgs.nodePackages.yaml-language-server
           pkgs.nodePackages.vim-language-server
@@ -462,7 +463,7 @@ in {
 
       # Matrix client
       nheko = {
-        enable = true;
+        enable = isLinux && !isWSL;
       };
 
       gpg = {
