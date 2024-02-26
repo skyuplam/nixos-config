@@ -125,6 +125,12 @@ in {
             name = "inputrc-config";
             path = ./config/inputrc;
           };
+          "biome.json".text = builtins.toJSON {
+            formatter = {
+              enabled = true;
+              indentStyle = "space";
+            };
+          };
         }
         // lib.optionalAttrs (isLinux && !isWSL) {
           ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
