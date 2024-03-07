@@ -200,6 +200,7 @@ in {
           pkgs.imagemagick
           pkgs.libsecret
           pkgs.biome # toolchain for the web
+          pkgs.testdisk # data recovery
 
           # Dev stuff
           pkgs.jq
@@ -398,7 +399,6 @@ in {
           incremental-search = false;
           statusbar-home-tilde = true;
           selection-clipboard = "clipboard";
-          smooth-scroll = true;
           scroll-step = 50;
         };
         extraConfig = ''
