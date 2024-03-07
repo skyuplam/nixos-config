@@ -10,4 +10,4 @@ local function map(mode, lhs, rhs, opts)
   keymap.set(mode, lhs, rhs, opts)
 end
 
-return {map=map};
+return { map = map }
