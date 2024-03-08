@@ -228,9 +228,9 @@ in {
           pkgs.shellcheck
           pkgs.gnumake
           pkgs.gcc
-          # pkgs.codeium-lsp
           pkgs.wgsl-analyzer
           pkgs.unzip
+          pkgs.xz
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
