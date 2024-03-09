@@ -231,6 +231,7 @@ in {
           pkgs.wgsl-analyzer
           pkgs.unzip
           pkgs.xz
+          pkgs.usbutils
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
