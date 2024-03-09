@@ -237,7 +237,7 @@ in {
           pkgs.grim
           pkgs.swayidle
           pkgs.wl-clipboard
-          pkgs.eww-wayland
+          pkgs.eww
           pkgs.libnotify
           pkgs.sound-theme-freedesktop
           pkgs.foliate
