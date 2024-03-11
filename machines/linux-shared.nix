@@ -110,55 +110,6 @@
         };
       };
     };
-    # manage $XDG_CONFIG_HOME/mimeapps.list
-    # xdg search all desktop entries from $XDG_DATA_DIRS, check it by command:
-    #  echo $XDG_DATA_DIRS
-    # the system-level desktop entries can be list by command:
-    #   ls -l /run/current-system/sw/share/applications/
-    # the user-level desktop entries can be list by command(user ryan):
-    #  ls /etc/profiles/per-user/terrencelam/share/applications/
-    mimeApps = {
-      enable = true;
-      defaultApplications = let
-        browser = ["firefox-nightly.desktop"];
-        editor = ["nvim.desktop"];
-        pdfViewer = ["org.pwmt.zathura.desktop"];
-        videoPlayer = ["mpv.desktop"];
-        imageViewer = ["imv.desktop"];
-      in {
-        "application/json" = browser;
-        "application/pdf" = pdfViewer;
-
-        "text/html" = browser;
-        "text/xml" = browser;
-        "text/plain" = editor;
-        "application/xml" = browser;
-        "application/xhtml+xml" = browser;
-        "application/xhtml_xml" = browser;
-        "application/rdf+xml" = browser;
-        "application/rss+xml" = browser;
-        "application/x-extension-htm" = browser;
-        "application/x-extension-html" = browser;
-        "application/x-extension-shtml" = browser;
-        "application/x-extension-xht" = browser;
-        "application/x-extension-xhtml" = browser;
-        "application/x-wine-extension-ini" = editor;
-
-        # define default applications for some url schemes.
-        "x-scheme-handler/about" = browser; # open `about:` url with `browser`
-        "x-scheme-handler/ftp" = browser; # open `ftp:` url with `browser`
-        "x-scheme-handler/http" = browser;
-        "x-scheme-handler/https" = browser;
-
-        "audio/*" = videoPlayer;
-        "video/*" = videoPlayer;
-        "image/*" = imageViewer;
-        "image/gif" = imageViewer;
-        "image/jpeg" = imageViewer;
-        "image/png" = imageViewer;
-        "image/webp" = imageViewer;
-      };
-    };
   };
   # Select internationalisation properties.
   i18n = {
