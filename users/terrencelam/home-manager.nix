@@ -298,6 +298,7 @@ in {
           pkgs.glxinfo
           pkgs.libusb1
           pkgs.libva-utils
+          pkgs.wl-screenrec
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
