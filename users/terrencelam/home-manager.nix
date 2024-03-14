@@ -297,6 +297,7 @@ in {
           pkgs.slurp
           pkgs.glxinfo
           pkgs.libusb1
+          pkgs.libva-utils
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
@@ -838,7 +839,7 @@ in {
   services = {
     gpg-agent = {
       enable = isLinux;
-      pinentryFlavor = "gnome3";
+      pinentryFlavor = "gtk2";
       enableScDaemon = true;
       enableZshIntegration = true;
       enableSshSupport = true;
