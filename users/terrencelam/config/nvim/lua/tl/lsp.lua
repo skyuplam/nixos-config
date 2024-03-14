@@ -135,6 +135,8 @@ vim.diagnostic.config({
   underline = true,
   update_in_insert = false,
   virtual_text = false,
+  -- lsp_lines
+  virtual_lines = { highlight_whole_line = false, only_current_line = true },
 })
 
 vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
