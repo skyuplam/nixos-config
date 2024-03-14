@@ -39,7 +39,7 @@ in {
     # the user-level desktop entries can be list by command(user ryan):
     #  ls /etc/profiles/per-user/terrencelam/share/applications/
     mimeApps = {
-      enable = true;
+      enable = isLinux && !isWSL;
       defaultApplications = let
         browser = ["firefox-nightly.desktop"];
         editor = ["nvim.desktop"];
@@ -249,7 +249,6 @@ in {
           pkgs.imagemagick
           pkgs.libsecret
           pkgs.biome # toolchain for the web
-          pkgs.testdisk # data recovery
 
           # Dev stuff
           pkgs.jq
@@ -280,7 +279,6 @@ in {
           pkgs.wgsl-analyzer
           pkgs.unzip
           pkgs.xz
-          pkgs.usbutils
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
@@ -299,6 +297,8 @@ in {
           pkgs.libusb1
           pkgs.libva-utils
           pkgs.wl-screenrec
+          pkgs.usbutils
+          pkgs.testdisk # data recovery
         ]);
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
