@@ -405,6 +405,13 @@ return require('lazy').setup({
         'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
         config = function()
           require('lsp_lines').setup()
+          local map = require('tl.common').map
+          map(
+            'n',
+            '<Leader>ll',
+            require('lsp_lines').toggle,
+            { desc = 'Toggle lsp_lines' }
+          )
         end,
       },
       {
