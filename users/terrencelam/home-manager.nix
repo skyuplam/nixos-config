@@ -81,6 +81,8 @@ in {
       };
     };
     configFile = {
+      # Workaround for Existing mimeapps.list file issue
+      "mimeapps.list".force = true;
       git = {
         enable = true;
         source = builtins.path {
@@ -840,7 +842,7 @@ in {
   services = {
     gpg-agent = {
       enable = isLinux;
-      pinentryFlavor = "gtk2";
+      pinentryPackage = pkgs.pinentry-gnome3;
       enableScDaemon = true;
       enableZshIntegration = true;
       enableSshSupport = true;
