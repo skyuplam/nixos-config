@@ -284,6 +284,7 @@ in {
           pkgs.wgsl-analyzer
           pkgs.unzip
           pkgs.xz
+          pkgs.python3
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
