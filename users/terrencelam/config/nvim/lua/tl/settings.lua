@@ -296,13 +296,6 @@ else
   -- - s10 max item size 10KB
   -- - h do not save/restore 'hlsearch' setting
   o.shada = "!,'100,/10000,<500,s10,h"
-  local shada_group =
-    vim.api.nvim_create_augroup('MyNeovimShada', { clear = true })
-  vim.api.nvim_create_autocmd({ 'CursorHold', 'FocusGained', 'FocusLost' }, {
-    pattern = '*',
-    command = 'rshada|wshada',
-    group = shada_group,
-  })
 end
 
 -------------------------------------------------------------------------------

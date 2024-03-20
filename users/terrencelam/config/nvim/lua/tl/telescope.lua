@@ -128,7 +128,6 @@ local function setup()
   telescope.load_extension('live_grep_args')
   -- telescope.load_extension('dap')
   telescope.load_extension('smart_history')
-  telescope.load_extension('neoclip')
   telescope.load_extension('media_files')
 
   -- Key mappings
