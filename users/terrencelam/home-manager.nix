@@ -254,6 +254,7 @@ in {
           pkgs.imagemagick
           pkgs.libsecret
           pkgs.biome # toolchain for the web
+          pkgs.localsend
 
           # Dev stuff
           pkgs.jq
