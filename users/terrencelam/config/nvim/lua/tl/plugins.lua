@@ -904,7 +904,6 @@ return require('lazy').setup({
             -- Options passed to nvim_open_win
             border = tl.style.current.border,
           },
-          yadm = { enable = false },
         })
       end,
       dependencies = { 'nvim-lua/plenary.nvim' },
