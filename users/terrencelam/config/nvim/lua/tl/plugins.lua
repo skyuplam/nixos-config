@@ -402,15 +402,16 @@ return require('lazy').setup({
   --     })
   --   end,
   -- },
-
+  {
+    'vhyrro/luarocks.nvim',
+    priority = 1000,
+    config = true,
+  },
   {
     'nvim-neorg/neorg',
-    build = ':Neorg sync-parsers',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-neorg/neorg-telescope',
-    },
+    dependencies = { 'luarocks.nvim' },
+    lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+    version = '*', -- Pin Neorg to the latest stable release
     config = function()
       require('neorg').setup({
         load = {
