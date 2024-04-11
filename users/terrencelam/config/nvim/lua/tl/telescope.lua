@@ -107,7 +107,9 @@ local function setup()
           -- even more opts
         }),
       },
-      frecency = {},
+      frecency = {
+        auto_validate = true,
+      },
       live_grep_raw = {
         auto_quoting = true, -- enable/disable auto-quoting
       },
