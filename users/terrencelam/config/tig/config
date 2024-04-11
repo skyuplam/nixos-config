@@ -15,7 +15,7 @@ set main-options = -n 1000
 # Don't show staged and unstaged changes in the main view
 set show-changes = no
 
-# Optionally, use the old and faster but less acurate graph renderer
+# Optionally, use the old and faster but less accurate graph renderer
 #set main-view-commit-title-graph = v1
 
 # ------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ bind generic up stage-update-part
 bind generic us stage-split-chunk
 
 # Copy the commit Hash to clipboard
-bind generic Y none
+# bind generic Y none
 bind generic YH !@sh -c "git rev-parse --short %(commit) | $COPY_CMD"
 bind generic YB !@sh -c "git show -s --format=%b %(commit) | $COPY_CMD"
 
