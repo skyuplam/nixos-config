@@ -8,6 +8,10 @@
       "keepingyouawake"
       "linearmouse"
       "stats"
+      "spotube"
+    ];
+    taps = [
+      "krtirtho/apps"
     ];
     onActivation = {
       upgrade = true;
