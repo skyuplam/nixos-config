@@ -433,7 +433,8 @@ return require('lazy').setup({
           ['core.journal'] = {
             config = { strategy = 'flat', workspace = 'notes' },
           }, -- Adds pretty icons to your documents
-          ['core.integrations.telescope'] = {},
+          -- Telescope integration is broken, see https://github.com/nvim-neorg/neorg-telescope/issues/57
+          -- ['core.integrations.telescope'] = {},
           ['core.keybinds'] = {
             config = {
               hook = function(keybinds)

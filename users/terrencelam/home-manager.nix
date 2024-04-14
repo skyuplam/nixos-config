@@ -431,6 +431,14 @@ in {
         defaultEditor = true;
 
         withPython3 = true;
+
+        extraLuaPackages = ps:
+          with ps; [
+            # neorg dependencies
+            lua-utils-nvim
+            pathlib-nvim
+            nvim-nio
+          ];
       };
       fzf = {
         enable = true;
