@@ -305,7 +305,10 @@ in {
           pkgs.wl-screenrec
           pkgs.usbutils
           pkgs.testdisk # data recovery
-        ]);
+        ])
+        ++ (lib.optionals isDarwin) [
+          pkgs.iina # media player
+        ];
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
       pointerCursor = {
