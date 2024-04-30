@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
 
   if inlay_hint then
     if client.server_capabilities.inlayHintProvider then
-      inlay_hint.enable(bufnr, true)
+      inlay_hint.enable(true, { bufnr })
     end
   end
 
