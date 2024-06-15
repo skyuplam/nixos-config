@@ -787,7 +787,6 @@ return require('lazy').setup({
           numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
           linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
           _threaded_diff = true, -- Run diffs on a separate thread
-          _extmark_signs = true, -- Use extmarks for placing signs
           word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
           watch_gitdir = { interval = 1000, follow_files = true },
           attach_to_untracked = true,
