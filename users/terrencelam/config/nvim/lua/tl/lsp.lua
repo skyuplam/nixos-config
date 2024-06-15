@@ -384,6 +384,7 @@ local servers = {
     },
   },
   glslls = {},
+  openscad_lsp = {},
   tsserver = {
     on_attach = on_attach,
     init_options = {
