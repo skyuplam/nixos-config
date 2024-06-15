@@ -66,10 +66,9 @@
     ...
   }: let
     overlays = [
-      inputs.neovim-nightly-overlay.overlay
+      inputs.neovim-nightly-overlay.overlays.default
       inputs.zig.overlays.default
       (_final: _prev: {inherit zls;})
-      (_final: prev: {inherit (inputs.codeium.packages.${prev.system}) codeium-lsp;})
       (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
     ];
