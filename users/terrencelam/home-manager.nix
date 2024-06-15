@@ -256,6 +256,10 @@ in {
           pkgs.biome # toolchain for the web
           pkgs.localsend
 
+          # CAD
+          # pkgs.openscad-unstable # Clipper2 doesn't support macOS
+          pkgs.openscad-lsp
+
           # Dev stuff
           pkgs.jq
           nodejs
@@ -285,6 +289,7 @@ in {
           pkgs.wgsl-analyzer
           pkgs.unzip
           pkgs.python3
+          pkgs.deno
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.grim
@@ -430,7 +435,7 @@ in {
       };
       neovim = {
         enable = true;
-        package = pkgs.neovim-nightly;
+        package = pkgs.neovim;
         defaultEditor = true;
 
         withPython3 = true;
@@ -517,7 +522,7 @@ in {
 
       mpv = {
         enable = true;
-        package = pkgs.wrapMpv (pkgs.mpv-unwrapped.override {vapoursynthSupport = isLinux && !isWSL;}) {youtubeSupport = true;};
+        package = pkgs.mpv;
       };
 
       yt-dlp = {
