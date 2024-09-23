@@ -350,14 +350,6 @@ return require('lazy').setup({
     },
   },
 
-  -- Color tool
-  {
-    'norcalli/nvim-colorizer.lua',
-    config = function()
-      require('colorizer').setup({ 'css', 'html', 'typescript' })
-    end,
-  },
-
   -- Snippets
   {
     'saadparwaiz1/cmp_luasnip',
@@ -531,14 +523,6 @@ return require('lazy').setup({
         config = function()
           require('trouble').setup({})
         end,
-      },
-      {
-        'simrat39/symbols-outline.nvim',
-        keys = {
-          { '<leader>cs', '<cmd>SymbolsOutline<cr>', desc = 'Symbols Outline' },
-        },
-        cmd = 'SymbolsOutline',
-        opts = {},
       },
     },
   },
