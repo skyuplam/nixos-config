@@ -18,7 +18,7 @@
       url = "github:wgsl-analyzer/wgsl-analyzer";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        crane.follows = "crane";
+        # crane.follows = "crane";
         flake-utils.follows = "flake-utils";
       };
     };
