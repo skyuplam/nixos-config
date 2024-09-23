@@ -385,7 +385,7 @@ local servers = {
   },
   glslls = {},
   openscad_lsp = {},
-  tsserver = {
+  ts_ls = {
     on_attach = on_attach,
     init_options = {
       hostInfo = 'neovim',
