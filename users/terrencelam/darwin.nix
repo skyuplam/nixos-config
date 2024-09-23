@@ -8,7 +8,8 @@
       "keepingyouawake"
       "linearmouse"
       "stats"
-      "spotube"
+      "signal"
+      "syncthing"
     ];
     taps = [
       "krtirtho/apps"
@@ -29,6 +30,7 @@
     # https://daiderd.com/nix-darwin/manual/index.html#opt-system.defaults.NSGlobalDomain.InitialKeyRepeat
     defaults.NSGlobalDomain.InitialKeyRepeat = 12;
     defaults.NSGlobalDomain.KeyRepeat = 1;
+    stateVersion = 5;
   };
 
   # The user should already exist, but we need to set this up so Nix knows
