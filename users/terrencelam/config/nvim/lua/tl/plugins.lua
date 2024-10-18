@@ -411,6 +411,22 @@ return require('lazy').setup({
   },
 
   {
+    'folke/zen-mode.nvim',
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      plugins = {
+        wezterm = {
+          enabled = true,
+          -- can be either an absolute font size or the number of incremental steps
+          font = '+4', -- (10% increase per step)
+        },
+      },
+    },
+  },
+
+  {
     'nvim-neorg/neorg',
     dependencies = { 'luarocks.nvim' },
     lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
