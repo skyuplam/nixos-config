@@ -372,9 +372,7 @@ return require('lazy').setup({
   {
     'rcarriga/nvim-notify',
     config = function()
-      local notify = require('notify')
-      notify.setup()
-      vim.notify = notify
+      vim.notify = require('notify')
     end,
   },
 
@@ -399,6 +397,19 @@ return require('lazy').setup({
     priority = 1000,
     config = true,
   },
+
+  --- Markdown
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'echasnovski/mini.nvim',
+    },
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  },
+
   {
     'nvim-neorg/neorg',
     dependencies = { 'luarocks.nvim' },
