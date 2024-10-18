@@ -8,17 +8,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
-    crane = {
-      url = "github:ipetkov/crane";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
     wgsl-analyzer = {
       url = "github:wgsl-analyzer/wgsl-analyzer";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        # crane.follows = "crane";
         flake-utils.follows = "flake-utils";
       };
     };
