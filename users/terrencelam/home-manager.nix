@@ -255,6 +255,7 @@ in {
           pkgs.libsecret
           pkgs.biome # toolchain for the web
           pkgs.localsend
+          pkgs.slides # TUI Present tool
 
           # CAD
           # pkgs.openscad-unstable # Clipper2 doesn't support macOS
