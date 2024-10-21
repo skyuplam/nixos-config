@@ -426,6 +426,11 @@ return require('lazy').setup({
     },
   },
 
+  -- Work with zen-mode
+  {
+    'folke/twilight.nvim',
+  },
+
   {
     'nvim-neorg/neorg',
     dependencies = { 'luarocks.nvim' },
