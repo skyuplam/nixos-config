@@ -212,7 +212,7 @@ in {
           # Fonts
           (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
           pkgs.noto-fonts
-          pkgs.noto-fonts-cjk
+          pkgs.noto-fonts-cjk-sans
           pkgs.noto-fonts-emoji
           pkgs.noto-fonts-extra
           pkgs.source-sans
