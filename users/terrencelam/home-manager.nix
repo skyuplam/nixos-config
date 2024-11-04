@@ -436,7 +436,7 @@ in {
       };
       neovim = {
         enable = true;
-        package = pkgs.neovim;
+        # package = pkgs.neovim;
         defaultEditor = true;
 
         withPython3 = true;
