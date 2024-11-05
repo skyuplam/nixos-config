@@ -311,6 +311,7 @@ in {
           pkgs.wl-screenrec
           pkgs.usbutils
           pkgs.testdisk # data recovery
+          pkgs.ghostty
         ])
         ++ (lib.optionals isDarwin) [
           pkgs.iina # media player
