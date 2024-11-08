@@ -48,7 +48,7 @@
       package = pkgs.yabai;
       enableScriptingAddition = true;
       extraConfig = builtins.readFile (builtins.path {
-        name = "skhd-config";
+        name = "yabai-config";
         path = ./config/yabai/yabairc;
       });
     };

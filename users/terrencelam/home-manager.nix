@@ -124,6 +124,13 @@ in {
             path = ./config/wezterm;
           };
         };
+        ghostty = {
+          enable = true;
+          source = builtins.path {
+            name = "ghostty-config";
+            path = ./config/ghostty;
+          };
+        };
         swaylock = {
           enable = true;
           source = builtins.path {

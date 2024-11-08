@@ -1,46 +1,46 @@
 # hotkey       = <mode> '<' <action> | <action>
-# 
+#
 # mode         = 'name of mode' | <mode> ',' <mode>
-# 
+#
 # action       = <keysym> '[' <proc_map_lst> ']' | <keysym> '->' '[' <proc_map_lst> ']'
 #                <keysym> ':' <command>          | <keysym> '->' ':' <command>
 #                <keysym> ';' <mode>             | <keysym> '->' ';' <mode>
-# 
+#
 # keysym       = <mod> '-' <key> | <key>
-# 
+#
 # mod          = 'modifier keyword' | <mod> '+' <mod>
-# 
+#
 # key          = <literal> | <keycode>
-# 
+#
 # literal      = 'single letter or built-in keyword'
-# 
+#
 # keycode      = 'apple keyboard kVK_<Key> values (0x3C)'
-# 
+#
 # proc_map_lst = * <proc_map>
-# 
+#
 # proc_map     = <string> ':' <command> | <string>     '~' |
 #                '*'      ':' <command> | '*'          '~'
-# 
+#
 # string       = '"' 'sequence of characters' '"'
-# 
+#
 # command      = command is executed through '$SHELL -c' and
 #                follows valid shell syntax. if the $SHELL environment
 #                variable is not set, it will default to '/bin/bash'.
 #                when bash is used, the ';' delemetter can be specified
 #                to chain commands.
-# 
+#
 #                to allow a command to extend into multiple lines,
 #                prepend '\' at the end of the previous line.
-# 
+#
 #                an EOL character signifies the end of the bind.
-# 
+#
 # ->           = keypress is not consumed by skhd
-# 
+#
 # *            = matches every application not specified in <proc_map_lst>
-# 
+#
 # ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
 # Global hotkeys
-cmd - return : open -na wezterm   # Launch Alacritty
+cmd - return : open -na Ghostty   # Launch Alacritty
 # Focus window
 cmd - h : yabai -m window --focus west || yabai -m display --focus west
 cmd - j : yabai -m window --focus south
