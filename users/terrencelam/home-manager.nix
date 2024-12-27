@@ -217,22 +217,18 @@ in {
           pkgs.fd # fancy version of `find`
 
           # Fonts
-          (pkgs.nerdfonts.override {fonts = ["JetBrainsMono" "Noto"];})
+          pkgs.nerd-fonts.noto
+          pkgs.nerd-fonts.jetbrains-mono
           pkgs.noto-fonts
           pkgs.noto-fonts-cjk-sans
-          pkgs.noto-fonts-emoji
-          pkgs.noto-fonts-extra
-          pkgs.source-sans
-          pkgs.source-serif
-          pkgs.source-han-sans
-          pkgs.source-han-serif
+          pkgs.noto-fonts-color-emoji
 
           pkgs.libiconv
           pkgs.go
           pkgs.nb
           pkgs.lsd
           pkgs.luajitPackages.luarocks
-          pkgs.lnav
+          # pkgs.lnav  -- failed to build for aarch64-darwin
           pkgs.ripgrep # better version of `grep`
           pkgs.rsync
           pkgs.sd
