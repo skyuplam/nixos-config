@@ -21,9 +21,12 @@
       exec cat "$@" | col -bx | bat --language man --style plain --pager "$PAGER"
     ''
   );
-  nodejs = pkgs.nodejs_18;
 in {
-  imports = [inputs.anyrun.homeManagerModules.default];
+  imports = [
+    inputs.anyrun.homeManagerModules.default
+    inputs.nixvim.homeManagerModules.nixvim
+    ./programs
+  ];
 
   xdg = {
     enable = true;
@@ -240,7 +243,6 @@ in {
           pkgs.units
           pkgs.wget
           pkgs.wasm-pack
-          (pkgs.yarn.override {inherit nodejs;})
           pkgs.nmap
           pkgs.presenterm
           # https://github.com/mitchellh/zig-overlay
@@ -256,42 +258,34 @@ in {
           pkgs.qmk
           pkgs.imagemagick
           pkgs.libsecret
-          pkgs.biome # toolchain for the web
           pkgs.localsend
           pkgs.slides # TUI Present tool
 
           # CAD
           # pkgs.openscad-unstable # Clipper2 doesn't support macOS
-          pkgs.openscad-lsp
+          # pkgs.openscad-lsp
 
           # Dev stuff
           pkgs.jq
-          nodejs
-          pkgs.nodePackages.typescript-language-server
-          pkgs.nodePackages.yaml-language-server
-          pkgs.nodePackages.vim-language-server
-          pkgs.nodePackages.write-good
-          pkgs.vscode-langservers-extracted
-          pkgs.lua-language-server
-          pkgs.efm-langserver
+          # pkgs.nodePackages.write-good
+          # pkgs.vscode-langservers-extracted
+          # pkgs.lua-language-server
+          # pkgs.efm-langserver
           pkgs.rustup
-          pkgs.marksman
+          # pkgs.marksman
           pkgs.gitlint
           pkgs.stylua # Lua formatter
-          pkgs.selene
+          # pkgs.selene
           pkgs.dotenv-linter
-          pkgs.statix
-          pkgs.deadnix
-          pkgs.alejandra
-          pkgs.typos
-          pkgs.dprint
-          pkgs.languagetool-rust
-          pkgs.nil
-          pkgs.shellcheck
+          # pkgs.deadnix
+          # pkgs.typos
+          # pkgs.dprint
+          # pkgs.languagetool-rust
+          # pkgs.shellcheck
           pkgs.gnumake
           pkgs.gcc
-          pkgs.wgsl-analyzer
-          pkgs.unzip
+          # pkgs.wgsl-analyzer
+          # pkgs.unzip
           pkgs.python3
           pkgs.deno
         ]
@@ -361,9 +355,6 @@ in {
 
   programs =
     {
-      bash = {
-        enable = true;
-      };
       zsh = {
         enable = true;
         autosuggestion = {
@@ -438,21 +429,21 @@ in {
         nix-direnv.enable = true;
         enableZshIntegration = true;
       };
-      neovim = {
-        enable = true;
-        # package = pkgs.neovim;
-        defaultEditor = true;
-
-        withPython3 = true;
-
-        extraLuaPackages = ps:
-          with ps; [
-            # neorg dependencies
-            lua-utils-nvim
-            pathlib-nvim
-            nvim-nio
-          ];
-      };
+      # neovim = {
+      #   enable = true;
+      #   # package = pkgs.neovim;
+      #   defaultEditor = true;
+      #
+      #   withPython3 = true;
+      #
+      #   extraLuaPackages = ps:
+      #     with ps; [
+      #       # neorg dependencies
+      #       lua-utils-nvim
+      #       pathlib-nvim
+      #       nvim-nio
+      #     ];
+      # };
       fzf = {
         enable = true;
         enableZshIntegration = true;
