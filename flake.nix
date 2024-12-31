@@ -52,6 +52,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nil = {
+      url = "github:oxalica/nil";
+    };
   };
 
   outputs = inputs @ {
@@ -66,6 +74,7 @@
       (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
       (_final: prev: {ghostty = inputs.ghostty.packages.${prev.system}.default;})
+      (_final: prev: {nil = inputs.nil.packages.${prev.system}.default;})
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;
