@@ -18,6 +18,7 @@
         dim_inactive = {enabled = false;};
       };
     };
+
     plugins = {
       mini = {
         enable = true;
@@ -27,6 +28,19 @@
           comment = {};
           surround = {};
           icons = {};
+          notify = {};
+          tabline = {};
+          indentscope = {
+            draw = {
+              delay = 0;
+              animation = {
+                __raw = ''
+                  require('mini.indentscope').gen_animation.none()
+                '';
+              };
+            };
+          };
+          statusline = {};
         };
       };
 
