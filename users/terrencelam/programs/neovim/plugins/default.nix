@@ -20,6 +20,16 @@
     };
 
     plugins = {
+      spectre = {
+        enable = true;
+        settings = {
+          default = {
+            replace = {
+              cmd = "oxi";
+            };
+          };
+        };
+      };
       mini = {
         enable = true;
         mockDevIcons = true;
