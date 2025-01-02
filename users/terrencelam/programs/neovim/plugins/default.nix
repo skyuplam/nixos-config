@@ -7,6 +7,7 @@
     ./git.nix
     ./format.nix
     ./treesitter.nix
+    ./fold.nix
   ];
 
   programs.nixvim = {
@@ -30,6 +31,10 @@
           };
         };
       };
+      notify = {
+        enable = true;
+        backgroundColour = "#000000";
+      };
       mini = {
         enable = true;
         mockDevIcons = true;
@@ -38,7 +43,6 @@
           comment = {};
           surround = {};
           icons = {};
-          notify = {};
           tabline = {};
           indentscope = {
             draw = {

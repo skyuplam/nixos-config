@@ -96,6 +96,14 @@
       incsearch = true;
       showmode = false;
 
+      # Spell
+      spellsuggest = "9,best";
+      spelloptions = "camel,noplainbuffer";
+      spellcapcheck = ""; # don't check for capital letters at start of sentence
+      fileformats = ["unix" "mac" "dos"];
+      spelllang = "en";
+      complete = ".,w,b,u,t,kspell";
+
       # persist
       swapfile = {
         __raw = ''
@@ -114,11 +122,11 @@
       };
       backupcopy = "auto";
       backupdir = {__raw = ''vim.fn.expand("$XDG_DATA_HOME/nvim/backup//")'';};
-      undofile = {
-        __raw = ''
-          vim.fn.exists('$SUDO_USER') > 0 and false or true
-        '';
-      };
+      # undofile = {
+      #   __raw = ''
+      #     vim.fn.exists('$SUDO_USER') > 0 and false or true
+      #   '';
+      # };
       # Defaults:
       #   Neovim: !,'100,<50,s10,h
       # - ! save/restore global variables (only all-uppercase variables)

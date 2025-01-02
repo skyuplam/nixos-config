@@ -16,6 +16,10 @@
               (lib.getExe pkgs.marksman)
             ];
           };
+
+          harper_ls = {
+            enable = true;
+          };
         };
 
         hmts.enable = true;
