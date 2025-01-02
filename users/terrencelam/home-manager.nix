@@ -238,7 +238,6 @@ in {
           pkgs.sqlite
           pkgs.stow
           pkgs.tig
-          pkgs.tmux
           pkgs.tree-sitter
           pkgs.units
           pkgs.wget
@@ -268,13 +267,9 @@ in {
           # Dev stuff
           pkgs.jq
           # pkgs.nodePackages.write-good
-          # pkgs.vscode-langservers-extracted
-          # pkgs.lua-language-server
           # pkgs.efm-langserver
           pkgs.rustup
-          # pkgs.marksman
           pkgs.gitlint
-          pkgs.stylua # Lua formatter
           # pkgs.selene
           pkgs.dotenv-linter
           # pkgs.deadnix
@@ -429,21 +424,6 @@ in {
         nix-direnv.enable = true;
         enableZshIntegration = true;
       };
-      # neovim = {
-      #   enable = true;
-      #   # package = pkgs.neovim;
-      #   defaultEditor = true;
-      #
-      #   withPython3 = true;
-      #
-      #   extraLuaPackages = ps:
-      #     with ps; [
-      #       # neorg dependencies
-      #       lua-utils-nvim
-      #       pathlib-nvim
-      #       nvim-nio
-      #     ];
-      # };
       fzf = {
         enable = true;
         enableZshIntegration = true;
