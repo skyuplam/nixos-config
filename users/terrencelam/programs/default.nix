@@ -1,12 +1,12 @@
-{ inputs, ... }: {
+{
   imports = [
     ./dev
     ./neovim
   ];
 
   programs = {
-      bash = {
-        enable = true;
-      };
+    bash = {
+      enable = true;
+    };
   };
 }
