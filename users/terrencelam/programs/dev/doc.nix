@@ -5,6 +5,10 @@
 }: {
   programs = {
     nixvim = {
+      colorschemes.catppuccin.settings.integrations = {
+        markdown = true;
+      };
+
       plugins = {
         render-markdown = {
           enable = true;

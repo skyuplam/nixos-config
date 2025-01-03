@@ -17,6 +17,15 @@
         flavour = "mocha";
         transparent_background = true;
         dim_inactive = {enabled = false;};
+        integrations = {
+          aerial = true;
+          mini = {
+            enabled = true;
+            indentscope_color = "";
+          };
+          notify = true;
+          which_key = false;
+        };
       };
     };
 

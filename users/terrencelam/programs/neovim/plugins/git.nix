@@ -1,5 +1,14 @@
 {lib, ...}: {
   programs.nixvim = {
+    colorschemes.catppuccin = {
+      settings = {
+        integrations = {
+          diffview = true;
+          gitsigns = true;
+        };
+      };
+    };
+
     plugins = {
       gitsigns = {
         enable = true;

@@ -1,5 +1,9 @@
 {lib, ...}: {
   programs.nixvim = {
+    colorschemes.catppuccin.settings.integrations = {
+      fidget = true;
+    };
+
     plugins = {
       lsp-lines = {
         enable = true;
@@ -9,6 +13,11 @@
       };
       fidget = {
         enable = true;
+        notification = {
+          window = {
+            winblend = 0;
+          };
+        };
       };
 
       lsp-signature = {

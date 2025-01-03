@@ -1,5 +1,9 @@
 {
   programs.nixvim = {
+    colorschemes.catppuccin.settings.integrations = {
+      blink_cmp = true;
+    };
+
     plugins = {
       blink-cmp = {
         enable = true;
