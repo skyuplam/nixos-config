@@ -26,7 +26,10 @@
 
             settings = {
               "harper-ls" = {
+                userDictPath = {__raw = ''vim.fn.stdpath("config") .. "/spell/en.utf-8.add"'';};
                 linters = {
+                  # Too manay noise
+                  sentence_capitalization = false;
                   wrong_quotes = true;
                   linking_verbs = true;
                 };
