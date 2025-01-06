@@ -22,6 +22,12 @@
 
       lsp-signature = {
         enable = true;
+        settings = {
+          bind = true;
+          handler_opts = {
+            border = "rounded";
+          };
+        };
       };
 
       trouble = {
@@ -33,6 +39,10 @@
 
         inlayHints = true;
 
+        preConfig = builtins.readFile (builtins.path {
+          name = "lsp.lua";
+          path = ../config/lspPreConfig.lua;
+        });
         keymaps = {
           silent = true;
           diagnostic = {

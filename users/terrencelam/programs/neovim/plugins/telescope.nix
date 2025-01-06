@@ -98,6 +98,10 @@
           action = "<cmd>Telescope jumplist<CR>";
           desc = "Jump list";
         };
+        "<leader>fd" = {
+          action = "<cmd>Telescope git_status<CR>";
+          desc = "Git status";
+        };
         "<leader>fg" = {
           action = "<cmd>Telescope live_grep_args<CR>";
           desc = "Grep files";
