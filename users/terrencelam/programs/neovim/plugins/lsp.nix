@@ -13,9 +13,11 @@
       };
       fidget = {
         enable = true;
-        notification = {
-          window = {
-            winblend = 0;
+        settings = {
+          notification = {
+            window = {
+              winblend = 0;
+            };
           };
         };
       };
