@@ -16,7 +16,7 @@
         options.desc = mapping.desc;
       }) {
         "<C-e>" = {
-          action = "<cmd>Yazi toggle<CR>";
+          action = "<cmd>Yazi<CR>";
           desc = "File explorer";
         };
         "<C-S-E>" = {
