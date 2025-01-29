@@ -54,10 +54,6 @@
           };
 
           lspBuf = {
-            gd = "definition";
-            gD = "references";
-            gt = "type_definition";
-            gi = "implementation";
             "<leader>ca" = "code_action";
           };
         };
@@ -82,6 +78,18 @@
           options = {
             desc = "Rename";
             expr = true;
+          };
+        };
+        "<leader>o" = {
+          action = {
+            __raw = ''
+              function()
+                vim.diagnostic.open_float(0, { scope = "line" })
+              end
+            '';
+          };
+          options = {
+            desc = "Open diagnostic";
           };
         };
       };
