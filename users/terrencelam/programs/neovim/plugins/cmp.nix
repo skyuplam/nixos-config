@@ -12,7 +12,6 @@
             default = [
               "lsp"
               "path"
-              "luasnip"
               "buffer"
               "copilot"
             ];
@@ -41,7 +40,10 @@
           keymap = {
             preset = "enter";
           };
-          completion.list.selection = "manual";
+          completion.list.selection = {
+            preselect = false;
+            auto_insert = true;
+          };
           appearance = {
             kind_icons = {
               Copilot = "";
