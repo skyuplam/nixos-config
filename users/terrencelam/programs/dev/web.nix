@@ -21,6 +21,7 @@ in {
     packages = with pkgs; [
       nodejs
       yarn
+      pnpm
       biome # toolchain for the web
       nodePackages.typescript-language-server
       nodePackages.vim-language-server
@@ -43,9 +44,9 @@ in {
             enable = true;
           };
           # Disable until eslint is dropped
-          biome.enable = false;
+          biome.enable = true;
           eslint = {
-            enable = true;
+            enable = false;
 
             settings = {
               nodePath = {

@@ -19,6 +19,23 @@
             # -- have other formatters configured.
             "_" = ["trim_whitespace"];
           };
+          # Map of treesitter language to file extension
+          # A temporary file name with this extension will be generated during formatting
+          # because some formatters care about the filename.
+          lang_to_ext = {
+            bash = "sh";
+            c = "c";
+            javascript = "js";
+            javascriptreact = "jsx";
+            lua = "lua";
+            markdown = "md";
+            nix = "nix";
+            python = "py";
+            rust = "rs";
+            typescript = "ts";
+            typescriptreact = "tsx";
+            zig = "zig";
+          };
 
           format_on_save = {
             timeout_ms = 500;

@@ -26,7 +26,7 @@
 
             settings = {
               "harper-ls" = {
-                userDictPath = {__raw = ''vim.fn.stdpath("config") .. "/spell/en.utf-8.add"'';};
+                userDictPath = {__raw = ''vim.fn.stdpath("data") .. "/spell/en.utf-8.add"'';};
                 linters = {
                   # Too manay noise
                   sentence_capitalization = false;

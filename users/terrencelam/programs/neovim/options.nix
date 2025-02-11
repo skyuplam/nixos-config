@@ -102,7 +102,7 @@
       spellcapcheck = ""; # don't check for capital letters at start of sentence
       fileformats = ["unix" "mac" "dos"];
       spelllang = "en";
-      spellfile = {__raw = ''vim.fn.stdpath("config") .. "/spell/en.utf-8.add"'';};
+      spellfile = {__raw = ''vim.fn.stdpath("data") .. "/spell/en.utf-8.add"'';};
 
       complete = ".,w,b,u,t,kspell";
 
