@@ -436,6 +436,8 @@ in {
       };
       zellij = {
         enable = true;
+        enableBashIntegration = false;
+        enableZshIntegration = false;
       };
       zoxide.enable = true;
       yazi = {
