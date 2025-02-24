@@ -6,6 +6,7 @@
   imports = [
     ./nix.nix
     ./web.nix
+    ./rust.nix
     ./doc.nix
     ./lua.nix
   ];
