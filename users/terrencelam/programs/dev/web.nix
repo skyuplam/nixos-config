@@ -24,7 +24,6 @@ in {
       pnpm
       biome # toolchain for the web
       nodePackages.typescript-language-server
-      nodePackages.vim-language-server
       nodePackages.yaml-language-server
       vscode-langservers-extracted
     ];
