@@ -57,6 +57,9 @@
     };
 
     plugins = {
+      repeat = {
+        enable = true;
+      };
       spectre = {
         enable = true;
         settings = {
