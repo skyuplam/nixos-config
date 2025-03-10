@@ -6,9 +6,10 @@
       "1password"
       "google-chrome"
       "keepingyouawake"
+      "librewolf"
       "linearmouse"
-      "stats"
       "signal"
+      "stats"
       "syncthing"
     ];
     taps = [
