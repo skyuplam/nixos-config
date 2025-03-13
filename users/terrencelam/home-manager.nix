@@ -260,6 +260,7 @@ in {
           pkgs.localsend
           pkgs.slides # TUI Present tool
           pkgs.localsend
+          pkgs.libargon2
 
           # CAD
           # pkgs.openscad-unstable # Clipper2 doesn't support macOS
