@@ -2,11 +2,15 @@
   # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;
+    brews = ["kanata"];
     casks = [
       "1password"
       "google-chrome"
       "keepingyouawake"
-      "librewolf"
+      {
+        name = "librewolf";
+        args = {no_quarantine = true;};
+      }
       "linearmouse"
       "signal"
       "stats"
