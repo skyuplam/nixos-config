@@ -203,11 +203,11 @@
           mapping.action;
         options.desc = mapping.desc;
       }) {
-        "<leader>fw" = {
+        "<leader>fg" = {
           action = "<cmd>lua require('telescope-live-grep-args.shortcuts').grep_visual_selection()<CR>";
           desc = "Grep with selection";
         };
-        "<leader>fW" = {
+        "<leader>fG" = {
           action = "<cmd>lua require('telescope-live-grep-args.shortcuts').grep_word_visual_selection_current_buffer()<CR>";
           desc = "Grep with selection for the current buffer";
         };
