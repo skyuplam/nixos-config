@@ -7,10 +7,7 @@
       "1password"
       "google-chrome"
       "keepingyouawake"
-      {
-        name = "librewolf";
-        args = {no_quarantine = true;};
-      }
+      "waterfox"
       "linearmouse"
       "signal"
       "stats"
