@@ -12,6 +12,7 @@
       "signal"
       "stats"
       "syncthing"
+      "bitwarden"
     ];
     taps = [
       "krtirtho/apps"
