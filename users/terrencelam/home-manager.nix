@@ -23,7 +23,6 @@
   );
 in {
   imports = [
-    inputs.anyrun.homeManagerModules.default
     inputs.nixvim.homeManagerModules.nixvim
     ./programs
   ];
@@ -705,6 +704,7 @@ in {
       };
       # launcher
       anyrun = {
+        package = inputs.anyrun.packages.${pkgs.system}.default;
         enable = isLinux && !isWSL;
         config = {
           plugins = with inputs.anyrun.packages.${pkgs.system}; [
