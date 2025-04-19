@@ -401,18 +401,18 @@ in {
         enable = true;
         config = {
           pager = "less -FR";
-          theme = "catppuccin-mocha";
+          theme = "catppuccin-macchiato";
         };
         themes = {
-          # https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme
-          catppuccin-mocha = {
+          # https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-Macchiato.tmTheme
+          catppuccin-macchiato = {
             src = pkgs.fetchFromGitHub {
               owner = "catppuccin";
               repo = "bat";
-              rev = "master";
-              sha256 = "6WVKQErGdaqb++oaXnY3i6/GuH2FhTgK0v4TN4Y0Wbw=";
+              rev = "main";
+              sha256 = "6fWoCH90IGumAMc4buLRWL0N61op+AuMNN9CAR9/OdI=";
             };
-            file = "Catppuccin-mocha.tmTheme";
+            file = "themes/Catppuccin Macchiato.tmTheme";
           };
         };
       };
