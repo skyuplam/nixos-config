@@ -13,7 +13,7 @@ stow_config() {
   echo "linking $1 config to $TARGET"
   # Ensure the folder is there
   mkdir -p "$TARGET"
-  # Perform unrestricted find all the symbolic links in the foler to execute rm
+  # Perform unrestricted find all the symbolic links in the folder to execute rm
   # ${pkgs.fd}/bin/fd -u -t l . $TARGET -x rm
   stow -d ./users/terrencelam/config -t "$TARGET" -S "$1"
 }

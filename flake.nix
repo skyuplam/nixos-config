@@ -19,7 +19,7 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     zig.url = "github:mitchellh/zig-overlay";
     zls.url = "github:zigtools/zls";
     disko = {
@@ -52,11 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nil = {
       url = "github:oxalica/nil";
     };
@@ -68,7 +63,7 @@
     ...
   }: let
     overlays = [
-      inputs.neovim-nightly-overlay.overlays.default
+      # inputs.neovim-nightly-overlay.overlays.default
       inputs.zig.overlays.default
       (_final: _prev: {inherit zls;})
       (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})

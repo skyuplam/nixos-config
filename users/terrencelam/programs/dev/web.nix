@@ -21,62 +21,10 @@ in {
     packages = with pkgs; [
       nodejs
       yarn
-      pnpm
       biome # toolchain for the web
       nodePackages.typescript-language-server
       nodePackages.yaml-language-server
       vscode-langservers-extracted
     ];
-  };
-
-  programs = {
-    nixvim = {
-      plugins = {
-        lsp.servers = {
-          nil_ls = {
-            enable = true;
-            settings.formatting.command = [
-              (lib.getExe pkgs.alejandra)
-            ];
-          };
-          cssls = {
-            enable = true;
-          };
-          # Disable until eslint is dropped
-          biome.enable = true;
-          eslint = {
-            enable = false;
-
-            settings = {
-              nodePath = {
-                __raw = ''
-                  vim.fn.getcwd() .. '/.yarn/sdks'
-                '';
-              };
-              packageManager = "yarn";
-              codeActionOnSave = {
-                enable = true;
-                mode = "all";
-              };
-            };
-          };
-          ts_ls = {
-            enable = true;
-          };
-        };
-        conform-nvim = {
-          settings = {
-            formatters_by_ft = {
-              javascript = prettier;
-              typescript = prettier;
-              javascriptreact = prettier;
-              typescriptreact = prettier;
-              json = prettier;
-              jsonc = prettier;
-            };
-          };
-        };
-      };
-    };
   };
 }
