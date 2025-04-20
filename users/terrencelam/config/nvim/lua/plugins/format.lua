@@ -45,7 +45,6 @@ return {
       quiet = false, -- not recommended to change
       lsp_format = 'fallback', -- not recommended to change
     },
-    log_level = vim.log.levels.DEBUG,
     format_on_save = {
       -- These options will be passed to conform.format()
       timeout_ms = 500,
