@@ -109,6 +109,5 @@ opt.winminwidth = 5 -- Minimum window width
 opt.wrap = false -- Disable line wrap
 
 opt.smoothscroll = true
-opt.foldexpr = "v:lua.require'conform'.formatexpr()" -- https://github.com/stevearc/conform.nvim?tab=readme-ov-file#setup
 opt.foldmethod = 'expr'
 opt.foldtext = ''
