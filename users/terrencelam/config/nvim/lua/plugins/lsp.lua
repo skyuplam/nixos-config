@@ -50,6 +50,8 @@ return {
     -- Nix
     vim.lsp.enable('nil_ls')
     vim.lsp.enable('statix')
+    vim.lsp.enable('ts_ls')
+    vim.lsp.enable('biome')
   end,
   dependencies = {
     { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim' },
