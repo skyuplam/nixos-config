@@ -94,7 +94,6 @@ return {
       },
       prettier = {
         command = function(self, bufnr)
-          Snacks.debug.backtrace()
           local util = require('conform.util')
           local fs = require('conform.fs')
           local cmd = util.find_executable({ '.yarn/sdks/prettier/bin/prettier.cjs' }, 'prettier')(self, bufnr)
