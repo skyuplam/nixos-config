@@ -5,9 +5,18 @@ return {
     local telescope = require('telescope')
     local lga_actions = require('telescope-live-grep-args.actions')
     local lga_shortcuts = require('telescope-live-grep-args.shortcuts')
+    local open_with_trouble = require('trouble.sources.telescope').open
 
     telescope.setup({
       defaults = {
+        mappings = {
+          i = {
+            ['c-t'] = open_with_trouble,
+          },
+          n = {
+            ['c-t'] = open_with_trouble,
+          },
+        },
         layout_strategy = 'flex',
         layout_config = {
           height = 0.95,

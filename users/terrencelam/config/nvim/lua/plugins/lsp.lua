@@ -1,6 +1,6 @@
 return {
   'neovim/nvim-lspconfig',
-  config = function(_, opts)
+  config = function()
     vim.lsp.config('lua_ls', {
       on_init = function(client)
         if client.workspace_folders then
@@ -37,10 +37,14 @@ return {
         Lua = {},
       },
     })
+    require('lspconfig').lua_ls.setup({})
+
+    vim.lsp.config('biome', {})
+    vim.lsp.config('ts_ls', {})
 
     vim.diagnostic.config({
       virtual_text = false,
-      virtual_lines = { only_current_line = true, highlight_whole_line = false },
+      virtual_lines = {current_line = true},
     })
 
     -- Lua
@@ -50,10 +54,13 @@ return {
     -- Nix
     vim.lsp.enable('nil_ls')
     vim.lsp.enable('statix')
+    -- Typescript/Javascript
     vim.lsp.enable('ts_ls')
     vim.lsp.enable('biome')
+
+    vim.lsp.enable('cssls')
+    vim.lsp.enable('html')
+    vim.lsp.enable('jsonls')
+    vim.lsp.enable('yamlls')
   end,
-  dependencies = {
-    { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim' },
-  },
 }

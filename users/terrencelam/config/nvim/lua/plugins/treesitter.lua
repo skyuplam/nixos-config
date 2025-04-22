@@ -126,6 +126,10 @@ return {
         end
       end,
     },
+    {
+      'windwp/nvim-ts-autotag',
+      opts = {},
+    },
     { 'andymass/vim-matchup' },
   },
 }
