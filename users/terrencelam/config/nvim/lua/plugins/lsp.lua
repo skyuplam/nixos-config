@@ -44,7 +44,7 @@ return {
 
     vim.diagnostic.config({
       virtual_text = false,
-      virtual_lines = {current_line = true},
+      virtual_lines = { current_line = true },
     })
 
     -- Lua
@@ -62,5 +62,13 @@ return {
     vim.lsp.enable('html')
     vim.lsp.enable('jsonls')
     vim.lsp.enable('yamlls')
+
+    -- Spell and Gramma
+    vim.lsp.config('harper_ls', {
+      settings = {
+        userDictPath = vim.fn.expand('~/.local/share/nvim/spell/en.utf-8.add'),
+      },
+    })
+    vim.lsp.enable('harper_ls')
   end,
 }

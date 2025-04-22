@@ -4,9 +4,9 @@
   ...
 }: {
   imports = [
+    ./doc.nix
+    ./lua.nix
     ./nix.nix
     ./web.nix
-    ./rust.nix
-    ./lua.nix
   ];
 }
