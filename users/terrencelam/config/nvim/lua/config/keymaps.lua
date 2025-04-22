@@ -35,3 +35,6 @@ Snacks.toggle.profiler_highlights():map("<leader>dph")
 if vim.lsp.inlay_hint then
   Snacks.toggle.inlay_hints():map("<leader>uh")
 end
+
+-- Tig
+map('n', '<leader>gs', function() Snacks.terminal('tig') end, {desc = 'Git Status'})
