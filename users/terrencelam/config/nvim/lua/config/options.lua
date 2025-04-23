@@ -111,3 +111,5 @@ opt.wrap = false -- Disable line wrap
 opt.smoothscroll = true
 opt.foldmethod = 'expr'
 opt.foldtext = ''
+
+vim.o.winborder = 'rounded'

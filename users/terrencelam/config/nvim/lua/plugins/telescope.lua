@@ -89,10 +89,21 @@ return {
     telescope.load_extension('zf-native')
     telescope.load_extension('live_grep_args')
     telescope.load_extension('frecency')
-        -- telescope.extensions.frecency.frecency({
-        --   sorter = require('telescope.config').values.file_sorter,
-        -- })
 
+    -- Workaround for telescope border issue
+    -- https://github.com/nvim-telescope/telescope.nvim/issues/3436#issuecomment-2756267300
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'TelescopeFindPre',
+      callback = function()
+        vim.opt_local.winborder = 'none'
+        vim.api.nvim_create_autocmd('WinLeave', {
+          once = true,
+          callback = function()
+            vim.opt_local.winborder = 'rounded'
+          end,
+        })
+      end,
+    })
     -- stylua: ignore start
     vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope resume<CR>', { desc = 'Resume Telescope' })
     vim.keymap.set('n', '<leader>fG', function() telescope.extensions.live_grep_args.live_grep_args({ search_dirs = { '%:p:h' } }) end, { desc = 'Grep files from current directory' })
