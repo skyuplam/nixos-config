@@ -89,8 +89,10 @@ return {
     telescope.load_extension('zf-native')
     telescope.load_extension('live_grep_args')
     telescope.load_extension('frecency')
+        -- telescope.extensions.frecency.frecency({
+        --   sorter = require('telescope.config').values.file_sorter,
+        -- })
 
-    local builtin = require('telescope.builtin')
     -- stylua: ignore start
     vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope resume<CR>', { desc = 'Resume Telescope' })
     vim.keymap.set('n', '<leader>fG', function() telescope.extensions.live_grep_args.live_grep_args({ search_dirs = { '%:p:h' } }) end, { desc = 'Grep files from current directory' })
@@ -98,7 +100,7 @@ return {
     vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>', { desc = 'Buffers' })
     vim.keymap.set('n', '<leader>fc', '<cmd>Telescope command_history<CR>', { desc = 'Command history' })
     vim.keymap.set('n', '<leader>fd', '<cmd>Telescope git_status<CR>', { desc = 'Git status' })
-    vim.keymap.set('n', '<leader>ff', '<cmd>Telescope frecency workspace=CWD<CR>', { desc = 'Find files' })
+    vim.keymap.set('n', '<leader>ff', function() telescope.extensions.frecency.frecency({ workspace = 'CWD', sorter = require('telescope.config').values.file_sorter() }) end, { desc = 'Find files (frecency)' })
     vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep_args<CR>', { desc = 'Grep files' })
     vim.keymap.set('n', '<leader>fj', '<cmd>Telescope jumplist<CR>', { desc = 'Jump list' })
     vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>', { desc = 'Find old files' })
