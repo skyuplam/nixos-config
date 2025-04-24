@@ -53,17 +53,22 @@ return {
     },
     formatters_by_ft = {
       lua = { 'stylua' },
-      -- Conform will run multiple formatters sequentially
-      python = { 'isort', 'black' },
       -- You can customize some of the format options for the filetype (:help conform.format)
       rust = { 'rustfmt', lsp_format = 'fallback' },
       nix = { 'alejandra' },
+      markdown = { 'prettier', 'injected' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
-        return { first(bufnr, 'prettier', 'biome') }
+        return { first(bufnr, 'prettier', 'biome'), 'injected' }
+      end,
+      javascriptreact = function(bufnr)
+        return { first(bufnr, 'prettier', 'biome'), 'injected' }
       end,
       typescript = function(bufnr)
-        return { first(bufnr, 'prettier', 'biome') }
+        return { first(bufnr, 'prettier', 'biome'), 'injected' }
+      end,
+      typescriptreact = function(bufnr)
+        return { first(bufnr, 'prettier', 'biome'), 'injected' }
       end,
     },
     formatters = {
@@ -82,6 +87,7 @@ return {
             c_sharp = 'cs',
             elixir = 'exs',
             javascript = 'js',
+            javascriptreact = 'jsx',
             latex = 'tex',
             markdown = 'md',
             python = 'py',
@@ -89,7 +95,9 @@ return {
             rust = 'rs',
             teal = 'tl',
             typescript = 'ts',
+            typescriptreact = 'tsx',
           },
+          lang_to_formatters = {},
         },
       },
       prettier = {
