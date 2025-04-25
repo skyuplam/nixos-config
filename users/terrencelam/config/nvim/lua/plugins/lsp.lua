@@ -1,3 +1,13 @@
+local ts_ls_inlayHints = {
+  includeInlayParameterNameHints = 'all',
+  includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+  includeInlayFunctionParameterTypeHints = true,
+  includeInlayVariableTypeHints = false,
+  includeInlayPropertyDeclarationTypeHints = false,
+  includeInlayFunctionLikeReturnTypeHints = false,
+  includeInlayEnumMemberValueHints = false,
+}
+
 return {
   'neovim/nvim-lspconfig',
   dependencies = {
@@ -54,7 +64,7 @@ return {
     -- Be aware that you also will need to properly configure your LSP server to
     -- provide the code lenses.
     codelens = {
-      enabled = false,
+      enabled = true,
     },
     -- add any global capabilities here
     capabilities = {
@@ -139,7 +149,16 @@ return {
       },
       nil_ls = {},
       statix = {},
-      ts_ls = {},
+      ts_ls = {
+        settings = {
+          typescript = {
+            inlayHints = vim.deepcopy(ts_ls_inlayHints),
+          },
+          javascript = {
+            inlayHints = vim.deepcopy(ts_ls_inlayHints),
+          },
+        },
+      },
       biome = {},
       cssls = {},
       html = {},
