@@ -370,7 +370,7 @@ in {
           name = "zsh-init-completions";
           path = ./config/init.zsh;
         });
-        initExtra = builtins.readFile (builtins.path {
+        initContent = builtins.readFile (builtins.path {
           name = "zsh-config";
           path = ./config/config.zsh;
         });
