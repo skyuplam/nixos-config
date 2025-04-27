@@ -164,6 +164,7 @@ return {
       html = {},
       jsonls = {},
       yamlls = {},
+      marksman = {},
       harper_ls = {
         settings = {
           userDictPath = vim.fn.stdpath('data') .. '/spell/en.utf-8.add',

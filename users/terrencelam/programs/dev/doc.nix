@@ -1,7 +1,8 @@
 {pkgs, ...}: {
   home = {
     packages = with pkgs; [
-      harper
+      harper # Language LSP
+      marksman # Markdown language server
     ];
   };
 }
