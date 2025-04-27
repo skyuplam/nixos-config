@@ -366,14 +366,16 @@ in {
           searchDownKey = ["^[[B" "^N"];
         };
         enableCompletion = true;
-        initExtraBeforeCompInit = builtins.readFile (builtins.path {
-          name = "zsh-init-completions";
-          path = ./config/init.zsh;
-        });
-        initContent = builtins.readFile (builtins.path {
-          name = "zsh-config";
-          path = ./config/config.zsh;
-        });
+        initContent = lib.mkMerge [
+          (lib.mkOrder 550 (builtins.readFile (builtins.path {
+            name = "zsh-init-completions";
+            path = ./config/init.zsh;
+          })))
+          (lib.mkOrder 1000 (builtins.readFile (builtins.path {
+            name = "zsh-config";
+            path = ./config/config.zsh;
+          })))
+        ];
         envExtra =
           ''
             export MANROFFOPT="-c"
