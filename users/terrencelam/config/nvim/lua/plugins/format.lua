@@ -56,6 +56,8 @@ return {
       -- You can customize some of the format options for the filetype (:help conform.format)
       rust = { 'rustfmt', lsp_format = 'fallback' },
       nix = { 'alejandra' },
+      json = { 'prettier', lsp_format = 'fallback' },
+      jsonc = { 'prettier', lsp_format = 'fallback' },
       markdown = { 'prettier', 'injected' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
