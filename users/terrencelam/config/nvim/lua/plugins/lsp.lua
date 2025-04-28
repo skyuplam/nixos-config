@@ -168,6 +168,10 @@ return {
       harper_ls = {
         settings = {
           userDictPath = vim.fn.stdpath('data') .. '/spell/en.utf-8.add',
+          linters = {
+            SentenceCapitalization = false,
+            SpellCheck = false,
+          },
         },
       },
     },
