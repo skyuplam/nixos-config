@@ -845,7 +845,7 @@ in {
   services = {
     gpg-agent = {
       enable = isLinux;
-      pinentryPackage = pkgs.pinentry-gnome3;
+      pinentry.package = pkgs.pinentry-gnome3;
       enableScDaemon = true;
       enableZshIntegration = true;
       enableSshSupport = true;
