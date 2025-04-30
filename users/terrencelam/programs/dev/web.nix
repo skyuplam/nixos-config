@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  nodejs = pkgs.nodejs_18;
+  nodejs = pkgs.stable.nodejs_18;
   yarn = pkgs.yarn.override {inherit nodejs;};
 in {
   home = {

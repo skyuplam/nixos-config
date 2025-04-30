@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,6 +60,7 @@
 
   outputs = inputs @ {
     nixpkgs,
+    nixpkgs-stable,
     zls,
     ...
   }: let
@@ -66,6 +68,7 @@
       # inputs.neovim-nightly-overlay.overlays.default
       inputs.zig.overlays.default
       (_final: _prev: {inherit zls;})
+      (_final: prev: {stable = import nixpkgs-stable {inherit (prev) system;};})
       # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
       (_final: prev: {ghostty = inputs.ghostty.packages.${prev.system}.default;})

@@ -6,6 +6,7 @@
   config,
   lib,
   pkgs,
+  pkgs-stable,
   ...
 }: let
   inherit (pkgs.stdenv) isDarwin isLinux;
