@@ -42,7 +42,7 @@ in {
     mimeApps = {
       enable = isLinux && !isWSL;
       defaultApplications = let
-        browser = ["firefox-nightly.desktop"];
+        browser = ["firefox.desktop"];
         editor = ["nvim.desktop"];
         pdfViewer = ["org.pwmt.zathura.desktop"];
         videoPlayer = ["mpv.desktop"];
@@ -665,7 +665,6 @@ in {
       };
       firefox = {
         enable = true;
-        package = pkgs.firefox-nightly-bin;
         profiles.terrencelam = {
           isDefault = true;
           settings = {

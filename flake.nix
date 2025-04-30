@@ -42,10 +42,10 @@
       url = "github:Exafunction/codeium.nvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    firefox-nightly = {
-      url = "github:nix-community/flake-firefox-nightly";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # firefox-nightly = {
+    #   url = "github:nix-community/flake-firefox-nightly";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     # A wayland native krunner-like runner, made with customizability in mind.
     anyrun = {
       url = "github:Kirottu/anyrun";
@@ -66,7 +66,7 @@
       # inputs.neovim-nightly-overlay.overlays.default
       inputs.zig.overlays.default
       (_final: _prev: {inherit zls;})
-      (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
+      # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
       (_final: prev: {ghostty = inputs.ghostty.packages.${prev.system}.default;})
       (_final: prev: {nil = inputs.nil.packages.${prev.system}.default;})
