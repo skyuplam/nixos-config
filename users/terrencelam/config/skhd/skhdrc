@@ -41,7 +41,7 @@
 # ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
 # Global hotkeys
 cmd - return : open -na Ghostty   # Launch Ghostty
-cmd - b : open -na WaterFox   # Launch WaterFox
+cmd - b : open -na Waterfox   # Launch Waterfox
 # Focus window
 cmd - h : yabai -m window --focus west || yabai -m display --focus west
 cmd - j : yabai -m window --focus south
