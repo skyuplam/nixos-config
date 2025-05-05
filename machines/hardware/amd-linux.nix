@@ -7,7 +7,7 @@
   modulesPath,
   ...
 }: let
-  dns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+  dns = ["10.0.1.170" "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
 in {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -17,19 +17,6 @@ in {
     initrd = {
       availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod"];
       kernelModules = ["kvm-amd"];
-      luks = {
-        gpgSupport = true;
-        devices."root" = {
-          device = "/dev/disk/by-uuid/23301f4c-fc32-427e-9781-913f317f3135";
-          allowDiscards = true;
-          preLVM = true;
-
-          gpgCard = {
-            encryptedPass = /crypt/crypt_key.luks.gpg;
-            publicKey = /crypt/pubkey.asc;
-          };
-        };
-      };
       systemd = {
         network = {
           enable = true;
@@ -66,7 +53,7 @@ in {
       enp39s0.useDHCP = lib.mkDefault false;
       wlo1.useDHCP = lib.mkDefault false;
     };
-    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    nameservers = dns;
   };
 
   services.resolved = {
