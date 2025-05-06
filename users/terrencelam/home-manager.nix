@@ -836,7 +836,7 @@ in {
       enable = isLinux && !isWSL;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
       settings = {
-        source = "./hypr.conf";
+        source = "./config/hypr/hypr.conf";
       };
       systemd.enable = false;
     };
