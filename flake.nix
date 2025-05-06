@@ -52,7 +52,6 @@
       url = "github:Kirottu/anyrun";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    ghostty.url = "git+ssh://git@github.com/ghostty-org/ghostty";
     nil = {
       url = "github:oxalica/nil";
     };
@@ -71,7 +70,6 @@
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev) system;};})
       # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
-      (_final: prev: {ghostty = inputs.ghostty.packages.${prev.system}.default;})
       (_final: prev: {nil = inputs.nil.packages.${prev.system}.default;})
     ];
     mkSystem = import ./lib/mksystem.nix {

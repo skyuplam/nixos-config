@@ -315,7 +315,6 @@ in {
           pkgs.wl-screenrec
           pkgs.usbutils
           pkgs.testdisk # data recovery
-          pkgs.ghostty
         ])
         ++ (lib.optionals isDarwin) [
           pkgs.iina # media player
@@ -460,6 +459,11 @@ in {
       wezterm = {
         enable = isDarwin;
         enableZshIntegration = true;
+      };
+      ghostty = {
+        enable = isLinux && !isWSL;
+        enableZshIntegration = true;
+        installBatSyntax = true;
       };
       zathura = {
         enable = true;
