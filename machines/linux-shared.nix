@@ -34,7 +34,7 @@
   # Set your timezone.
   time.timeZone = "Europe/Oslo";
   hardware = {
-    opengl = {
+    graphics = {
       enable = true;
       extraPackages = with pkgs; [libva vaapiVdpau libvdpau-va-gl mesa];
     };
@@ -110,7 +110,7 @@
   i18n = {
     defaultLocale = "en_US.UTF-8";
     inputMethod = {
-      enabled = "fcitx5";
+      type = "fcitx5";
       fcitx5.addons = with pkgs; [
         fcitx5-mozc
         fcitx5-gtk

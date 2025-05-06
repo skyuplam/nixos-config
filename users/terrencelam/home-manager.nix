@@ -703,16 +703,6 @@ in {
           # "--enable-unsafe-webgpu"
         ];
       };
-      # wallpaper
-      wpaperd = {
-        enable = true;
-        settings = {
-          default = {
-            path = "~/Pictures/Wallpapers/";
-            duration = "30m";
-          };
-        };
-      };
       # launcher
       anyrun = {
         package = inputs.anyrun.packages.${pkgs.system}.default;
@@ -873,6 +863,16 @@ in {
       enable = isLinux && !isWSL;
       latitude = "59.8";
       longitude = "10.8";
+    };
+    # wallpaper
+    wpaperd = {
+      enable = true;
+      settings = {
+        default = {
+          path = "~/Pictures/Wallpapers/";
+          duration = "30m";
+        };
+      };
     };
   };
 }
