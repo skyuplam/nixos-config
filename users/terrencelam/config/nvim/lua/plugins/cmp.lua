@@ -17,7 +17,7 @@ return {
           help = true,
         },
         server = {
-          type = 'binary'
+          type = 'binary',
         },
       },
     },
@@ -86,7 +86,7 @@ return {
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'ripgrep', 'copilot' },
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'ripgrep', 'copilot', 'cmdline', 'omni' },
       providers = {
         -- Buffer completion from all open buffers
         buffer = {
@@ -100,8 +100,8 @@ return {
           },
         },
         copilot = {
-          name = "copilot",
-          module = "blink-copilot",
+          name = 'copilot',
+          module = 'blink-copilot',
           score_offset = 100,
           async = true,
         },
