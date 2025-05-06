@@ -1,6 +1,6 @@
 {
-  lib,
   pkgs,
+  lib,
   ...
 }: {
   imports = [
@@ -9,24 +9,20 @@
     ./linux-shared.nix
   ];
 
-  sops = {
-    defaultSopsFile = ../secrets/user.yaml;
-    age.keyFile = "/var/lib/sops-nix/keys.txt";
-    secrets.hashedPassword = {
-      neededForUsers = true;
-    };
-  };
-
   environment = {
     systemPackages = [pkgs.sbctl];
   };
 
   boot = {
-    loader.systemd-boot.enable = true;
+    # This is not a complete NixOS configuration and you need to reference
+    # your normal configuration here.
+    loader.systemd-boot.enable = lib.mkForce false;
     loader.efi.canTouchEfiVariables = true;
+    initrd.systemd.enable = true;
+
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
   };
 

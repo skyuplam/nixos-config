@@ -29,13 +29,9 @@
   boot = {
     # Be careful updating this.
     kernelPackages = pkgs.linuxPackages_latest;
-
-    # Use the systemd-boot EFI boot loader.
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
   };
 
-  # Set your time zone.
+  # Set your timezone.
   time.timeZone = "Europe/Oslo";
   hardware = {
     opengl = {
@@ -188,5 +184,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
