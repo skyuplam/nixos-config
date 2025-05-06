@@ -34,25 +34,16 @@
 
     packages = with pkgs; [
       # icon fonts
-      material-design-icons
+      dejavu_fonts
       font-awesome
-
+      material-design-icons
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.symbols-only
       noto-fonts-emoji
-      source-sans
-      source-serif
       source-han-sans
       source-han-serif
-
-      # nerdfonts
-      # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/fonts/nerdfonts/shas.nix
-      (nerdfonts.override {
-        fonts = [
-          # symbols icon only
-          "NerdFontsSymbolsOnly"
-          "JetBrainsMono"
-        ];
-      })
-      dejavu_fonts
+      source-sans
+      source-serif
     ];
     # user defined fonts
     # the reason there's Noto Color Emoji everywhere is to override DejaVu's

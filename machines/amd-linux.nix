@@ -36,18 +36,16 @@
 
     packages = with pkgs; [
       # icon fonts
-      material-design-icons
+      dejavu_fonts
       font-awesome
-
+      material-design-icons
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.symbols-only
       noto-fonts-emoji
-      source-sans
-      source-serif
       source-han-sans
       source-han-serif
-
-      nerd-fonts.symbols-only
-      nerd-fonts.jetbrains-mono
-      dejavu_fonts
+      source-sans
+      source-serif
     ];
     # user defined fonts
     # the reason there's Noto Color Emoji everywhere is to override DejaVu's
