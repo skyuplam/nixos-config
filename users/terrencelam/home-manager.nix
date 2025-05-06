@@ -149,7 +149,7 @@ in {
         };
         mako = {
           enable = true;
-          source =
+          text =
             builtins.readFile (builtins.path {
               name = "mako-config";
               path = ./config/mako/config;
