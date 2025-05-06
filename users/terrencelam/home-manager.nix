@@ -147,6 +147,17 @@ in {
             path = ./config/mpv;
           };
         };
+        mako = {
+          enable = true;
+          source =
+            builtins.readFile (builtins.path {
+              name = "mako-config";
+              path = ./config/mako/config;
+            })
+            + ''
+              on-notify=exec ${pkgs.mpv}/bin/mpv ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
+            '';
+        };
       }
       // lib.optionalAttrs (isLinux && !isWSL) {
         # Workaround for Existing mimeapps.list file issue
@@ -857,14 +868,6 @@ in {
 
     mako = {
       enable = isLinux && !isWSL;
-      settings =
-        builtins.readFile (builtins.path {
-          name = "mako-config";
-          path = ./config/mako/config;
-        })
-        + ''
-          on-notify=exec ${pkgs.mpv}/bin/mpv ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
-        '';
     };
 
     wlsunset = {
