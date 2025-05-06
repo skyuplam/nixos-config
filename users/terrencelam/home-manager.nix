@@ -392,6 +392,7 @@ in {
             export MANROFFOPT="-c"
             # Git Review Env var
             export REVIEW_BASE=main
+            export GPG_TTY="$(tty)"
           ''
           + (
             if isDarwin
@@ -845,10 +846,11 @@ in {
   services = {
     gpg-agent = {
       enable = isLinux;
-      pinentry.package = pkgs.pinentry-gnome3;
+      pinentry.package = pkgs.pinentry-curses;
       enableScDaemon = true;
       enableZshIntegration = true;
       enableSshSupport = true;
+      enableExtraSocket = true;
     };
 
     udiskie = {
