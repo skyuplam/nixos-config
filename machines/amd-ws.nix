@@ -1,8 +1,4 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware/amd-ws.nix
@@ -17,14 +13,9 @@
   boot = {
     # This is not a complete NixOS configuration and you need to reference
     # your normal configuration here.
-    loader.systemd-boot.enable = lib.mkForce false;
+    loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
     initrd.systemd.enable = true;
-
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
-    };
   };
 
   fonts = {
