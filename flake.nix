@@ -102,6 +102,11 @@
       user = "terrencelam";
     };
 
+    nixosConfigurations.amd-ws = mkSystem "amd-ws" {
+      system = "x86_64-linux";
+      user = "terrencelam";
+    };
+
     darwinConfigurations.macbook-pro-m2 = mkSystem "macbook-pro-m2" {
       system = "aarch64-darwin";
       user = "terrencelam";
