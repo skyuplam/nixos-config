@@ -6,7 +6,7 @@
 }: {
   nix = {
     # use unstable nix so we can access flakes
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
