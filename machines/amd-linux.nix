@@ -45,15 +45,8 @@
       source-han-sans
       source-han-serif
 
-      # nerdfonts
-      # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/fonts/nerdfonts/shas.nix
-      (nerdfonts.override {
-        fonts = [
-          # symbols icon only
-          "NerdFontsSymbolsOnly"
-          "JetBrainsMono"
-        ];
-      })
+      nerd-fonts.symbols-only
+      nerd-fonts.jetbrains-mono
       dejavu_fonts
     ];
     # user defined fonts
