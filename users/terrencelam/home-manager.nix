@@ -540,11 +540,6 @@ in {
         };
       };
 
-      # Matrix client
-      nheko = {
-        enable = isLinux && !isWSL;
-      };
-
       gpg = {
         enable = true;
         settings = {
