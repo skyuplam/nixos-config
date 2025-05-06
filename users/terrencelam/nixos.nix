@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{pkgs, ...}: let
   keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIi4mBqMk32PKYVGFJZBXqM+b6vw8b3J0pSFBGAQm3ps TlamM2"];
 in {
   # Add ~/.local/bin to PATH
@@ -30,7 +26,6 @@ in {
   };
 
   users = {
-    mutableUsers = false;
     groups.terrencelam = {};
     users = {
       terrencelam = {
