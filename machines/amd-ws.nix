@@ -7,6 +7,7 @@
     # Include the results of the hardware scan.
     ./hardware/amd-ws.nix
     ./linux-shared.nix
+    ./disko-config-ws.nix
   ];
 
   environment = {
