@@ -39,7 +39,6 @@ in {
         group = "terrencelam";
         extraGroups = ["wheel" "video" "docker"];
         shell = pkgs.zsh;
-        hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 
         openssh.authorizedKeys.keys = keys;
       };
