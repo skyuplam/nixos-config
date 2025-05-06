@@ -857,7 +857,7 @@ in {
 
     mako = {
       enable = isLinux && !isWSL;
-      extraConfig =
+      settings =
         builtins.readFile (builtins.path {
           name = "mako-config";
           path = ./config/mako/config;
