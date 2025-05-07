@@ -18,6 +18,7 @@ return {
         },
         server = {
           type = 'binary',
+          custom_server_filepath = vim.env.COPILOT_PATH,
         },
       },
     },

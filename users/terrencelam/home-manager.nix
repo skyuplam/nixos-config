@@ -185,7 +185,7 @@ in {
           then "dylib"
           else "so"
         }";
-        # CODEIUM_PATH = "${pkgs.codeium-lsp}/bin/codeium-lsp";
+        COPILOT_PATH = "${pkgs.copilot-language-server-fhs}/bin/copilot-language-server";
         # Failed to build target aarch64-darwin
         VSCODE_LLDB_PATH =
           if isDarwin
