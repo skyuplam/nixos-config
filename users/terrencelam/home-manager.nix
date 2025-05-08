@@ -185,7 +185,11 @@ in {
           then "dylib"
           else "so"
         }";
-        COPILOT_PATH = "${pkgs.copilot-language-server-fhs}/bin/copilot-language-server";
+        COPILOT_PATH = "${
+          if isLinux
+          then pkgs.copilot-language-server-fhs
+          else pkgs.copilot-language-server
+        }/bin/copilot-language-server";
         # Failed to build target aarch64-darwin
         VSCODE_LLDB_PATH =
           if isDarwin
@@ -868,7 +872,7 @@ in {
     };
     # wallpaper
     wpaperd = {
-      enable = true;
+      enable = isLinux && !isWSL;
       settings = {
         default = {
           path = "~/Pictures/Wallpapers/";
