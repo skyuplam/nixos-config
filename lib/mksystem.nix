@@ -49,8 +49,10 @@ in
         else {}
       )
       (
-        if !darwin && !isWSL
+        if !darwin && !wsl
         then inputs.sops-nix.nixosModules.sops
+        else if darwin
+        then inputs.sops-nix.darwinModules.sops
         else {}
       )
       (

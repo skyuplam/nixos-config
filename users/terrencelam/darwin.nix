@@ -1,4 +1,7 @@
 {pkgs, ...}: {
+  imports = [
+    ./common.nix
+  ];
   # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;

@@ -41,6 +41,10 @@ if vim.lsp.inlay_hint then
   Snacks.toggle.inlay_hints():map('<leader>uh')
 end
 
+map('n', '<leader>rt', function()
+  Snacks.terminal()
+end, { desc = 'Terminal' })
+
 -- Tig
 map('n', '<leader>gs', function()
   Snacks.terminal('tig status')

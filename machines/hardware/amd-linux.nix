@@ -5,10 +5,9 @@
   config,
   lib,
   modulesPath,
+  inputs,
   ...
-}: let
-  dns = ["10.0.1.170" "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
-in {
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -35,7 +34,7 @@ in {
                 IPv6AcceptRA = false;
                 DNSOverTLS = true;
                 DNSSEC = true;
-                DNS = dns;
+                DNS = inputs.nix-secrets.networking.dns;
               };
               # make routing on this interface a dependency for network-online.target
               linkConfig.RequiredForOnline = "routable";
@@ -53,14 +52,14 @@ in {
       enp39s0.useDHCP = lib.mkDefault false;
       wlo1.useDHCP = lib.mkDefault false;
     };
-    nameservers = dns;
+    nameservers = inputs.nix-secrets.networking.dns;
   };
 
   services.resolved = {
     enable = true;
     dnssec = "true";
     domains = ["~."];
-    fallbackDns = dns;
+    fallbackDns = inputs.nix-secrets.networking.dns;
     extraConfig = ''
       DNSOverTLS=yes
     '';
@@ -84,7 +83,7 @@ in {
             IPv6AcceptRA = false;
             DNSOverTLS = true;
             DNSSEC = true;
-            DNS = dns;
+            DNS = inputs.nix-secrets.networking.dns;
           };
           # make routing on this interface a dependency for network-online.target
           linkConfig.RequiredForOnline = "routable";

@@ -9,14 +9,6 @@
     ./linux-shared.nix
   ];
 
-  sops = {
-    defaultSopsFile = ../secrets/user.yaml;
-    age.keyFile = "/var/lib/sops-nix/keys.txt";
-    secrets.hashedPassword = {
-      neededForUsers = true;
-    };
-  };
-
   environment = {
     systemPackages = [pkgs.sbctl];
   };

@@ -695,6 +695,23 @@
         "type": "github"
       }
     },
+    "nix-secrets": {
+      "locked": {
+        "lastModified": 1746652416,
+        "narHash": "sha256-ZMqikhNWMqGlh6mK3bjBrBIT+LLCEuYMpjqIY1Z0IEU=",
+        "ref": "main",
+        "rev": "665d98e049d7afa9ad38b58ee870a4696e188e87",
+        "shallow": true,
+        "type": "git",
+        "url": "file:///home/terrencelam/dev/nix-secrets"
+      },
+      "original": {
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "file:///home/terrencelam/dev/nix-secrets"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1741037377,
@@ -851,6 +868,7 @@
         "hyprland": "hyprland",
         "lanzaboote": "lanzaboote",
         "nil": "nil",
+        "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable_2",
         "sops-nix": "sops-nix",

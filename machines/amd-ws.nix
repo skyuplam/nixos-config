@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware/amd-ws.nix
@@ -48,4 +52,27 @@
   };
 
   networking.hostName = "tlamws";
+  networking.firewall = {
+    allowedUDPPorts = [55535];
+  };
+  networking.wireguard = {
+    enable = true;
+    useNetworkd = true;
+    interfaces = {
+      wg0 = {
+        ips = inputs.nix-secrets.networking.wireguard.wg0.ips;
+        listenPort = inputs.nix-secrets.networking.wireguard.wg0.listenPort;
+        privateKeyFile = "/etc/wireguard/private.key";
+        peers = [
+          {
+            publicKey = inputs.nix-secrets.networking.wireguard.wg0.publicKey;
+            allowedIPs = inputs.nix-secrets.networking.wireguard.wg0.allowedIPs;
+            endpoint = inputs.nix-secrets.networking.wireguard.wg0.endpoint;
+            presharedKeyFile = "/etc/wireguard/preshared.key";
+            persistentKeepalive = 25;
+          }
+        ];
+      };
+    };
+  };
 }

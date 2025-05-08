@@ -51,6 +51,10 @@
     nil = {
       url = "github:oxalica/nil";
     };
+    nix-secrets = {
+      url = "git+file:///home/terrencelam/dev/nix-secrets?shallow=1&ref=main";
+      inputs = {};
+    };
   };
 
   outputs = inputs @ {

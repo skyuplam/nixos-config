@@ -1,6 +1,9 @@
 {pkgs, ...}: let
   keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIi4mBqMk32PKYVGFJZBXqM+b6vw8b3J0pSFBGAQm3ps TlamM2"];
 in {
+  imports = [
+    ./common.nix
+  ];
   # Add ~/.local/bin to PATH
   environment.localBinInPath = true;
 

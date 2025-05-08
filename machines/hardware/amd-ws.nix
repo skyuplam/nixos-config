@@ -4,12 +4,10 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
+  inputs,
   ...
-}: let
-  dns = ["10.0.1.170" "1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
-in {
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -18,12 +16,93 @@ in {
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
+  boot.initrd.systemd = {
+    network = {
+      enable = true;
+      wait-online = {
+        enable = true;
+        anyInterface = true;
+        timeout = 30;
+      };
+      networks = {
+        "10-wan" = {
+          matchConfig.Name = "enp10s0";
+          networkConfig = {
+            # start a DHCP Client for IPv4 Addressing/Routing
+            DHCP = "ipv4";
+            LinkLocalAddressing = "ipv4";
+            IPv6AcceptRA = false;
+            DNSOverTLS = true;
+            DNSSEC = true;
+            DNS = inputs.nix-secrets.networking.dns;
+          };
+          # make routing on this interface a dependency for network-online.target
+          linkConfig.RequiredForOnline = "routable";
+        };
+      };
+    };
+  };
+
+  networking = {
+    useDHCP = lib.mkDefault false;
+    interfaces = {
+      enp38s0.useDHCP = lib.mkDefault false;
+      enp39s0.useDHCP = lib.mkDefault false;
+      wlo1.useDHCP = lib.mkDefault false;
+    };
+    nameservers = inputs.nix-secrets.networking.dns;
+  };
+
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = ["~."];
+    fallbackDns = inputs.nix-secrets.networking.dns;
+    extraConfig = ''
+      DNSOverTLS=yes
+    '';
+  };
+
+  services.btrfs = {
+    autoScrub = {
+      enable = true;
+      interval = "weekly";
+      fileSystems = ["/"];
+    };
+  };
+
+  systemd = {
+    network = {
+      enable = true;
+      wait-online = {
+        enable = true;
+        anyInterface = true;
+        timeout = 30;
+      };
+      networks = {
+        "10-wan" = {
+          matchConfig.Name = "enp10s0";
+          networkConfig = {
+            # start a DHCP Client for IPv4 Addressing/Routing
+            DHCP = "ipv4";
+            LinkLocalAddressing = "ipv4";
+            IPv6AcceptRA = false;
+            DNSOverTLS = true;
+            DNSSEC = true;
+            DNS = inputs.nix-secrets.networking.dns;
+          };
+          # make routing on this interface a dependency for network-online.target
+          linkConfig.RequiredForOnline = "routable";
+        };
+      };
+    };
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
+  # networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp10s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp11s0.useDHCP = lib.mkDefault true;
 
