@@ -49,3 +49,12 @@ end, { desc = 'Terminal' })
 map('n', '<leader>gs', function()
   Snacks.terminal('tig status')
 end, { desc = 'Git Status' })
+
+-- clipboard-write
+map({ 'n', 'v' }, 'y', '"+y', { remap = false })
+map({ 'n', 'v' }, 'd', '"+d', { remap = false })
+map({ 'n', 'v' }, 'x', '"+x', { remap = false })
+map({ 'n', 'v' }, 'X', '"+X', { remap = false })
+map('n', 'p', '"+p', { remap = false })
+map('n', 'P', '"+P', { remap = false })
+map('n', 'dd', '"+dd', { remap = false })
