@@ -60,6 +60,11 @@ in
         then inputs.lanzaboote.nixosModules.lanzaboote
         else {}
       )
+      (
+        if !darwin && !isWSL
+        then inputs.nix-ld.nixosModules.nix-ld
+        else {}
+      )
 
       machineConfig
       userOSConfig

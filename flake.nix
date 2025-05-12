@@ -55,6 +55,10 @@
       url = "git+file:///home/terrencelam/dev/nix-secrets?shallow=1&ref=main";
       inputs = {};
     };
+    nix-ld = {
+      url = "github:Mic92/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {

@@ -21,6 +21,7 @@ in {
         thunar-volman
       ];
     };
+    nix-ld.dev.enable = true;
   };
 
   services = {
