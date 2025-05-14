@@ -46,9 +46,8 @@
   networking = {
     useDHCP = lib.mkDefault false;
     interfaces = {
-      enp38s0.useDHCP = lib.mkDefault false;
-      enp39s0.useDHCP = lib.mkDefault false;
-      wlo1.useDHCP = lib.mkDefault false;
+      enp10s0.useDHCP = lib.mkDefault false;
+      wlp11s0.useDHCP = lib.mkDefault false;
     };
     nameservers = inputs.nix-secrets.networking.dns;
   };
