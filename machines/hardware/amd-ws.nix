@@ -7,13 +7,15 @@
   modulesPath,
   inputs,
   ...
-}: {
+}: let
+  dns = inputs.nix-secrets.networking.dns;
+  dnsP = inputs.nix-secrets.networking.dnsP;
+in {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-amd"];
   boot.extraModulePackages = [];
   boot.initrd.systemd = {
@@ -34,7 +36,7 @@
             IPv6AcceptRA = false;
             DNSOverTLS = true;
             DNSSEC = true;
-            DNS = inputs.nix-secrets.networking.dns;
+            DNS = dns;
           };
           # make routing on this interface a dependency for network-online.target
           linkConfig.RequiredForOnline = "routable";
@@ -49,17 +51,15 @@
       enp10s0.useDHCP = lib.mkDefault false;
       wlp11s0.useDHCP = lib.mkDefault false;
     };
-    nameservers = inputs.nix-secrets.networking.dns;
+    nameservers = dns;
   };
 
   services.resolved = {
     enable = true;
     dnssec = "true";
     domains = ["~."];
-    fallbackDns = inputs.nix-secrets.networking.dns;
-    extraConfig = ''
-      DNSOverTLS=yes
-    '';
+    fallbackDns = dns;
+    dnsovertls = "true";
   };
 
   services.btrfs = {
@@ -67,6 +67,27 @@
       enable = true;
       interval = "weekly";
       fileSystems = ["/"];
+    };
+  };
+
+  networking.wireguard = {
+    enable = true;
+    useNetworkd = true;
+    interfaces = {
+      wg0 = {
+        ips = inputs.nix-secrets.networking.wireguard.wg0.ips;
+        listenPort = inputs.nix-secrets.networking.wireguard.wg0.listenPort;
+        privateKeyFile = "/etc/wireguard/private.key";
+        peers = [
+          {
+            publicKey = inputs.nix-secrets.networking.wireguard.wg0.publicKey;
+            allowedIPs = inputs.nix-secrets.networking.wireguard.wg0.allowedIPs;
+            endpoint = inputs.nix-secrets.networking.wireguard.wg0.endpoint;
+            presharedKeyFile = "/etc/wireguard/preshared.key";
+            persistentKeepalive = 25;
+          }
+        ];
+      };
     };
   };
 
@@ -88,7 +109,7 @@
             IPv6AcceptRA = false;
             DNSOverTLS = true;
             DNSSEC = true;
-            DNS = inputs.nix-secrets.networking.dns;
+            DNS = dns;
           };
           # make routing on this interface a dependency for network-online.target
           linkConfig.RequiredForOnline = "routable";
