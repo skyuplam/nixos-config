@@ -717,10 +717,10 @@
     },
     "nix-secrets": {
       "locked": {
-        "lastModified": 1747294866,
-        "narHash": "sha256-tFQhUtLvdn8w8GDjN3jhegBblY+lzK+3Ptb7L79yeyI=",
+        "lastModified": 1747297464,
+        "narHash": "sha256-EtR0Al5Wf0i4DIUKCQ8weh3TorDojPNSbRnsFBgj0tk=",
         "ref": "main",
-        "rev": "6d69d2268e2f175f547ebbdbb7619e022c6f955d",
+        "rev": "9d4f7a76d837b1ef487175dfea23432a600078fa",
         "shallow": true,
         "type": "git",
         "url": "file:///home/terrencelam/dev/nix-secrets"
