@@ -15,7 +15,7 @@
       "signal"
       "stats"
       "syncthing"
-      "bitwarden"
+      "keyguard"
     ];
     taps = [
       "krtirtho/apps"
