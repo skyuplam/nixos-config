@@ -28,6 +28,7 @@ local spec = {
 }
 
 ---@param method string|string[]
+---@param buffer integer
 function M.has(buffer, method)
   if type(method) == 'table' then
     for _, m in ipairs(method) do
@@ -38,9 +39,9 @@ function M.has(buffer, method)
     return false
   end
   method = method:find('/') and method or 'textDocument/' .. method
-  local clients = require('utils.lsp').get_clients({ bufnr = buffer })
+  local clients = vim.lsp.get_clients({ bufnr = buffer })
   for _, client in ipairs(clients) do
-    if client.supports_method(method) then
+    if client.supports_method(method, buffer) then
       return true
     end
   end
