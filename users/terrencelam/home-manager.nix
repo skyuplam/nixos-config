@@ -840,10 +840,12 @@ in {
     hyprland = {
       enable = isLinux && !isWSL;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       settings = {
         source = "./hypr.conf";
       };
       systemd.enable = false;
+      xwayland.enable = false;
     };
   };
 
