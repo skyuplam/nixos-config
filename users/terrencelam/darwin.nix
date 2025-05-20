@@ -47,6 +47,7 @@
     shell = pkgs.zsh;
   };
   environment.pathsToLink = ["/share/zsh"];
+  system.primaryUser = "terrencelam";
 
   services = {
     yabai = {
