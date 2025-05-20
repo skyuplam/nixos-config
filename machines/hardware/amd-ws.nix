@@ -16,7 +16,7 @@ in {
   ];
 
   boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
-  boot.kernelModules = ["kvm-amd"];
+  boot.kernelModules = ["kvm-amd" "wireguard"];
   boot.extraModulePackages = [];
   boot.initrd.systemd = {
     network = {
@@ -70,26 +70,7 @@ in {
     };
   };
 
-  networking.wireguard = {
-    enable = true;
-    useNetworkd = true;
-    interfaces = {
-      wg0 = {
-        ips = inputs.nix-secrets.networking.wireguard.wg0.ips;
-        listenPort = inputs.nix-secrets.networking.wireguard.wg0.listenPort;
-        privateKeyFile = "/etc/wireguard/private.key";
-        peers = [
-          {
-            publicKey = inputs.nix-secrets.networking.wireguard.wg0.publicKey;
-            allowedIPs = inputs.nix-secrets.networking.wireguard.wg0.allowedIPs;
-            endpoint = inputs.nix-secrets.networking.wireguard.wg0.endpoint;
-            presharedKeyFile = "/etc/wireguard/preshared.key";
-            persistentKeepalive = 25;
-          }
-        ];
-      };
-    };
-  };
+  networking.hosts = inputs.nix-secrets.networking.hosts;
 
   systemd = {
     network = {
@@ -99,20 +80,72 @@ in {
         anyInterface = true;
         timeout = 30;
       };
+      netdevs = {
+        "99-wg0" = {
+          netdevConfig = {
+            Kind = "wireguard";
+            Name = "wg0";
+            MTUBytes = "1300";
+            Description = "WireGuard tunnel wg0";
+          };
+          wireguardConfig = {
+            ListenPort = inputs.nix-secrets.networking.wireguard.wg0.listenPort;
+            PrivateKeyFile = "/etc/wireguard/private.key";
+            FirewallMark = 34952;
+          };
+          wireguardPeers = [
+            {
+              PublicKey = inputs.nix-secrets.networking.wireguard.wg0.publicKey;
+              AllowedIPs = inputs.nix-secrets.networking.wireguard.wg0.allowedIPs;
+              Endpoint = inputs.nix-secrets.networking.wireguard.wg0.endpoint;
+              PresharedKeyFile = "/etc/wireguard/preshared.key";
+              PersistentKeepalive = 25;
+              RouteTable = 1000;
+            }
+          ];
+        };
+      };
       networks = {
         "10-wan" = {
           matchConfig.Name = "enp10s0";
+          domains = ["~."];
           networkConfig = {
             # start a DHCP Client for IPv4 Addressing/Routing
             DHCP = "ipv4";
+            DNSDefaultRoute = "yes";
             LinkLocalAddressing = "ipv4";
-            IPv6AcceptRA = false;
-            DNSOverTLS = true;
-            DNSSEC = true;
+            IPv6AcceptRA = "no";
+            DNSOverTLS = "yes";
+            DNSSEC = "yes";
             DNS = dns;
           };
           # make routing on this interface a dependency for network-online.target
           linkConfig.RequiredForOnline = "routable";
+        };
+        "50-wg0" = {
+          matchConfig.Name = "wg0";
+          address = inputs.nix-secrets.networking.wireguard.wg0.ips;
+          # gateway = inputs.nix-secrets.networking.wireguard.wg0.gateway;
+          dns = dns;
+          domains = ["~."];
+          networkConfig = {
+            DNSDefaultRoute = "no";
+          };
+          routingPolicyRules = [
+            {
+              FirewallMark = 34952;
+              InvertRule = "yes";
+              Table = 1000;
+              Priority = 10;
+            }
+          ];
+          # routes = [
+          #   {
+          #     Gateway = inputs.nix-secrets.networking.wireguard.wg0.gateway;
+          #     GatewayOnLink = "yes";
+          #     Table = 1000;
+          #   }
+          # ];
         };
       };
     };
