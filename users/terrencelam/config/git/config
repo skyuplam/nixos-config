@@ -41,6 +41,9 @@
   ci = commit                       # commit
   amend = commit --amend            # amend your last commit
 
+  # commit with last in-progress message
+  recommit =!git commit -eF $(git rev-parse --git-dir)/COMMIT_EDITMSG
+
   # checkout
   co = checkout                     # checkout
   nb = checkout -b                  # create and switch to a new branch (mnemonic: "git new branch branchname...")
