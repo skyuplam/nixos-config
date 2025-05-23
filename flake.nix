@@ -51,8 +51,9 @@
     nil = {
       url = "github:oxalica/nil";
     };
+    # FIXME: https://github.com/NixOS/nix/issues/12281
     nix-secrets = {
-      url = "git+file:///home/terrencelam/dev/nix-secrets?shallow=1&ref=main";
+      url = "git+file:./../nix-secrets?shadow=1&ref=main";
       inputs = {};
     };
     nix-ld = {
