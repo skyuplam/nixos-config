@@ -20,3 +20,4 @@ shell-integration-features = no-cursor
 clipboard-read = allow
 clipboard-write = allow
 copy-on-select = clipboard
+app-notifications = no-clipboard-copy
