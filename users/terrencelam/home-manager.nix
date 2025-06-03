@@ -404,6 +404,8 @@ in {
               export HOMEBREW_NO_ANALYTICS=1
               # Homebrew
               export PATH="$PATH:/opt/homebrew/bin"
+              export LIBRARY_PATH=$LIBRARY_PATH:${pkgs.libiconv}/lib
+              export LDFLAGS="-L${pkgs.libiconv}/lib"
             ''
             else ""
           );
