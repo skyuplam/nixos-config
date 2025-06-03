@@ -284,7 +284,6 @@ in {
           pkgs.jq
           # pkgs.nodePackages.write-good
           # pkgs.efm-langserver
-          pkgs.rustup
           pkgs.gitlint
           # pkgs.selene
           pkgs.dotenv-linter
