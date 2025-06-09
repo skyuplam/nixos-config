@@ -4,6 +4,7 @@
       graphviz
       rustup
       wasm-bindgen-cli
+      binaryen
     ];
   };
 }
