@@ -16,6 +16,7 @@
       "stats"
       "syncthing"
       "keyguard"
+      "openscad"
     ];
     taps = [
       "krtirtho/apps"
