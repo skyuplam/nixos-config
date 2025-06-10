@@ -20,6 +20,14 @@ return {
           type = 'binary',
           custom_server_filepath = vim.env.COPILOT_PATH,
         },
+
+        server_opts_overrides = {
+          settings = {
+            telemetry = {
+              telemetryLevel = 'off',
+            },
+          },
+        },
       },
     },
   },
