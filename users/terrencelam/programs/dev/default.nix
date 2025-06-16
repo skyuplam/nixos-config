@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./cad.nix
     ./doc.nix
     ./lua.nix
     ./nix.nix

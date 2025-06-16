@@ -52,6 +52,7 @@ return {
       lsp_format = 'fallback',
     },
     formatters_by_ft = {
+      openscad = { lsp_format = 'prefer' },
       lua = { 'stylua' },
       -- You can customize some of the format options for the filetype (:help conform.format)
       rust = { 'rustfmt', lsp_format = 'fallback' },
