@@ -45,9 +45,19 @@
   users.users.terrencelam = {
     home = "/Users/terrencelam";
     # https://daiderd.com/nix-darwin/manual/index.html#opt-users.users._name_.shell
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
-  environment.pathsToLink = ["/share/zsh"];
+  programs.fish.enable = true;
+  # fish is the default shell on Mac and we want to make sure that we're
+  # configuring the rc correctly with nix-darwin paths.
+  programs.fish.loginShellInit = ''
+    # Nix
+    if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+      . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
+    end
+    # End Nix
+  '';
+  environment.pathsToLink = ["/share/fish"];
   system.primaryUser = "terrencelam";
 
   services = {

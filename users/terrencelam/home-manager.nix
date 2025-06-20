@@ -243,7 +243,6 @@ in {
           pkgs.libiconv
           pkgs.go
           pkgs.nb
-          pkgs.lsd
           pkgs.luajitPackages.luarocks
           # pkgs.lnav  -- failed to build for aarch64-darwin
           pkgs.ripgrep # better version of `grep`
@@ -365,7 +364,7 @@ in {
   programs =
     {
       zsh = {
-        enable = true;
+        enable = false;
         autosuggestion = {
           enable = true;
         };
@@ -415,6 +414,16 @@ in {
         };
       };
 
+      fish = {
+        enable = true;
+        generateCompletions = true;
+      };
+
+      lsd = {
+        enable = true;
+        enableFishIntegration = true;
+      };
+
       bat = {
         enable = true;
         config = {
@@ -441,11 +450,10 @@ in {
       direnv = {
         enable = true;
         nix-direnv.enable = true;
-        enableZshIntegration = true;
       };
       fzf = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = true;
       };
       password-store = {
         enable = true;
@@ -455,20 +463,19 @@ in {
       zellij = {
         enable = true;
         enableBashIntegration = false;
-        enableZshIntegration = false;
+        enableFishIntegration = false;
       };
       zoxide.enable = true;
       yazi = {
         enable = true;
-        enableZshIntegration = true;
+        enableFishIntegration = true;
       };
       wezterm = {
         enable = isDarwin;
-        enableZshIntegration = true;
       };
       ghostty = {
         enable = isLinux && !isWSL;
-        enableZshIntegration = true;
+        enableFishIntegration = true;
         installBatSyntax = true;
       };
       zathura = {
@@ -535,6 +542,7 @@ in {
       # https://rycee.gitlab.io/home-manager/options.html#opt-programs.starship.enable
       starship = {
         enable = true;
+        enableFishIntegration = true;
         settings = {
           command_timeout = 1000;
           directory.fish_style_pwd_dir_length = 1; # turn on fish directory truncation
@@ -855,7 +863,7 @@ in {
       enable = isLinux;
       pinentry.package = pkgs.pinentry-curses;
       enableScDaemon = true;
-      enableZshIntegration = true;
+      enableFishIntegration = true;
       enableSshSupport = true;
       enableExtraSocket = true;
     };

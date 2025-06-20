@@ -7,9 +7,9 @@ in {
   # Add ~/.local/bin to PATH
   environment.localBinInPath = true;
 
-  # Since we're using zsh as our shell
+  # Since we're using fish as our shell
   programs = {
-    zsh.enable = true;
+    fish.enable = true;
     # Needed to enable gtk
     dconf.enable = true;
 
@@ -37,7 +37,7 @@ in {
         home = "/home/terrencelam";
         group = "terrencelam";
         extraGroups = ["wheel" "video" "docker"];
-        shell = pkgs.zsh;
+        shell = pkgs.fish;
 
         openssh.authorizedKeys.keys = keys;
       };
