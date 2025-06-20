@@ -13,7 +13,7 @@ nix build ./\#darwinConfigurations.macbook-pro-m2.system
 - Switch to the new setup
 
 ```sh
-./result/sw/bin/darwin-rebuild switch --flake ./\#macbook-pro-m2
+sudo darwin-rebuild switch --flake .#macbook-pro-m2
 ```
 
 ## Setup a VM with NixOS on a macOS with UTM
