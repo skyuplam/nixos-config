@@ -299,24 +299,24 @@ in {
           pkgs.deno
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
-          pkgs.grim
-          pkgs.swayidle
-          pkgs.wl-clipboard
           pkgs.eww
-          pkgs.libnotify
-          pkgs.sound-theme-freedesktop
           pkgs.foliate
-          pkgs.xdg-utils
-          pkgs.qt6.qtwayland
-          pkgs.libsForQt5.qt5.qtwayland
           pkgs.freecad
-          pkgs.slurp
           pkgs.glxinfo
+          pkgs.grim
+          pkgs.libnotify
+          pkgs.libsForQt5.qt5.qtwayland
           pkgs.libusb1
           pkgs.libva-utils
-          pkgs.wl-screenrec
-          pkgs.usbutils
+          pkgs.qt6.qtwayland
+          pkgs.slurp
+          pkgs.sound-theme-freedesktop
+          pkgs.swayidle
           pkgs.testdisk # data recovery
+          pkgs.usbutils
+          pkgs.wl-clipboard
+          pkgs.wl-screenrec
+          pkgs.xdg-utils
         ])
         ++ (lib.optionals isDarwin) [
           pkgs.iina # media player
