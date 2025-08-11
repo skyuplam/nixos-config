@@ -9,7 +9,8 @@
   ...
 }: let
   dns = inputs.nix-secrets.networking.dns;
-  dnsP = inputs.nix-secrets.networking.dnsP;
+  # FIXME: Cannot use the private dns to the whole system
+  # dnsP = inputs.nix-secrets.networking.dnsP;
 in {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
