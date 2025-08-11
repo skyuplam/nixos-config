@@ -77,6 +77,20 @@
           type = "-";
           value = 1;
         }
+        # Set soft' and a 'hard' limit for number of files a process may have opened at a time
+        # To avoid "Too many open file" error
+        {
+          domain = "*";
+          type = "soft";
+          item = "nofile";
+          value = "65536";
+        }
+        {
+          domain = "*";
+          type = "hard";
+          item = "nofile";
+          value = "1048576";
+        }
       ];
       services = {
         swaylock = {};
