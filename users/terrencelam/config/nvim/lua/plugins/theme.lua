@@ -2,6 +2,7 @@ return {
   'catppuccin/nvim',
   name = 'catppuccin',
   opts = {
+    flavour = 'mocha',
     transparent_background = true,
     float = {
       transparent = true, -- enable transparent floating windows
@@ -11,11 +12,10 @@ return {
     integrations = {
       telescope = {
         enabled = true,
-        -- style = "nvchad"
       },
+      which_key = true,
       gitsigns = true,
-      nvimtree = false,
-      blink_cmp = true,
+      blink_cmp = { style = 'bordered' },
       treesitter = true,
       diffview = true,
       snacks = {
