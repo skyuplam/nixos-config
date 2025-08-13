@@ -10,18 +10,6 @@
   ...
 }: let
   inherit (pkgs.stdenv) isDarwin isLinux;
-
-  # For our MANPAGER env var
-  # https://github.com/sharkdp/bat/issues/1145
-  manpager = pkgs.writeShellScriptBin "manpager" (
-    if isDarwin
-    then ''
-      sh -c 'col -bx | bat -l man -p'
-    ''
-    else ''
-      exec cat "$@" | col -bx | bat --language man --style plain --pager "$PAGER"
-    ''
-  );
 in {
   imports = [
     ./programs
@@ -179,7 +167,9 @@ in {
         LC_CTYPE = "en_US.UTF-8";
         LC_ALL = "en_US.UTF-8";
         PAGER = "less -FirSwX";
-        MANPAGER = "${manpager}/bin/manpager";
+        VISUAL = "$EDITOR";
+        GIT_EDITOR = "$EDITOR";
+        MANPAGER = "$EDITOR +Man!";
         SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
           if isDarwin
           then "dylib"
