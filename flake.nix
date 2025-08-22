@@ -21,8 +21,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    zig.url = "github:mitchellh/zig-overlay";
-    zls.url = "github:zigtools/zls";
+    # zig.url = "github:mitchellh/zig-overlay";
+    # zls.url = "github:zigtools/zls";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,13 +65,13 @@
   outputs = inputs @ {
     nixpkgs,
     nixpkgs-stable,
-    zls,
+    # zls,
     ...
   }: let
     overlays = [
       # inputs.neovim-nightly-overlay.overlays.default
-      inputs.zig.overlays.default
-      (_final: _prev: {inherit zls;})
+      # inputs.zig.overlays.default
+      # (_final: _prev: {inherit zls;})
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev) system;};})
       # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})

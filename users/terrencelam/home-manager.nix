@@ -247,10 +247,10 @@ in {
           pkgs.wasm-pack
           pkgs.nmap
           pkgs.presenterm
-          # https://github.com/mitchellh/zig-overlay
-          # latest nightly release
-          pkgs.zigpkgs.master
-          pkgs.zls
+          # # https://github.com/mitchellh/zig-overlay
+          # # latest nightly release
+          # pkgs.zigpkgs.master
+          # pkgs.zls
           pkgs.qemu
           pkgs.sops
           pkgs.age
