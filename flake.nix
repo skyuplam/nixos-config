@@ -60,6 +60,9 @@
       url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    playwright = {
+      url = "github:pietdevries94/playwright-web-flake/1.51.1";
+    };
   };
 
   outputs = inputs @ {
@@ -76,6 +79,7 @@
       # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
       (_final: prev: {nil = inputs.nil.packages.${prev.system}.default;})
+      (_final: prev: {inherit (inputs.playwright.packages.${prev.system}) playwright-test playwright-driver;})
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;

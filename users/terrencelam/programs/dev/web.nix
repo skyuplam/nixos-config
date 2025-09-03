@@ -12,4 +12,12 @@ in {
       vscode-langservers-extracted
     ];
   };
+  programs.fish = {
+    shellInit = ''
+      set -x PLAYWRIGHT_NODEJS_PATH ${nodejs}/bin/node
+      set -x PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD 1
+      set -x PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS true
+      set -x PLAYWRIGHT_BROWSERS_PATH ${pkgs.playwright-driver.browsers}
+    '';
+  };
 }
