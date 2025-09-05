@@ -712,6 +712,17 @@ in {
         package = inputs.anyrun.packages.${pkgs.system}.default;
         enable = isLinux && !isWSL;
         config = {
+          x = {fraction = 0.5;};
+          y = {fraction = 0.02;};
+          width = {fraction = 0.3;};
+          hideIcons = false;
+          ignoreExclusiveZones = false;
+          layer = "overlay";
+          hidePluginInfo = true;
+          closeOnClick = true;
+          showResultsImmediately = false;
+          maxEntries = 10;
+
           plugins = with inputs.anyrun.packages.${pkgs.system}; [
             applications
             rink
@@ -720,11 +731,6 @@ in {
             dictionary
             websearch
           ];
-          width.fraction = 0.3;
-          y.fraction = 0.02;
-          hidePluginInfo = true;
-          closeOnClick = true;
-          maxEntries = 10;
         };
         extraConfigFiles = {
           "applications.ron".text = ''
@@ -734,7 +740,7 @@ in {
               max_entries: 10,
               // The terminal used for running terminal based desktop entries, if left as `None` a static list of terminals is used
               // to determine what terminal to use.
-              terminal: Some("footclient"),
+              terminal: Some(Terminal(command: "ghostty", args: "-e {}")),
             )
           '';
           "websearch.ron".text = ''
@@ -769,53 +775,62 @@ in {
           @define-color fg-col2 #F28FAD;
 
           * {
-            transition: 200ms ease;
             font-family: "JetBrainsMono Nerd Font";
             font-size: 1.3rem;
           }
 
-          #window {
+          window {
             background: transparent;
           }
 
-          #plugin,
-          #main {
+          .plugin,
+          .main {
             border: 3px solid @border-col;
             color: @fg-col;
             background-color: @bg-col;
           }
           /* anyrun's input window - Text */
-          #entry {
+          .entry {
             color: @fg-col;
             background-color: @bg-col;
           }
 
           /* anyrun's output matches entries - Base */
-          #match {
+          .match {
             color: @fg-col;
             background: @bg-col;
           }
 
           /* anyrun's selected entry - Red */
-          #match:selected {
+          .match:selected {
             color: @fg-col2;
             background: @selected-col;
           }
 
-          #match {
+          .matches {
             padding: 3px;
             border-radius: 16px;
           }
 
-          #entry, #plugin:hover {
+          .entry, .plugin:hover {
             border-radius: 16px;
           }
 
-          box#main {
+          box.main {
             background: rgba(30, 30, 46, 0.7);
             border: 1px solid @border-col;
             border-radius: 15px;
             padding: 5px;
+          }
+
+          @keyframes fade {
+            0% {
+              opacity: 0;
+            }
+
+            100% {
+              opacity: 1;
+            }
           }
         '';
       };
