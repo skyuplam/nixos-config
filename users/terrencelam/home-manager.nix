@@ -614,7 +614,7 @@ in {
 
       ssh = {
         enable = true;
-        hashKnownHosts = true;
+        matchBlocks."*".hashKnownHosts = true;
         extraConfig = ''
           # Host keys the client accepts - order here is honored by OpenSSH
           HostKeyAlgorithms ssh-ed25519-cert-v01@openssh.com,ssh-rsa-cert-v01@openssh.com,ssh-ed25519,ssh-rsa,ecdsa-sha2-nistp521-cert-v01@openssh.com,ecdsa-sha2-nistp384-cert-v01@openssh.com,ecdsa-sha2-nistp256-cert-v01@openssh.com,ecdsa-sha2-nistp521,ecdsa-sha2-nistp384,ecdsa-sha2-nistp256
