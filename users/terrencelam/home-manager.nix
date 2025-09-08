@@ -866,6 +866,7 @@ in {
   services = {
     gpg-agent = {
       enable = isLinux;
+      defaultCacheTtl = 1800;
       pinentry.package = pkgs.pinentry-curses;
       enableScDaemon = true;
       enableFishIntegration = true;
