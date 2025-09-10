@@ -61,7 +61,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     playwright = {
-      url = "github:pietdevries94/playwright-web-flake/1.51.1";
+      url = "github:pietdevries94/playwright-web-flake/1.55.0";
     };
   };
 
