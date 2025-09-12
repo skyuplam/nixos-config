@@ -222,6 +222,7 @@ in {
           pkgs.chafa
           pkgs.du-dust # fancy version of `du`
           pkgs.fd # fancy version of `find`
+          pkgs.unzip
 
           # Fonts
           pkgs.nerd-fonts.noto
