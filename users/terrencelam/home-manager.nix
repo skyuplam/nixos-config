@@ -202,9 +202,9 @@ in {
           ".mozilla/native-messaging-hosts/ff2mpv.json".source = "${pkgs.ff2mpv}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
         }
         // lib.optionalAttrs isDarwin {
-          "Library/Application Support/Waterfox/NativeMessagingHosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
-          "Library/Application Support/Waterfox/NativeMessagingHosts/passff.json".source = "${pkgs.passff-host}/lib/mozilla/native-messaging-hosts/passff.json";
-          "Library/Application Support/Waterfox/NativeMessagingHosts/ff2mpv.json".source = "${pkgs.ff2mpv}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
+          "Library/Application Support/Firefox/NativeMessagingHosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+          "Library/Application Support/Firefox/NativeMessagingHosts/passff.json".source = "${pkgs.passff-host}/lib/mozilla/native-messaging-hosts/passff.json";
+          "Library/Application Support/Firefox/NativeMessagingHosts/ff2mpv.json".source = "${pkgs.ff2mpv}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
         };
 
       packages =
