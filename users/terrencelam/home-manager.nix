@@ -611,6 +611,7 @@ in {
 
       ssh = {
         enable = true;
+        enableDefaultConfig = false;
         matchBlocks."*".hashKnownHosts = true;
         extraConfig = ''
           # Host keys the client accepts - order here is honored by OpenSSH
