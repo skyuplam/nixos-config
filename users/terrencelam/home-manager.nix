@@ -175,11 +175,7 @@ in {
           then "dylib"
           else "so"
         }";
-        COPILOT_PATH = "${
-          if isLinux
-          then pkgs.copilot-language-server-fhs
-          else pkgs.copilot-language-server
-        }/bin/copilot-language-server";
+        COPILOT_PATH = "${pkgs.copilot-language-server}/bin/copilot-language-server";
         # Failed to build target aarch64-darwin
         VSCODE_LLDB_PATH =
           if isDarwin
