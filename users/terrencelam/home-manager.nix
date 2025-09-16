@@ -404,6 +404,18 @@ in {
       fish = {
         enable = true;
         generateCompletions = true;
+        shellInit =
+          ''
+          ''
+          + (
+            if isDarwin
+            then ''
+              set -gx HOMEBREW_NO_ANALYTICS 1
+              # Setup brew
+              eval "$(/opt/homebrew/bin/brew shellenv)"
+            ''
+            else ""
+          );
       };
 
       lsd = {
