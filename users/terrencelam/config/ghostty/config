@@ -9,7 +9,7 @@ mouse-scroll-multiplier = 2
 cursor-style = block
 
 # Theme
-theme = "Tokyonight Night"
+theme = catppuccin-mocha
 cursor-invert-fg-bg = true
 # window-theme = ghostty
 background-opacity = 0.9
