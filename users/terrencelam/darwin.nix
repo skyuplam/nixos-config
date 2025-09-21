@@ -5,26 +5,27 @@
   # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;
-    brews = ["kanata"];
+    brews = ["kanata" "skhd-zig"];
     casks = [
       "1password"
       "google-chrome"
       "keepingyouawake"
-      "waterfox"
+      "keyguard"
       "linearmouse"
+      "openscad"
       "signal"
       "stats"
       "syncthing"
-      "keyguard"
-      "openscad"
+      "waterfox"
     ];
     taps = [
+      "jackielii/tap"
       "krtirtho/apps"
     ];
     onActivation = {
-      upgrade = true;
       autoUpdate = true;
       cleanup = "zap";
+      upgrade = true;
     };
   };
 
@@ -70,13 +71,13 @@
         path = ./config/yabai/yabairc;
       });
     };
-    skhd = {
-      enable = true;
-      package = pkgs.skhd;
-      skhdConfig = builtins.readFile (builtins.path {
-        name = "skhd-config";
-        path = ./config/skhd/skhdrc;
-      });
-    };
+    # skhd = {
+    #   enable = true;
+    #   package = pkgs.skhd-zig;
+    #   skhdConfig = builtins.readFile (builtins.path {
+    #     name = "skhd-config";
+    #     path = ./config/skhd/skhdrc;
+    #   });
+    # };
   };
 }
