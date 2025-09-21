@@ -19,8 +19,8 @@ return {
       -- refer to the configuration section below
       image = { enabled = true },
       bigfile = { enabled = true },
-      dashboard = { enabled = true },
-      explorer = { enabled = true },
+      dashboard = { enabled = false },
+      explorer = { enabled = false },
       indent = { enabled = true, animate = { enabled = false } },
       input = { enabled = true },
       notifier = { enabled = true, timeout = 3000 },
