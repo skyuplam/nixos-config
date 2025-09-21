@@ -59,6 +59,14 @@
     # End Nix
   '';
   environment.pathsToLink = ["/share/fish"];
+  # Determinate Systems config
+  environment.etc."determinate/config.json".text = ''
+    {
+      "garbageCollector": {
+        "strategy": "automatic"
+      }
+    }
+  '';
   system.primaryUser = "terrencelam";
 
   services = {

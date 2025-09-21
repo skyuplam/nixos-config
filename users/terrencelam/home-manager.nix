@@ -416,6 +416,9 @@ in {
               set -gx HOMEBREW_NO_ANALYTICS 1
               # Setup brew
               eval "$(/opt/homebrew/bin/brew shellenv)"
+              # Setup Determinate System
+              # https://docs.determinate.systems/determinate-nix/#determinate-nixd-completion
+              eval "$(determinate-nixd completion fish)"
             ''
             else ""
           );
