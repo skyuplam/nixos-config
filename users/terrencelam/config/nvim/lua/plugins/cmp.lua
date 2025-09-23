@@ -142,7 +142,6 @@ return {
       implementation = 'prefer_rust_with_warning',
       sorts = {
         'exact',
-        -- defaults
         'score',
         'sort_text',
       },

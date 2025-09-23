@@ -222,7 +222,7 @@ return {
       'force',
       {},
       vim.lsp.protocol.make_client_capabilities(),
-      has_blink and blink.get_lsp_capabilities() or {},
+      has_blink and blink.get_lsp_capabilities({}, false) or {},
       opts.capabilities or {}
     )
 
