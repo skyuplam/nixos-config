@@ -43,56 +43,33 @@
 cmd - return : open -na Ghostty   # Launch Ghostty
 cmd - b : open -na Firefox        # Launch Firefox
 # Focus window
-cmd - h : yabai -m window --focus west || yabai -m display --focus west
-cmd - j : yabai -m window --focus south
-cmd - k : yabai -m window --focus north
-cmd - l : yabai -m window --focus east || yabai -m display --focus east
 
-# Focus display
-shift + ctrl + alt - h: yabai -m display --focus west
-shift + ctrl + alt - l: yabai -m display --focus east
+.define yabai_focus : yabai -m window --focus {{1}} || yabai -m display --focus {{1}}
+.define focus_recent : yabai -m window --focus recent
+.define window_action : yabai -m window --{{1}} {{2}}
+.define space_focus : yabai -m space --focus {{1}}
+.define yabai_warp : yabai -m window --warp {{1}} || begin; yabai -m window --display {{1}}; yabai -m window --focus recent; end;
+
+cmd - h : @yabai_focus("west")
+cmd - j : @yabai_focus("south")
+cmd - k : @yabai_focus("north")
+cmd - l : @yabai_focus("east")
 
 # Focus space
-ctrl - 1 : yabai -m space --focus 1
-ctrl - 2 : yabai -m space --focus 2
-ctrl - 3 : yabai -m space --focus 3
-ctrl - 4 : yabai -m space --focus 4
-ctrl - 5 : yabai -m space --focus 5
-ctrl - 6 : yabai -m space --focus 6
-ctrl - 7 : yabai -m space --focus 7
-ctrl - 8 : yabai -m space --focus 8
-
-# swap managed windows
-shift + cmd + ctrl - h : yabai -m window --swap west
-shift + cmd + ctrl - j : yabai -m window --swap south
-shift + cmd + ctrl - k : yabai -m window --swap north
-shift + cmd + ctrl - l : yabai -m window --swap east
+ctrl - 1 : @yabai_focus("1")
+ctrl - 2 : @yabai_focus("2")
+ctrl - 3 : @yabai_focus("3")
+ctrl - 4 : @yabai_focus("4")
+ctrl - 5 : @yabai_focus("5")
+ctrl - 6 : @yabai_focus("6")
+ctrl - 7 : @yabai_focus("7")
+ctrl - 8 : @yabai_focus("8")
 
 # move managed windows
-shift + cmd - h : yabai -m window --warp west || \
-                 (yabai -m window --display west; yabai -m window --focus recent);
-shift + cmd - j : yabai -m window --warp south
-shift + cmd - k : yabai -m window --warp north
-shift + cmd - l : yabai -m window --warp east || \
-                 (yabai -m window --display east; yabai -m window --focus recent);
-
-# move managed space
-shift + cmd + ctrl - 1 : yabai -m window --space 1; \
-                         yabai -m space --focus 1
-shift + cmd + ctrl - 2 : yabai -m window --space 2; \
-                         yabai -m space --focus 2
-shift + cmd + ctrl - 3 : yabai -m window --space 3; \
-                         yabai -m space --focus 3
-shift + cmd + ctrl - 4 : yabai -m window --space 4; \
-                         yabai -m space --focus 4
-shift + cmd + ctrl - 5 : yabai -m window --space 5; \
-                         yabai -m space --focus 5
-shift + cmd + ctrl - 6 : yabai -m window --space 6; \
-                         yabai -m space --focus 6
-shift + cmd + ctrl - 7 : yabai -m window --space 7; \
-                         yabai -m space --focus 7
-shift + cmd + ctrl - 8 : yabai -m window --space 8; \
-                         yabai -m space --focus 8
+cmd + ctrl - h : @yabai_warp("west")
+cmd + ctrl - j : @yabai_warp("south")
+cmd + ctrl - k : @yabai_warp("north")
+cmd + ctrl - l : @yabai_warp("east")
 
 # Toggle float
 alt - t : yabai -m window --toggle float;\
@@ -103,7 +80,6 @@ shift + alt - p : yabai -m space --toggle padding; \
                   yabai -m space --toggle gap;
 
 # Balance layout
-alt - b : yabai -m space --balance
 alt - b : yabai -m space --balance
 alt - space: yabai -m window --toggle split
 # Zoom parent
