@@ -40,8 +40,9 @@
 #
 # ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
 # Global hotkeys
-cmd - return : open -na Ghostty   # Launch Ghostty
-cmd - b : open -na Firefox        # Launch Firefox
+cmd - return : open -na Ghostty            # Launch Ghostty
+cmd - b : open -na Firefox                 # Launch Firefox
+cmd + shift - b : open -na "Google Chrome" # Launch Chrome
 # Focus window
 
 .define yabai_focus : yabai -m window --focus {{1}} || yabai -m display --focus {{1}}

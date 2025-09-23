@@ -138,17 +138,15 @@ in {
             path = ./config/mpv;
           };
         };
-        # mako = {
-        #   enable = true;
-        #   text =
-        #     builtins.readFile (builtins.path {
-        #       name = "mako-config";
-        #       path = ./config/mako/config;
-        #     })
-        #     + ''
-        #       on-notify=exec ${pkgs.mpv}/bin/mpv ${pkgs.sound-theme-freedesktop}/share/sounds/freedesktop/stereo/message.oga
-        #     '';
-        # };
+      }
+      // lib.optionalAttrs isDarwin {
+        skhd = {
+          enable = true;
+          source = builtins.path {
+            name = "skhd-config";
+            path = ./config/skhd;
+          };
+        };
       }
       // lib.optionalAttrs (isLinux && !isWSL) {
         # Workaround for Existing mimeapps.list file issue
