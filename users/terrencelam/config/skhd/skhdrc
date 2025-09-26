@@ -40,16 +40,27 @@
 #
 # ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
 # Global hotkeys
-cmd - return : open -na Ghostty            # Launch Ghostty
-cmd - b : open -na Firefox                 # Launch Firefox
-cmd + shift - b : open -na "Google Chrome" # Launch Chrome
-# Focus window
+cmd - return    : open -na Ghostty
+cmd - b         : open -na Firefox
+cmd + shift - b : open -na "Google Chrome"
+cmd - e         : open -na "Keyguard"
+cmd + shift - e : open -na "1Password"
 
-.define yabai_focus : yabai -m window --focus {{1}} || yabai -m display --focus {{1}}
-.define focus_recent : yabai -m window --focus recent
+# Modes
+:: default
+:: resizemode @
+
+# Mode Activations
+meh - s             ; resizemode
+resizemode < escape ; default
+
+# Focus window
+.define yabai_focus   : yabai -m window --focus {{1}} || yabai -m display --focus {{1}}
+.define focus_recent  : yabai -m window --focus recent
 .define window_action : yabai -m window --{{1}} {{2}}
-.define space_focus : yabai -m space --focus {{1}}
-.define yabai_warp : yabai -m window --warp {{1}} || begin; yabai -m window --display {{1}}; yabai -m window --focus recent; end;
+.define space_focus   : yabai -m space --focus {{1}}
+.define yabai_warp    : yabai -m window --warp {{1}} || begin; yabai -m window --display {{1}}; yabai -m window --focus recent; end;
+.define resize_window : yabai -m window --resize {{1}}:{{2}}:{{3}}
 
 cmd - h : @yabai_focus("west")
 cmd - j : @yabai_focus("south")
@@ -71,6 +82,12 @@ cmd + ctrl - h : @yabai_warp("west")
 cmd + ctrl - j : @yabai_warp("south")
 cmd + ctrl - k : @yabai_warp("north")
 cmd + ctrl - l : @yabai_warp("east")
+
+# Resize
+resizemode < h : @resize_window("left", "-20", "0")
+resizemode < l : @resize_window("right", "20", "0")
+resizemode < j : @resize_window("bottom", "0", "20")
+resizemode < k : @resize_window("top", "0", "-20")
 
 # Toggle float
 alt - t : yabai -m window --toggle float;\
