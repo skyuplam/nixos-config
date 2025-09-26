@@ -15,7 +15,7 @@
       "openscad"
       "signal"
       "stats"
-      "syncthing"
+      "syncthing-app"
       "waterfox"
     ];
     taps = [
