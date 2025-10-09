@@ -118,10 +118,7 @@ in {
           enable = true;
           source = builtins.path {
             name = "ghostty-config";
-            path =
-              if isDarwin
-              then ./config/ghosttyDarwin
-              else ./config/ghostty;
+            path = ./config/ghostty;
           };
         };
         swaylock = {
