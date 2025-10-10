@@ -43,11 +43,11 @@
     #   url = "github:nix-community/flake-firefox-nightly";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-    # A wayland native krunner-like runner, made with customizability in mind.
-    anyrun = {
-      url = "github:Kirottu/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # # A wayland native krunner-like runner, made with customizability in mind.
+    # anyrun = {
+    #   url = "github:Kirottu/anyrun";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     nil = {
       url = "github:oxalica/nil";
     };

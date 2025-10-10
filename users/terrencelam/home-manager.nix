@@ -717,7 +717,7 @@ in {
       };
       # launcher
       anyrun = {
-        package = inputs.anyrun.packages.${pkgs.system}.default;
+        # package = inputs.anyrun.packages.${pkgs.system}.default;
         enable = isLinux && !isWSL;
         config = {
           x = {fraction = 0.5;};
@@ -731,13 +731,13 @@ in {
           showResultsImmediately = false;
           maxEntries = 10;
 
-          plugins = with inputs.anyrun.packages.${pkgs.system}; [
-            applications
-            rink
-            shell
-            translate
-            dictionary
-            websearch
+          plugins = [
+            "${pkgs.anyrun}/lib/libapplications.so"
+            "${pkgs.anyrun}/lib/librink.so"
+            "${pkgs.anyrun}/lib/libshell.so"
+            "${pkgs.anyrun}/lib/libtranslate.so"
+            "${pkgs.anyrun}/lib/libdictionary.so"
+            "${pkgs.anyrun}/lib/libwebsearch.so"
           ];
         };
         extraConfigFiles = {

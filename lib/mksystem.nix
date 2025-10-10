@@ -65,7 +65,6 @@ in
         then inputs.nix-ld.nixosModules.nix-ld
         else {}
       )
-
       machineConfig
       userOSConfig
       home-manager.home-manager
@@ -79,6 +78,22 @@ in
           };
         };
       }
+
+      # (
+      #   if !darwin && !isWSL
+      #   then
+      #     {modulesPath, ...}: {
+      #       # Important! We disable home-manager's module to avoid option
+      #       # definition collisions
+      #       disabledModules = ["${modulesPath}/programs/anyrun.nix"];
+      #     }
+      #   else {}
+      # )
+      # (
+      #   if !darwin && !isWSL
+      #   then inputs.anyrun.homeManagerModules.default
+      #   else {}
+      # )
 
       # We expose some extra arguments so that our modules can parameterize
       # better based on these values.
