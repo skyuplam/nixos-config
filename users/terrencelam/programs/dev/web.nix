@@ -1,6 +1,12 @@
-{pkgs, ...}: let
+{
+  pkgs,
+  isWSL,
+  ...
+}: let
   nodejs = pkgs.stable.nodejs_18;
   yarn = pkgs.yarn.override {inherit nodejs;};
+
+  inherit (pkgs.stdenv) isDarwin isLinux;
 in {
   home = {
     packages = with pkgs; [
@@ -13,11 +19,14 @@ in {
     ];
   };
   programs.fish = {
-    shellInit = ''
-      set -x PLAYWRIGHT_NODEJS_PATH ${nodejs}/bin/node
-      set -x PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD 1
-      set -x PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS true
-      set -x PLAYWRIGHT_BROWSERS_PATH ${pkgs.playwright-driver.browsers}
-    '';
+    shellInit =
+      if isLinux && !isWSL
+      then ''
+        set -x PLAYWRIGHT_NODEJS_PATH ${nodejs}/bin/node
+        set -x PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD 1
+        set -x PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS true
+        set -x PLAYWRIGHT_BROWSERS_PATH ${pkgs.playwright-driver.browsers}
+      ''
+      else "";
   };
 }
