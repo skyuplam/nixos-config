@@ -3,10 +3,10 @@
   isWSL,
   ...
 }: let
-  nodejs = pkgs.stable.nodejs_18;
+  nodejs = pkgs.stable.nodejs_22;
   yarn = pkgs.yarn.override {inherit nodejs;};
 
-  inherit (pkgs.stdenv) isDarwin isLinux;
+  inherit (pkgs.stdenv) isLinux;
 in {
   home = {
     packages = with pkgs; [
