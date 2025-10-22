@@ -229,7 +229,7 @@ in {
           pkgs.go
           pkgs.nb
           pkgs.luajitPackages.luarocks
-          # pkgs.lnav  -- failed to build for aarch64-darwin
+          pkgs.lnav
           pkgs.ripgrep # better version of `grep`
           pkgs.rsync
           pkgs.sd
