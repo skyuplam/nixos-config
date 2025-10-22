@@ -442,7 +442,10 @@ in {
       };
       git = {
         enable = true;
-        delta.enable = true;
+      };
+      delta = {
+        enable = true;
+        enableGitIntegration = true;
       };
       direnv = {
         enable = true;
