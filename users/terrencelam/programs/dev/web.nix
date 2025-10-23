@@ -1,8 +1,4 @@
-{
-  pkgs,
-  isWSL,
-  ...
-}: let
+{pkgs, ...}: let
   nodejs = pkgs.stable.nodejs_22;
   yarn = pkgs.yarn.override {inherit nodejs;};
 
@@ -20,7 +16,7 @@ in {
   };
   programs.fish = {
     shellInit =
-      if isLinux && !isWSL
+      if isLinux
       then ''
         set -x PLAYWRIGHT_NODEJS_PATH ${nodejs}/bin/node
         set -x PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD 1

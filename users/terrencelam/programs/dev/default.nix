@@ -1,8 +1,4 @@
 {
-  pkgs,
-  lib,
-  ...
-}: {
   imports = [
     ./cad.nix
     ./doc.nix
