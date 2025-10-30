@@ -34,7 +34,7 @@
       material-design-icons
       nerd-fonts.jetbrains-mono
       nerd-fonts.symbols-only
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       source-han-sans
       source-han-serif
       source-sans

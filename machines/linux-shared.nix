@@ -36,7 +36,7 @@
   hardware = {
     graphics = {
       enable = true;
-      extraPackages = with pkgs; [libva vaapiVdpau libvdpau-va-gl mesa];
+      extraPackages = with pkgs; [libva libva-vdpau-driver libvdpau-va-gl mesa];
     };
   };
 

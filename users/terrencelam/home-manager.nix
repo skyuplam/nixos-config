@@ -214,7 +214,7 @@ in {
           pkgs.codespell
           pkgs.curl
           pkgs.chafa
-          pkgs.du-dust # fancy version of `du`
+          pkgs.dust # fancy version of `du`
           pkgs.fd # fancy version of `find`
           pkgs.unzip
 
@@ -287,7 +287,7 @@ in {
           pkgs.eww
           pkgs.foliate
           pkgs.freecad
-          pkgs.glxinfo
+          pkgs.mesa-demos
           pkgs.grim
           pkgs.libnotify
           pkgs.libsForQt5.qt5.qtwayland
