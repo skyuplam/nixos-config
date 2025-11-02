@@ -5,7 +5,7 @@
   # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;
-    brews = ["kanata" "skhd-zig"];
+    brews = ["kanata" "skhd-zig" "pinentry-mac"];
     casks = [
       "1password"
       "google-chrome"
