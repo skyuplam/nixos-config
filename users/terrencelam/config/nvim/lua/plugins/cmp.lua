@@ -129,6 +129,17 @@ return {
             end
             return items
           end,
+          opts = {
+            backend = {
+              -- The backend to use for searching. Defaults to "ripgrep".
+              -- Available options:
+              -- - "ripgrep", always use ripgrep
+              -- - "gitgrep", always use git grep
+              -- - "gitgrep-or-ripgrep", use git grep if possible, otherwise
+              --   use ripgrep. Uses the same options as the gitgrep backend
+              use = 'gitgrep-or-ripgrep',
+            },
+          },
         },
       },
     },
