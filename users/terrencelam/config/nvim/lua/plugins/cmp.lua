@@ -62,6 +62,10 @@ return {
       nerd_font_variant = 'mono',
     },
 
+    signature = {
+      enabled = true,
+    },
+
     -- (Default) Only show the documentation popup when manually triggered
     completion = {
       documentation = { auto_show = true },
@@ -153,7 +157,7 @@ return {
     fuzzy = {
       implementation = 'prefer_rust_with_warning',
       sorts = {
-        'exact',
+        -- 'exact',
         'score',
         'sort_text',
       },
