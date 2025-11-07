@@ -52,6 +52,8 @@ return {
         MiniTablineModifiedVisible = { fg = C.red, bg = C.none },
         MiniTablineTabpagesection = { fg = C.surface1, bg = bg_highlight },
         MiniTablineVisible = { bg = C.none },
+
+        Pmenu = { bg = C.none },
       }
     end,
   },
