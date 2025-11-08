@@ -75,11 +75,11 @@
       # inputs.neovim-nightly-overlay.overlays.default
       # inputs.zig.overlays.default
       # (_final: _prev: {inherit zls;})
-      (_final: prev: {stable = import nixpkgs-stable {inherit (prev) system;};})
+      (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
       # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
-      (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.system}.default;})
-      (_final: prev: {nil = inputs.nil.packages.${prev.system}.default;})
-      (_final: prev: {inherit (inputs.playwright.packages.${prev.system}) playwright-test playwright-driver;})
+      (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.stdenv.hostPlatform.system}.default;})
+      (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
+      (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;
