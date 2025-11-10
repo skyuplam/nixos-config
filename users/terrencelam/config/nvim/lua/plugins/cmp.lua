@@ -116,8 +116,9 @@ return {
         copilot = {
           name = 'copilot',
           module = 'blink-copilot',
-          score_offset = 100,
+          score_offset = -100,
           async = true,
+          max_items = 3,
         },
         ripgrep = {
           module = 'blink-ripgrep',
@@ -134,6 +135,8 @@ return {
             end
             return items
           end,
+          max_items = 3,
+          score_offset = -200,
           opts = {
             backend = {
               -- The backend to use for searching. Defaults to "ripgrep".
