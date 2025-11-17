@@ -169,7 +169,13 @@ return {
       cssls = {},
       html = {},
       jsonls = {},
-      yamlls = {},
+      yamlls = {
+        settings = {
+          yaml = {
+            format = { enable = false },
+          },
+        },
+      },
       marksman = {},
       markdown_oxide = {},
       harper_ls = {

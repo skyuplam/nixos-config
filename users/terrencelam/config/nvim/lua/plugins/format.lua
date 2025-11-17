@@ -60,6 +60,7 @@ return {
       json = { 'prettier', lsp_format = 'fallback' },
       jsonc = { 'prettier', lsp_format = 'fallback' },
       markdown = { 'prettier', 'injected' },
+      yaml = { 'prettier' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
         return { first(bufnr, 'prettier', 'biome'), 'injected' }
