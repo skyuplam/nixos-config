@@ -5,8 +5,10 @@ return {
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {
-      lsp = { enabled = true },
-      blink = { enabled = true },
+      completions = {
+        lsp = { enabled = true },
+        blink = { enabled = true },
+      },
     },
   },
 }
