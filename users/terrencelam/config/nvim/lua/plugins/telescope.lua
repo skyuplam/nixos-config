@@ -89,6 +89,7 @@ return {
     telescope.load_extension('zf-native')
     telescope.load_extension('live_grep_args')
     telescope.load_extension('frecency')
+    telescope.load_extension('aerial')
 
     -- Workaround for telescope border issue
     -- https://github.com/nvim-telescope/telescope.nvim/issues/3436#issuecomment-2756267300
@@ -143,5 +144,11 @@ return {
       version = '*',
     },
     { 'nvim-telescope/telescope-live-grep-args.nvim', version = '^1.0.0' },
+    {
+      'stevearc/aerial.nvim',
+      opts = {},
+      -- Optional dependencies
+      dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    },
   },
 }
