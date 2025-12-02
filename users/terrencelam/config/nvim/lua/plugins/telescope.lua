@@ -112,7 +112,7 @@ return {
     vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>', { desc = 'Buffers' })
     vim.keymap.set('n', '<leader>fc', '<cmd>Telescope command_history<CR>', { desc = 'Command history' })
     vim.keymap.set('n', '<leader>fd', '<cmd>Telescope git_status<CR>', { desc = 'Git status' })
-    -- vim.keymap.set('n', '<leader>ff', function() telescope.extensions.frecency.frecency({ workspace = 'CWD', sorter = require('telescope.config').values.file_sorter() }) end, { desc = 'Find files (frecency)' })
+    vim.keymap.set('n', '<leader>ff', function() telescope.extensions.frecency.frecency({ workspace = 'CWD', sorter = require('telescope.config').values.file_sorter() }) end, { desc = 'Find files (frecency)' })
     vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep_args<CR>', { desc = 'Grep files' })
     vim.keymap.set('n', '<leader>fj', '<cmd>Telescope jumplist<CR>', { desc = 'Jump list' })
     vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>', { desc = 'Find old files' })
