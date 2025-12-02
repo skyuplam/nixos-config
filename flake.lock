@@ -90,11 +90,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764350888,
-        "narHash": "sha256-6Rp18zavTlnlZzcoLoBTJMBahL2FycVkw2rAEs3cQvo=",
+        "lastModified": 1764627417,
+        "narHash": "sha256-D6xc3Rl8Ab6wucJWdvjNsGYGSxNjQHzRc2EZ6eeQ6l4=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "2055a08fd0e2fd41318279a5355eb8a161accf26",
+        "rev": "5a88a6eceb8fd732b983e72b732f6f4b8269bef3",
         "type": "github"
       },
       "original": {
@@ -243,11 +243,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764544324,
-        "narHash": "sha256-GVBGjO7UsmzLrlOJV8NlKSxukHaHencrJqWkCA6FkqI=",
+        "lastModified": 1764636297,
+        "narHash": "sha256-S41K55kw+hWgDfgKmZ9/fMZ3F0BQDMvqFfE120fMHeE=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "e4e25a8c310fa45f2a8339c7972dc43d2845a612",
+        "rev": "ff067cfc619fdf6f82d50344e7d19ff2323f0827",
         "type": "github"
       },
       "original": {
@@ -332,11 +332,11 @@
         "xdph": "xdph"
       },
       "locked": {
-        "lastModified": 1764515131,
-        "narHash": "sha256-gDP05ePlorViRWcDA3eYu4l+3NE53sayi6iHaaQDEMA=",
+        "lastModified": 1764607679,
+        "narHash": "sha256-1Bsem6lhJWMQmkLIml5oKOL+z1dYMewZ6ql0K35Y3TA=",
         "owner": "hyprwm",
         "repo": "Hyprland",
-        "rev": "bb963fb00263bac78a0c633d1d0d02ae4763222c",
+        "rev": "f82a8630d7a51dab4cc70924f500bf70e723db12",
         "type": "github"
       },
       "original": {
@@ -613,11 +613,11 @@
     },
     "nix-secrets": {
       "locked": {
-        "lastModified": 1755598812,
-        "narHash": "sha256-KxJgTWE5zkFj5ZLPxgxuVVOCvPol0iMXNlzziPCt90Y=",
+        "lastModified": 1747647076,
+        "narHash": "sha256-tCLnBdTokWakSTQBg9waPmfNLCheg3Gn+5OjvC2ELDE=",
         "ref": "main",
-        "rev": "1a85d4745353c0d09409b8a31ac78f32b2a58b70",
-        "revCount": 10,
+        "rev": "23e39a674a8a4a6473be6984db18207b0ce72dc6",
+        "revCount": 9,
         "type": "git",
         "url": "file:./../nix-secrets?shadow=1"
       },
@@ -709,11 +709,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1755759088,
-        "narHash": "sha256-lW2EfwKyCTye30g2yqFXFFv/yVr0G+Wna1FLfHdEhlQ=",
+        "lastModified": 1764622766,
+        "narHash": "sha256-IRgIlmkSoqlVLkYYwpkjG1PYe/aOboycP7tB5uEOfjA=",
         "owner": "pietdevries94",
         "repo": "playwright-web-flake",
-        "rev": "8cfb83f241f326b62e69597cda66ad2ea2dbf340",
+        "rev": "31e4e12d908bd0f6f4f8796b7ad76b35476838bb",
         "type": "github"
       },
       "original": {
