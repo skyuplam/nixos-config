@@ -234,6 +234,7 @@ return {
 
     local function setup(server)
       local server_opts = vim.tbl_deep_extend('force', {
+        offset_encoding = 'utf-16',
         capabilities = vim.deepcopy(capabilities),
       }, servers[server] or {})
       if server_opts.enabled == false then

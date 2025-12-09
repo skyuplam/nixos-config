@@ -2,16 +2,29 @@ return {
   'saghen/blink.cmp',
   -- optional: provides snippets for the snippet source
   dependencies = {
-    'rafamadriz/friendly-snippets',
     'mikavilpas/blink-ripgrep.nvim',
     'fang2hou/blink-copilot',
     {
       'zbirenbaum/copilot.lua',
+      dependencies = {
+        'copilotlsp-nvim/copilot-lsp',
+        init = function()
+          vim.g.copilot_nes_debounce = 500
+        end,
+      },
       cmd = 'Copilot',
       event = 'InsertEnter',
       opts = {
         suggestion = { enabled = false },
         panel = { enabled = false },
+        nes = {
+          enabled = true,
+          keymap = {
+            accept_and_goto = '<leader>p',
+            accept = false,
+            dismiss = '<Esc>',
+          },
+        },
         filetypes = {
           markdown = true,
           help = true,
@@ -20,9 +33,28 @@ return {
           type = 'binary',
           custom_server_filepath = vim.env.COPILOT_PATH,
         },
+        should_attach = function(_, bufname)
+          if not vim.bo.buflisted then
+            return false
+          end
+          if vim.bo.buftype ~= '' then
+            return false
+          end
+          if string.match(bufname, 'env') then
+            return false
+          end
+          if string.match(bufname, '^zipfile') then
+            return false
+          end
 
+          return true
+        end,
         server_opts_overrides = {
           settings = {
+            advanced = {
+              listCount = 10, -- #completions for panel
+              inlineSuggestCount = 3, -- #completions for getCompletions
+            },
             telemetry = {
               telemetryLevel = 'off',
             },
@@ -100,7 +132,7 @@ return {
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'ripgrep', 'copilot', 'cmdline', 'omni' },
+      default = { 'lsp', 'path', 'buffer', 'ripgrep', 'copilot', 'cmdline', 'omni' },
       providers = {
         -- Buffer completion from all open buffers
         buffer = {
