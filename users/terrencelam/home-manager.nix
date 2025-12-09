@@ -302,6 +302,7 @@ in {
           pkgs.wl-clipboard
           pkgs.wl-screenrec
           pkgs.xdg-utils
+          pkgs.pinentry-curses # terminal-based pinentry
         ])
         ++ (lib.optionals isDarwin) [
           pkgs.iina # media player
@@ -878,7 +879,7 @@ in {
     gpg-agent = {
       enable = isLinux;
       defaultCacheTtl = 1800;
-      pinentry.package = pkgs.pinentry-curses;
+      pinentry.package = pkgs.pinentry-gnome3;
       enableScDaemon = true;
       enableFishIntegration = true;
       enableSshSupport = true;
