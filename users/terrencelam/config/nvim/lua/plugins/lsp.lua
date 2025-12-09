@@ -68,6 +68,9 @@ return {
     },
     -- add any global capabilities here
     capabilities = {
+      general = {
+        positionEncodings = { 'utf-16' }, -- Set the offset encoding, see `:h vim.lsp.start` for more info
+      },
       workspace = {
         fileOperations = {
           didRename = true,
@@ -234,7 +237,6 @@ return {
 
     local function setup(server)
       local server_opts = vim.tbl_deep_extend('force', {
-        offset_encoding = 'utf-16',
         capabilities = vim.deepcopy(capabilities),
       }, servers[server] or {})
       if server_opts.enabled == false then
