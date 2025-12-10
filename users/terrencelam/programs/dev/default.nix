@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   imports = [
     ./cad.nix
     ./doc.nix
@@ -7,9 +7,4 @@
     ./rust.nix
     ./web.nix
   ];
-  home = {
-    packages = with pkgs; [
-      inotify-tools # File system event monitoring
-    ];
-  };
 }

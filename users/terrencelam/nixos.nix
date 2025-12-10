@@ -7,6 +7,12 @@ in {
   # Add ~/.local/bin to PATH
   environment.localBinInPath = true;
 
+  home = {
+    packages = with pkgs; [
+      inotify-tools # File system event monitoring
+    ];
+  };
+
   # Since we're using fish as our shell
   programs = {
     fish.enable = true;
