@@ -165,7 +165,7 @@ in {
         LC_CTYPE = "en_US.UTF-8";
         LC_ALL = "en_US.UTF-8";
         PAGER = "less -FirSwX";
-        VISUAL = "$EDITOR";
+        # VISUAL = "$EDITOR";
         GIT_EDITOR = "$EDITOR";
         MANPAGER = "$EDITOR +Man!";
         SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${
@@ -448,10 +448,10 @@ in {
         enable = true;
         enableGitIntegration = true;
       };
-      direnv = {
-        enable = true;
-        nix-direnv.enable = true;
-      };
+      # direnv = {
+      #   enable = true;
+      #   nix-direnv.enable = true;
+      # };
       fzf = {
         enable = true;
         enableFishIntegration = true;
