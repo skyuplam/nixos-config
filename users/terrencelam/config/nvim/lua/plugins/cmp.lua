@@ -15,6 +15,8 @@ return {
           markdown = true,
           help = true,
         },
+        -- https://github.com/github/copilot.vim/issues/77
+        copilot_model = '',
         server = {
           type = 'binary',
           custom_server_filepath = vim.env.COPILOT_PATH,
