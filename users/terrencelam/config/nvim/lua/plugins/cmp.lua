@@ -6,25 +6,11 @@ return {
     'fang2hou/blink-copilot',
     {
       'zbirenbaum/copilot.lua',
-      dependencies = {
-        'copilotlsp-nvim/copilot-lsp',
-        init = function()
-          vim.g.copilot_nes_debounce = 500
-        end,
-      },
       cmd = 'Copilot',
       event = 'InsertEnter',
       opts = {
         suggestion = { enabled = false },
         panel = { enabled = false },
-        nes = {
-          enabled = true,
-          keymap = {
-            accept_and_goto = 'enter',
-            accept = false,
-            dismiss = '<Esc>',
-          },
-        },
         filetypes = {
           markdown = true,
           help = true,
