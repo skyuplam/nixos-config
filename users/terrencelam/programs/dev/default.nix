@@ -19,6 +19,7 @@ in {
       []
       ++ (lib.optionals isLinux [
         inotify-tools # File system event monitoring
+        zmx
       ]);
   };
 }

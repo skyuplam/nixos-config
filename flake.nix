@@ -20,9 +20,6 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    # zig.url = "github:mitchellh/zig-overlay";
-    # zls.url = "github:zigtools/zls";
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,15 +36,9 @@
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # firefox-nightly = {
-    #   url = "github:nix-community/flake-firefox-nightly";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # # A wayland native krunner-like runner, made with customizability in mind.
-    # anyrun = {
-    #   url = "github:Kirottu/anyrun";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    zmx = {
+      url = "github:neurosnap/zmx";
+    };
     nil = {
       url = "github:oxalica/nil";
     };
@@ -68,17 +59,13 @@
   outputs = inputs @ {
     nixpkgs,
     nixpkgs-stable,
-    # zls,
     ...
   }: let
     overlays = [
-      # inputs.neovim-nightly-overlay.overlays.default
-      # inputs.zig.overlays.default
-      # (_final: _prev: {inherit zls;})
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
-      # (_final: prev: {inherit (inputs.firefox-nightly.packages.${prev.system}) firefox-nightly-bin;})
       (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
+      (_final: prev: {zmx = inputs.zmx.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})
     ];
     mkSystem = import ./lib/mksystem.nix {

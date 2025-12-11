@@ -5,7 +5,7 @@
   # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;
-    brews = ["kanata" "skhd-zig" "pinentry-mac"];
+    brews = ["kanata" "skhd-zig" "pinentry-mac" "zmx"];
     casks = [
       "1password"
       "google-chrome"
@@ -21,6 +21,7 @@
     taps = [
       "jackielii/tap"
       "krtirtho/apps"
+      "neurosnap/tap"
     ];
     onActivation = {
       autoUpdate = true;
