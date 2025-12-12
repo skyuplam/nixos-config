@@ -3,19 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-utils.url = "github:numtide/flake-utils";
-    wgsl-analyzer = {
-      url = "github:wgsl-analyzer/wgsl-analyzer";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,7 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     zmx = {
@@ -63,7 +56,6 @@
   }: let
     overlays = [
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
-      (_final: prev: {wgsl-analyzer = inputs.wgsl-analyzer.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {zmx = inputs.zmx.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})

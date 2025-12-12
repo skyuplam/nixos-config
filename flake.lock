@@ -48,21 +48,6 @@
         "type": "github"
       }
     },
-    "crane_2": {
-      "locked": {
-        "lastModified": 1745022865,
-        "narHash": "sha256-tXL4qUlyYZEGOHUKUWjmmcvJjjLQ+4U38lPWSc8Cgdo=",
-        "owner": "ipetkov",
-        "repo": "crane",
-        "rev": "25ca4c50039d91ad88cc0b8feacb9ad7f748dedf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ipetkov",
-        "repo": "crane",
-        "type": "github"
-      }
-    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -709,16 +694,16 @@
     },
     "nixpkgs-stable_2": {
       "locked": {
-        "lastModified": 1751274312,
-        "narHash": "sha256-/bVBlRpECLVzjV19t5KMdMFWSwKLtb5RyXdjz3LJT+g=",
+        "lastModified": 1765311797,
+        "narHash": "sha256-mSD5Ob7a+T2RNjvPvOA1dkJHGVrNVl8ZOrAwBjKBDQo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "50ab793786d9de88ee30ec4e4c24fb4236fc2674",
+        "rev": "09eb77e94fa25202af8f3e81ddc7353d9970ac1b",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-24.11",
+        "ref": "nixos-25.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -851,7 +836,6 @@
         "nixpkgs-stable": "nixpkgs-stable_2",
         "playwright": "playwright",
         "sops-nix": "sops-nix",
-        "wgsl-analyzer": "wgsl-analyzer",
         "zmx": "zmx"
       }
     },
@@ -953,30 +937,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "wgsl-analyzer": {
-      "inputs": {
-        "crane": "crane_2",
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1765457321,
-        "narHash": "sha256-jN5qBvalTbiRlfXh3+waNlsaKJffS0Ue0ATg+lVGe+k=",
-        "owner": "wgsl-analyzer",
-        "repo": "wgsl-analyzer",
-        "rev": "c4daa329abe4a86d56f1fdc7fabc072a027ca3b4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "wgsl-analyzer",
-        "repo": "wgsl-analyzer",
         "type": "github"
       }
     },
