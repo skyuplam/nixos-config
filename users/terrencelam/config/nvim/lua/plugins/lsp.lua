@@ -181,6 +181,8 @@ return {
       },
       marksman = {},
       markdown_oxide = {},
+      glsl_analyzer = {},
+      wgsl_analyzer = {},
       harper_ls = {
         settings = {
           ['harper-ls'] = {

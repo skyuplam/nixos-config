@@ -266,20 +266,10 @@ in {
 
           # Dev stuff
           pkgs.jq
-          # pkgs.nodePackages.write-good
-          # pkgs.efm-langserver
           pkgs.gitlint
-          # pkgs.selene
           pkgs.dotenv-linter
-          # pkgs.deadnix
-          # pkgs.typos
-          # pkgs.dprint
-          # pkgs.languagetool-rust
-          # pkgs.shellcheck
           pkgs.gnumake
           pkgs.gcc
-          # pkgs.wgsl-analyzer
-          # pkgs.unzip
           pkgs.python3
           pkgs.deno
         ]

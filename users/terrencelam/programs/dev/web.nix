@@ -9,6 +9,8 @@ in {
       nodejs
       yarn
       biome # toolchain for the web
+      glsl_analyzer # Language server for GLSL (OpenGL Shading Language)
+      wgsl-analyzer # Language server implementation for the WGSL shading language
       nodePackages.typescript-language-server
       nodePackages.yaml-language-server
       vscode-langservers-extracted
