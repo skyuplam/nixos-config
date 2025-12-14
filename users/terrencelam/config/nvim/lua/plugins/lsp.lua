@@ -181,7 +181,13 @@ return {
       },
       marksman = {},
       markdown_oxide = {},
-      glsl_analyzer = {},
+      glsl_analyzer = {
+        settings = {
+          glsl = {
+            format = { enable = false },
+          },
+        },
+      },
       wgsl_analyzer = {},
       harper_ls = {
         settings = {

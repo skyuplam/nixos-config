@@ -46,11 +46,28 @@ return {
       quiet = false, -- not recommended to change
       lsp_format = 'fallback', -- not recommended to change
     },
-    format_on_save = {
-      -- These options will be passed to conform.format()
-      timeout_ms = 500,
-      lsp_format = 'fallback',
-    },
+    format_on_save = function(bufnr)
+      -- Disable autoformat on certain filetypes
+      local ignore_filetypes = { 'glsl' }
+      if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
+        return
+      end
+      -- Disable with a global or buffer-local variable
+      if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+        return
+      end
+      -- Disable autoformat for files in a certain path
+      local bufname = vim.api.nvim_buf_get_name(bufnr)
+      if bufname:match('/node_modules/') then
+        return
+      end
+
+      return {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_format = 'fallback',
+      }
+    end,
     formatters_by_ft = {
       openscad = { lsp_format = 'prefer' },
       lua = { 'stylua' },
@@ -61,6 +78,7 @@ return {
       jsonc = { 'prettier', lsp_format = 'fallback' },
       markdown = { 'prettier', 'injected' },
       yaml = { 'prettier' },
+      glsl = { lsp_format = 'never' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
         return { first(bufnr, 'prettier', 'biome'), 'injected' }
@@ -84,7 +102,7 @@ return {
             bash = 'sh',
           },
           -- Map of treesitter language to file extension
-          -- A temporary file name with this extension will be generated during formatting
+          -- A temporary filename with this extension will be generated during formatting
           -- because some formatters care about the filename.
           lang_to_ext = {
             bash = 'sh',
