@@ -173,6 +173,8 @@ in {
           then "dylib"
           else "so"
         }";
+        # hint Electron apps to use Wayland:
+        NIXOS_OZONE_WL = "1";
         COPILOT_PATH = "${pkgs.copilot-language-server}/bin/copilot-language-server";
         # Failed to build target aarch64-darwin
         VSCODE_LLDB_PATH =
