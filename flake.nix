@@ -38,7 +38,6 @@
     # FIXME: https://github.com/NixOS/nix/issues/12281
     nix-secrets = {
       url = "git+file:./../nix-secrets?shadow=1&ref=main";
-      inputs = {};
     };
     nix-ld = {
       url = "github:Mic92/nix-ld";
