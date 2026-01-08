@@ -29,9 +29,6 @@
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zmx = {
-      url = "github:neurosnap/zmx";
-    };
     nil = {
       url = "github:oxalica/nil";
     };
@@ -56,7 +53,6 @@
     overlays = [
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
       (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
-      (_final: prev: {zmx = inputs.zmx.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})
     ];
     mkSystem = import ./lib/mksystem.nix {
