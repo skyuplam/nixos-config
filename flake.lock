@@ -605,11 +605,11 @@
     },
     "nix-secrets": {
       "locked": {
-        "lastModified": 1767991017,
-        "narHash": "sha256-t1VqmycazweS6oQNSNC16p6bkuXae8CPPMTMRLRXzzE=",
+        "lastModified": 1767994160,
+        "narHash": "sha256-YIOj7rDTCnKlZ6BwFrMR+xDQh5mZr1R8Y+sQOvEYxyw=",
         "ref": "main",
-        "rev": "f8f0d2ffec15520b35819782f86fd086ca6cda51",
-        "revCount": 13,
+        "rev": "aae0c7d20ef4fadc6324fb9620a1ca85c560169f",
+        "revCount": 14,
         "type": "git",
         "url": "file:./../nix-secrets?shadow=1"
       },

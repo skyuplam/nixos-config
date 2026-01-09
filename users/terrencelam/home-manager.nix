@@ -621,6 +621,7 @@ in {
         enableDefaultConfig = false;
         matchBlocks."*".hashKnownHosts = true;
         extraConfig = inputs.nix-secrets.ssh.extraConfig;
+        includes = ["./.config"];
       };
     }
     // lib.optionalAttrs (isLinux && !isWSL) {
