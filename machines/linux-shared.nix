@@ -155,6 +155,7 @@
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
         StreamLocalBindUnlink = true;
+        PermitRootLogin = "no";
       };
     };
 
