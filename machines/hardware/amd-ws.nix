@@ -57,10 +57,14 @@ in {
 
   services.resolved = {
     enable = true;
-    dnssec = "true";
-    domains = ["~."];
-    fallbackDns = dns;
-    dnsovertls = "true";
+    settings = {
+      Resolve = {
+        DNSOverTLS = "true";
+        DNSSEC = "true";
+        Domains = ["~."];
+        FallbackDNS = dns;
+      };
+    };
   };
 
   services.btrfs = {

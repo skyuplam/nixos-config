@@ -279,7 +279,7 @@ in {
         ++ (lib.optionals (isLinux && !isWSL) [
           pkgs.eww
           pkgs.foliate
-          pkgs.freecad
+          # pkgs.freecad
           pkgs.mesa-demos
           pkgs.grim
           pkgs.libnotify
