@@ -183,9 +183,7 @@ return {
       markdown_oxide = {},
       glsl_analyzer = {
         settings = {
-          glsl = {
-            format = { enable = false },
-          },
+          glsl = {},
         },
       },
       wgsl_analyzer = {},

@@ -48,7 +48,7 @@ return {
     },
     format_on_save = function(bufnr)
       -- Disable autoformat on certain filetypes
-      local ignore_filetypes = { 'glsl' }
+      local ignore_filetypes = {}
       if vim.tbl_contains(ignore_filetypes, vim.bo[bufnr].filetype) then
         return
       end
@@ -78,7 +78,7 @@ return {
       jsonc = { 'prettier', lsp_format = 'fallback' },
       markdown = { 'prettier', 'injected' },
       yaml = { 'prettier' },
-      glsl = { lsp_format = 'never' },
+      glsl = { lsp_format = 'fallback' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
         return { first(bufnr, 'prettier', 'biome'), 'injected' }
