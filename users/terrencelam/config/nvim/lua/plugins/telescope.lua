@@ -30,6 +30,10 @@ return {
         },
       },
       extensions = {
+        frecency = {
+          db_safe_mode = false,
+          auto_validate = true,
+        },
         live_grep_args = {
           auto_quoting = true, -- enable/disable auto-quoting
           -- define mappings, e.g.
