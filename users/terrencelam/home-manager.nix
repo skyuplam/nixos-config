@@ -463,6 +463,7 @@ in {
       yazi = {
         enable = true;
         enableFishIntegration = true;
+        shellWrapperName = "y";
       };
       wezterm = {
         enable = isDarwin;
