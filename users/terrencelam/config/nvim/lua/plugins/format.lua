@@ -79,6 +79,7 @@ return {
       markdown = { 'prettier', 'injected' },
       yaml = { 'prettier' },
       glsl = { lsp_format = 'fallback' },
+      wgsl = { 'wgslfmt', lsp_format = 'fallback' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
         return { first(bufnr, 'prettier', 'biome'), 'injected' }
@@ -121,6 +122,9 @@ return {
           },
           lang_to_formatters = {},
         },
+      },
+      wgslfmt = {
+        command = 'wgslfmt',
       },
       prettier = {
         command = function(self, bufnr)
