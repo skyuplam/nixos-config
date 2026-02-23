@@ -102,7 +102,8 @@
     portal = {
       enable = true;
       # gtk portal needed to make gtk apps happy
-      extraPortals = [pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk];
+      # extraPortals = [pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk];
+      extraPortals = [pkgs.xdg-desktop-portal-gnome pkgs.xdg-desktop-portal-gtk];
       config = {
         common = {
           default = ["gtk"];
@@ -176,7 +177,7 @@
       enable = true;
       settings = {
         default_session = {
-          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd start-hyprland";
+          command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
           user = "terrencelam";
         };
       };

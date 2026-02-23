@@ -135,6 +135,13 @@ in {
             path = ./config/mpv;
           };
         };
+        # niri = {
+        #   enable = true;
+        #   source = builtins.path {
+        #     name = "niri";
+        #     path = ./config/niri;
+        #   };
+        # };
       }
       // lib.optionalAttrs isDarwin {
         skhd = {
@@ -852,7 +859,7 @@ in {
     };
 
     hyprland = {
-      enable = isLinux && !isWSL;
+      enable = false;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       settings = {

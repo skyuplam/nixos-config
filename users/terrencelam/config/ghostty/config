@@ -10,14 +10,23 @@ cursor-style = block
 
 # Theme
 theme = "Catppuccin Mocha"
-cursor-invert-fg-bg = true
-# window-theme = ghostty
+# Window Configuratio
+window-decoration = false
+background-blur = 32
 background-opacity = 0.9
-background-blur-radius = 20
 
-selection-invert-fg-bg = true
 shell-integration-features = no-cursor
 clipboard-read = allow
 clipboard-write = allow
 copy-on-select = clipboard
 app-notifications = no-clipboard-copy
+
+# Tab configuration
+gtk-titlebar = false
+
+# Shell integration
+shell-integration = detect
+shell-integration-features = cursor,sudo,title,no-cursor
+
+# Rando stuff
+gtk-single-instance = true
