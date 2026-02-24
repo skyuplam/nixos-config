@@ -297,7 +297,6 @@ in {
           pkgs.qt6.qtwayland
           pkgs.slurp
           pkgs.sound-theme-freedesktop
-          pkgs.swayidle
           pkgs.testdisk # data recovery
           pkgs.usbutils
           pkgs.wl-clipboard
@@ -887,6 +886,38 @@ in {
 
     mako = {
       enable = isLinux && !isWSL;
+    };
+
+    swayidle = let
+      lock = "${pkgs.dms-shell}/bin/dms ipc call lock lock";
+      display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
+    in {
+      enable = isLinux && !isWSL;
+      timeouts = [
+        {
+          timeout = 17; # in seconds
+          command = "${pkgs.dms-shell}/bin/dms ipc call toast warn 'Locking in 3 seconds'";
+        }
+        {
+          timeout = 20;
+          command = lock;
+        }
+        {
+          timeout = 25;
+          command = display "off";
+          resumeCommand = display "on";
+        }
+        {
+          timeout = 30;
+          command = "${pkgs.systemd}/bin/systemctl suspend";
+        }
+      ];
+      events = {
+        after-resume = display "on";
+        before-sleep = (display "off") + "; " + lock;
+        lock = (display "off") + "; " + lock;
+        unlock = display "on";
+      };
     };
 
     wlsunset = {
