@@ -9,8 +9,8 @@ return {
       cmd = 'Copilot',
       event = 'InsertEnter',
       opts = {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
+        suggestion = { enabled = true },
+        panel = { enabled = true },
         filetypes = {
           markdown = true,
           help = true,
@@ -38,6 +38,7 @@ return {
           return true
         end,
         server_opts_overrides = {
+          offset_encoding = 'utf-16',
           settings = {
             advanced = {
               listCount = 10, -- #completions for panel

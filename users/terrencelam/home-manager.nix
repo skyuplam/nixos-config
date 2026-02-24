@@ -903,19 +903,19 @@ in {
           command = lock;
         }
         {
-          timeout = 25;
+          timeout = 180;
           command = display "off";
           resumeCommand = display "on";
         }
         {
-          timeout = 30;
+          timeout = 300;
           command = "${pkgs.systemd}/bin/systemctl suspend";
         }
       ];
       events = {
         after-resume = display "on";
         before-sleep = (display "off") + "; " + lock;
-        lock = (display "off") + "; " + lock;
+        lock = lock;
         unlock = display "on";
       };
     };
