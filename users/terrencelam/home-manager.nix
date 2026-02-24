@@ -709,7 +709,9 @@ in {
           # make it use text-input-v1, which works for kwin 5.27 and weston
           "--enable-wayland-ime"
           # WebGPU support
-          # "--enable-features=Vulkan"
+          # https://github.com/gpuweb/gpuweb/wiki/Implementation-Status#chromium-chrome-edge-etc
+          "--use-angle=vulkan"
+          "--enable-features=Vulkan,VulkanFromANGLE"
           # "--enable-unsafe-webgpu"
         ];
       };
