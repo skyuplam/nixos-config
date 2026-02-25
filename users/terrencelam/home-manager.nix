@@ -107,13 +107,6 @@ in {
             path = ./config/foot;
           };
         };
-        wezterm = {
-          enable = isDarwin;
-          source = builtins.path {
-            name = "wezterm-config";
-            path = ./config/wezterm;
-          };
-        };
         ghostty = {
           enable = true;
           source = builtins.path {
@@ -472,9 +465,6 @@ in {
         enableFishIntegration = true;
         shellWrapperName = "y";
       };
-      wezterm = {
-        enable = isDarwin;
-      };
       ghostty = {
         enable = isLinux && !isWSL;
         enableFishIntegration = true;
@@ -636,50 +626,9 @@ in {
       imv = {
         enable = isLinux && !isWSL;
       };
-      wlogout = {
-        enable = true;
-        layout = [
-          {
-            label = "lock";
-            action = "~/.config/hypr/sway-lock.sh";
-            text = "Lock";
-            keybind = "l";
-          }
-          {
-            label = "hibernate";
-            action = "systemctl hibernate";
-            text = "Hibernate";
-            keybind = "h";
-          }
-          {
-            label = "logout";
-            action = "loginctl terminate-user $USER";
-            text = "Logout";
-            keybind = "e";
-          }
-          {
-            label = "shutdown";
-            action = "systemctl poweroff";
-            text = "Shutdown";
-            keybind = "s";
-          }
-          {
-            label = "suspend";
-            action = "systemctl suspend";
-            text = "Suspend";
-            keybind = "u";
-          }
-          {
-            label = "reboot";
-            action = "systemctl reboot";
-            text = "Reboot";
-            keybind = "r";
-          }
-        ];
-      };
       foot = {
         enable = true;
-        server.enable = isLinux && !isWSL;
+        server.enable = true;
       };
       swaylock = {
         enable = true;
@@ -715,133 +664,6 @@ in {
           # "--enable-unsafe-webgpu"
         ];
       };
-      # launcher
-      anyrun = {
-        # package = inputs.anyrun.packages.${pkgs.system}.default;
-        enable = isLinux && !isWSL;
-        config = {
-          x = {fraction = 0.5;};
-          y = {fraction = 0.02;};
-          width = {fraction = 0.3;};
-          hideIcons = false;
-          ignoreExclusiveZones = false;
-          layer = "overlay";
-          hidePluginInfo = true;
-          closeOnClick = true;
-          showResultsImmediately = false;
-          maxEntries = 10;
-
-          plugins = [
-            "${pkgs.anyrun}/lib/libapplications.so"
-            "${pkgs.anyrun}/lib/librink.so"
-            "${pkgs.anyrun}/lib/libshell.so"
-            "${pkgs.anyrun}/lib/libtranslate.so"
-            "${pkgs.anyrun}/lib/libdictionary.so"
-            "${pkgs.anyrun}/lib/libwebsearch.so"
-          ];
-        };
-        extraConfigFiles = {
-          "applications.ron".text = ''
-            Config(
-              // Also show the Desktop Actions defined in the desktop files, e.g. "New Window" from LibreWolf
-              desktop_actions: true,
-              max_entries: 10,
-              // The terminal used for running terminal based desktop entries, if left as `None` a static list of terminals is used
-              // to determine what terminal to use.
-              terminal: Some(Terminal(command: "ghostty", args: "-e {}")),
-            )
-          '';
-          "websearch.ron".text = ''
-            Config(
-              prefix: "?",
-              // Options: Google, Ecosia, Bing, DuckDuckGo, Custom
-              //
-              // Custom engines can be defined as such:
-              // Custom(
-              //   name: "Searx",
-              //   url: "searx.be/?q={}",
-              // )
-              //
-              // NOTE: `{}` is replaced by the search query and `https://` is automatically added in front.
-              engines: [Google]
-            )
-          '';
-          "dictionary.ron".text = ''
-            Config(
-              prefix: ":def",
-              max_entries: 5,
-            )
-          '';
-        };
-        # custom css for anyrun, based on catppuccin-mocha
-        extraCss = ''
-          @define-color bg-col  rgba(30, 30, 46, 0.7);
-          @define-color bg-col-light rgba(150, 220, 235, 0.7);
-          @define-color border-col rgba(30, 30, 46, 0.7);
-          @define-color selected-col rgba(150, 205, 251, 0.7);
-          @define-color fg-col #D9E0EE;
-          @define-color fg-col2 #F28FAD;
-
-          * {
-            font-family: "JetBrainsMono Nerd Font";
-            font-size: 1.3rem;
-          }
-
-          window {
-            background: transparent;
-          }
-
-          .plugin,
-          .main {
-            border: 3px solid @border-col;
-            color: @fg-col;
-            background-color: @bg-col;
-          }
-          /* anyrun's input window - Text */
-          .entry {
-            color: @fg-col;
-            background-color: @bg-col;
-          }
-
-          /* anyrun's output matches entries - Base */
-          .match {
-            color: @fg-col;
-            background: @bg-col;
-          }
-
-          /* anyrun's selected entry - Red */
-          .match:selected {
-            color: @fg-col2;
-            background: @selected-col;
-          }
-
-          .matches {
-            padding: 3px;
-            border-radius: 16px;
-          }
-
-          .entry, .plugin:hover {
-            border-radius: 16px;
-          }
-
-          box.main {
-            background: rgba(30, 30, 46, 0.7);
-            border: 1px solid @border-col;
-            border-radius: 15px;
-            padding: 5px;
-          }
-
-          @keyframes fade {
-            0% {
-              opacity: 0;
-            }
-
-            100% {
-              opacity: 1;
-            }
-          }
-        '';
-      };
     };
 
   wayland.windowManager = {
@@ -857,17 +679,6 @@ in {
           {command = "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK";}
         ];
       };
-    };
-
-    hyprland = {
-      enable = false;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-      settings = {
-        source = "./hypr.conf";
-      };
-      systemd.enable = false;
-      xwayland.enable = false;
     };
   };
 

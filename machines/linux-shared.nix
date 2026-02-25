@@ -102,7 +102,6 @@
     portal = {
       enable = true;
       # gtk portal needed to make gtk apps happy
-      # extraPortals = [pkgs.xdg-desktop-portal-hyprland pkgs.xdg-desktop-portal-gtk];
       extraPortals = [pkgs.xdg-desktop-portal-gnome pkgs.xdg-desktop-portal-gtk];
       config = {
         common = {
@@ -114,9 +113,6 @@
         };
         sway = {
           default = ["wlr" "gtk"];
-        };
-        hyprland = {
-          default = ["hyprland" "gtk"];
         };
       };
     };
