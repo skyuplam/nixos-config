@@ -80,6 +80,7 @@ return {
       yaml = { 'prettier' },
       glsl = { lsp_format = 'fallback' },
       wgsl = { 'wgslfmt', lsp_format = 'fallback' },
+      gitcommit = { 'commitmsgfmt', lsp_format = 'fallback' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
         return { first(bufnr, 'prettier', 'biome'), 'injected' }
@@ -125,6 +126,9 @@ return {
       },
       wgslfmt = {
         command = 'wgslfmt',
+      },
+      commitmsgfmt = {
+        command = 'commitmsgfmt',
       },
       prettier = {
         command = function(self, bufnr)
