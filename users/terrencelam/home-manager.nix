@@ -720,10 +720,11 @@ in {
           command = display "off";
           resumeCommand = display "on";
         }
-        {
-          timeout = 300;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
-        }
+        # No suspend
+        # {
+        #   timeout = 300;
+        #   command = "${pkgs.systemd}/bin/systemctl suspend";
+        # }
       ];
       events = {
         after-resume = display "on";
