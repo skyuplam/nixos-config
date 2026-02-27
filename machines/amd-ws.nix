@@ -54,5 +54,7 @@
   networking.hostName = "tlamws";
   networking.firewall = {
     allowedUDPPorts = [inputs.nix-secrets.networking.wireguard.wg0.listenPort];
+    # NixOS firewall will block wg traffic because of rpfilter
+    checkReversePath = "loose";
   };
 }
