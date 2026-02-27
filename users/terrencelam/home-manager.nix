@@ -469,6 +469,10 @@ in {
         enable = isLinux && !isWSL;
         enableFishIntegration = true;
         installBatSyntax = true;
+        installVimSyntax = true;
+        systemd = {
+          enable = true;
+        };
       };
       zathura = {
         enable = true;
