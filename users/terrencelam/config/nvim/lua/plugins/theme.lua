@@ -60,7 +60,7 @@ return {
   config = function(lazy, opts)
     require('catppuccin').setup(opts)
     -- load the colorscheme here
-    vim.cmd([[colorscheme catppuccin]])
+    vim.cmd([[colorscheme catppuccin-nvim]])
   end,
   priority = 1000,
 }
