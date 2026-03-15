@@ -235,7 +235,6 @@ in {
           pkgs.lnav
           pkgs.ripgrep # better version of `grep`
           pkgs.rsync
-          pkgs.sd
           pkgs.sqlite
           pkgs.stow
           pkgs.tig
