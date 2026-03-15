@@ -40,7 +40,7 @@
 #
 # ~            = application is unbound and keypress is forwarded per usual, when specified in a <proc_map>
 # Global hotkeys
-cmd - return    : open -na Ghostty
+cmd - return    : open -a Ghostty.app --args --quit-after-last-window-closed=true
 cmd - b         : open -na Firefox
 cmd + shift - b : open -na "Google Chrome"
 cmd - e         : open -na "Keyguard"
