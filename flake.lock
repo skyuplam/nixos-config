@@ -191,33 +191,13 @@
         "type": "github"
       }
     },
-    "nix-ld": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1772441860,
-        "narHash": "sha256-nbBqBwgJOOGkMyX/Y+UWvrY3/1yANhy8sqh3HHQWR4Q=",
-        "owner": "Mic92",
-        "repo": "nix-ld",
-        "rev": "86d81fbed0a693ae1b4790a9d0480df014ffcfac",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "nix-ld",
-        "type": "github"
-      }
-    },
     "nix-secrets": {
       "locked": {
-        "lastModified": 1773236926,
-        "narHash": "sha256-FI0VBtYpxQBsrzPdYbhp5MXftCp7PB2ZeH3u0y1QRAo=",
+        "lastModified": 1773407306,
+        "narHash": "sha256-01XsMVcewQrF/MGG/7hUMpA8yCkqV75Yj8DxnViBr2c=",
         "ref": "main",
-        "rev": "2c2863e58a5e9f55b5a4e2a60f2975c8a67ad7ff",
-        "revCount": 16,
+        "rev": "08d02b97f1a6ba36d1ea96873797a1612d7a9e6f",
+        "revCount": 17,
         "type": "git",
         "url": "file:./../nix-secrets?shadow=1"
       },
@@ -338,7 +318,6 @@
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nil": "nil",
-        "nix-ld": "nix-ld",
         "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
