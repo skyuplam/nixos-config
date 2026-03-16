@@ -56,20 +56,12 @@
       fi
     '';
   };
-  # Wrapped bubblewrap with proper library dependencies
-  bubblewrap-wrapped = pkgs.symlinkJoin {
-    name = "bubblewrap-wrapped";
-    paths = [pkgs.bubblewrap];
-    buildInputs = [pkgs.makeWrapper];
-    postBuild = ''
-      wrapProgram $out/bin/bwrap \
-        --prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [pkgs.pcre2]}"
-    '';
-  };
 
   mdatp-fhs = buildFHSEnv {
     name = "${pname}-fhs";
-
+    extraPreBwrapCmds = ''
+      export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [pkgs.pcre2 pkgs.libffi]}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    '';
     targetPkgs = pkgs:
       with pkgs; [
         # Core system
@@ -128,17 +120,9 @@
       mkdir -p opt/microsoft/mdatp
       cp -r ${mdatp-unwrapped}/opt/microsoft/mdatp/* opt/microsoft/mdatp/
       chmod -R u+w opt/microsoft/mdatp || true
-
-      # Use the wrapped bubblewrap
-      mkdir -p usr/bin
-      ln -sf ${bubblewrap-wrapped}/bin/bwrap usr/bin/bwrap
-
-      # Also make it available in bin for PATH
-      mkdir -p bin
-      ln -sf ${bubblewrap-wrapped}/bin/bwrap bin/bwrap
     '';
 
-    runScript = "";
+    runScript = "bash";
   };
 in
   stdenv.mkDerivation {
@@ -174,7 +158,6 @@ in
             if [ -f ${mdatp-unwrapped}/opt/microsoft/mdatp/sbin/mde_netfilter ]; then
               cat > $out/bin/mde_netfilter <<EOF
       #!${bash}/bin/bash
-      export LD_LIBRARY_PATH="/opt/microsoft/mdatp/lib:\$LD_LIBRARY_PATH"
       exec ${mdatp-fhs}/bin/${pname}-fhs /opt/microsoft/mdatp/sbin/mde_netfilter "\$@"
       EOF
               chmod +x $out/bin/mde_netfilter
