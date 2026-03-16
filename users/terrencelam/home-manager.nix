@@ -6,7 +6,6 @@
   config,
   lib,
   pkgs,
-  pkgs-stable,
   ...
 }: let
   inherit (pkgs.stdenv) isDarwin isLinux;
@@ -182,6 +181,7 @@ in {
           then ""
           else "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/";
         NKT_ROOT_DIR = "$HOME/docs";
+        WEBKIT_DISABLE_DMABUF_RENDERER = "1";
       };
 
       file =

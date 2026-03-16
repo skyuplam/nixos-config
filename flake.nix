@@ -32,10 +32,11 @@
     nix-secrets = {
       url = "git+file:./../nix-secrets?shadow=1&ref=main";
     };
-    nix-ld = {
-      url = "github:Mic92/nix-ld";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Microsoft Defender for Endpoint on NixOS
+    # mdatp = {
+    #   url = "github:NitorCreations/nix-mdatp";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     playwright = {
       url = "github:pietdevries94/playwright-web-flake/1.55.0";
     };
@@ -47,9 +48,19 @@
     ...
   }: let
     overlays = [
+      (final: prev: {customPkgs = import ./pkgs {pkgs = final;};})
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
       (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})
+      # Custom package: intune-portal - Microsoft Intune Company Portal with version control
+      (final: _prev: {
+        intune-portal = final.callPackage ./pkgs/intune-portal/package.nix {};
+      })
+      (final: _prev: {
+        mdatp = final.callPackage ./pkgs/mdatp/default.nix {
+          inherit (final) buildFHSEnv;
+        };
+      })
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;

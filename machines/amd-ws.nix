@@ -11,7 +11,69 @@
   ];
 
   environment = {
-    systemPackages = [pkgs.sbctl];
+    systemPackages = with pkgs; [
+      sbctl
+      # Core dependencies
+      libsecret
+      seahorse
+
+      # Web authentication dependencies
+      webkitgtk_6_0
+      glib-networking
+      gsettings-desktop-schemas
+
+      # Credential storage
+      libgnome-keyring
+      xwayland-satellite
+      # TLS/SSL support
+      gnutls
+      openssl
+    ];
+    # Environment variables for WebKit
+    sessionVariables = {
+      # GIO_EXTRA_MODULES = "${pkgs.glib-networking}/lib/gio/modules";
+      GST_PLUGIN_SYSTEM_PATH_1_0 = "${pkgs.glib-networking}/lib/gio/modules";
+      SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+      WEBKIT_DISABLE_COMPOSITING_MODE = "1";
+    };
+  };
+
+  # Microsoft Defender for Endpoint on NixOS
+  services.mdatp = {
+    enable = true;
+    onboardingFile = "/etc/opt/microsoft/mdatp/_mdatp_onboard.json";
+  };
+
+  # Make sure systemd machine-id is available
+  systemd.services.systemd-machine-id-setup = {
+    enable = true;
+  };
+
+  programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+  programs.seahorse.enable = true;
+  # Microsoft Intune Company Portal (custom package with version control)
+  services.intune.enable = true;
+
+  # Enable necessary authentication services
+  services.gnome.gnome-keyring.enable = true;
+  # Enable D-Bus (required for broker authentication)
+  services.dbus.enable = true;
+  # Enable secret service for credential storage
+  security.pam.services.login.enableGnomeKeyring = true;
+  # Ensure system-wide GIO modules
+  services.gvfs.enable = true;
+  # SSL/TLS certificates
+  security.pki.certificateFiles = [
+    "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+  ];
+  # add licence for microsoft defender
+  environment.etc = {
+    "opt/microsoft/mdatp/_mdatp_onboard.json" = {
+      source = inputs.nix-secrets.mdatpLicence.source;
+      mode = "0644";
+      user = "root";
+      group = "root";
+    };
   };
 
   boot = {

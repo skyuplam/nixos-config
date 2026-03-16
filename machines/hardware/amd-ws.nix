@@ -10,7 +10,7 @@
 }: let
   dns = inputs.nix-secrets.networking.dns;
   # FIXME: Cannot use the private dns to the whole system
-  # dnsP = inputs.nix-secrets.networking.dnsP;
+  dnsP = inputs.nix-secrets.networking.dnsP;
 in {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -117,13 +117,19 @@ in {
           networkConfig = {
             # start a DHCP Client for IPv4 Addressing/Routing
             DHCP = "ipv4";
-            DNSDefaultRoute = "yes";
+            DNSDefaultRoute = "no";
             LinkLocalAddressing = "ipv4";
             IPv6AcceptRA = "no";
             DNSOverTLS = "yes";
             DNSSEC = "yes";
             DNS = dns;
           };
+          routingPolicyRules = [
+            {
+              To = "10.47.0.0/24";
+              Priority = 9;
+            }
+          ];
           # make routing on this interface a dependency for network-online.target
           linkConfig.RequiredForOnline = "routable";
         };
@@ -131,10 +137,11 @@ in {
           matchConfig.Name = "wg0";
           address = inputs.nix-secrets.networking.wireguard.wg0.ips;
           # gateway = inputs.nix-secrets.networking.wireguard.wg0.gateway;
-          dns = dns;
           domains = ["~."];
           networkConfig = {
-            DNSDefaultRoute = "no";
+            #     Gateway = inputs.nix-secrets.networking.wireguard.wg0.gateway;
+            DNSDefaultRoute = "yes";
+            DNS = dnsP;
           };
           routingPolicyRules = [
             {

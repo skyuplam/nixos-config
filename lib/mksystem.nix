@@ -24,6 +24,9 @@
     }.nix;
   userHMConfig = ../users/${user}/home-manager.nix;
 
+  intuneModule = ../modules/services/intune-portal.nix;
+  mdatpModule = ../modules/services/mdatp.nix;
+
   # NixOS vs nix-darwin functionst
   systemFunc =
     if darwin
@@ -60,14 +63,25 @@ in
         then inputs.lanzaboote.nixosModules.lanzaboote
         else {}
       )
-      (
-        if !darwin && !isWSL
-        then inputs.nix-ld.nixosModules.nix-ld
-        else {}
-      )
+      # (
+      #   if !darwin && !isWSL
+      #   then inputs.nix-ld.nixosModules.nix-ld
+      #   else {}
+      # )
       machineConfig
       userOSConfig
       home-manager.home-manager
+      (
+        if !darwin && !isWSL
+        then intuneModule
+        else {}
+      )
+      (
+        if !darwin && !isWSL
+        then mdatpModule
+        else {}
+      )
+      #inputs.mdatp.nixosModules.mdatp
       {
         home-manager = {
           useGlobalPkgs = true;

@@ -40,7 +40,7 @@ in {
         thunar-volman
       ];
     };
-    nix-ld.dev.enable = true;
+    nix-ld.enable = true;
   };
 
   services = {

@@ -24,7 +24,12 @@
     };
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "mdatp"
+    ];
+  };
 
   boot = {
     # Be careful updating this.
@@ -39,6 +44,9 @@
       extraPackages = with pkgs; [libva libva-vdpau-driver libvdpau-va-gl mesa];
     };
   };
+
+  # Enables the systemd NTP client daemon.
+  services.timesyncd.enable = true;
 
   virtualisation.docker = {
     enable = true;
@@ -125,7 +133,6 @@
       fcitx5.addons = with pkgs; [
         fcitx5-mozc
         fcitx5-gtk
-        fcitx5-chinese-addons
       ];
     };
   };
