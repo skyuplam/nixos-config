@@ -32,13 +32,12 @@
     nix-secrets = {
       url = "git+file:./../nix-secrets?shadow=1&ref=main";
     };
-    # Microsoft Defender for Endpoint on NixOS
-    # mdatp = {
-    #   url = "github:NitorCreations/nix-mdatp";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     playwright = {
       url = "github:pietdevries94/playwright-web-flake/1.55.0";
+    };
+    # Session persistence for terminal processes
+    zmx = {
+      url = "github:neurosnap/zmx";
     };
   };
 
@@ -51,6 +50,7 @@
       (final: prev: {customPkgs = import ./pkgs {pkgs = final;};})
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
       (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
+      (_final: prev: {zmx = inputs.zmx.packages.${prev.stdenv.hostPlatform.system}.default;})
       (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})
       # Custom package: intune-portal - Microsoft Intune Company Portal with version control
       (final: _prev: {
