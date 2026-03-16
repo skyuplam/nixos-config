@@ -313,6 +313,7 @@ in {
         after = ["mdatp.service"];
         requires = ["mdatp.service"];
         wantedBy = ["multi-user.target"];
+        startLimitIntervalSec = 120;
 
         serviceConfig = {
           Type = "simple";
@@ -322,7 +323,6 @@ in {
           LimitCORE = "infinity";
           KillMode = "process";
           Restart = "on-failure";
-          StartLimitInterval = 120;
           StartLimitBurst = 3;
           PrivateTmp = true;
           NoNewPrivileges = true;
