@@ -546,12 +546,6 @@ in {
           hostname.style = "bold green"; # don't like the default
           memory_usage.disabled = true; # because it includes cached memory it's reported as full a lot
           username.style_user = "bold blue"; # don't like the default
-          env_var.ZMX_SESSION = {
-            symbol = " ";
-            format = "[$symbol$env_value]($style) ";
-            description = "zmx session name";
-            style = "bold magenta";
-          };
         };
       };
 
