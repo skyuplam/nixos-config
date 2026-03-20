@@ -143,7 +143,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     sbctl
-    nvim
+    neovim
     git
   ];
 
