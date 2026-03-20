@@ -1,4 +1,4 @@
-{}: {
+{...}: {
   imports = [
     ./hardware/amd-wb.nix
     ./disko-config-wb.nix
