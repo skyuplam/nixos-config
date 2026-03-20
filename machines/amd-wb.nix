@@ -20,7 +20,7 @@
   };
 
   networking = {
-    hostname = "tlamwb";
+    hostName = "tlamwb";
     networkmanager.enable = true;
     enableIPv6 = true;
   };
