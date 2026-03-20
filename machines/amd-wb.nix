@@ -4,8 +4,23 @@
     ./disko-config-wb.nix
     ./linux-shared.nix
   ];
+  boot.loader.systemd-boot.enable = true;
+  # boot.initrd.luks.devices = {
+  #   crypted = {
+  #     device = "/dev/disk/by-partlabel/luks";
+  #     allowDiscards = true;
+  #     bypassWorkqueues = true;
+  #   };
+  # };
+  # Enable autoScrub for btrfs
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "weekly";
+    fileSystems = ["/"];
+  };
 
   networking = {
+    hostname = "tlamwb";
     networkmanager.enable = true;
     enableIPv6 = true;
   };

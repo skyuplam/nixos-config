@@ -26,9 +26,6 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    permittedInsecurePackages = [
-      "mdatp"
-    ];
   };
 
   boot = {

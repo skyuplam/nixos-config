@@ -10,6 +10,12 @@
     ./disko-config-ws.nix
   ];
 
+  nixpkgs.config = {
+    permittedInsecurePackages = [
+      "mdatp"
+    ];
+  };
+
   environment = {
     systemPackages = with pkgs; [
       # Core dependencies
