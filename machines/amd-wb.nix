@@ -1,5 +1,6 @@
 {}: {
   imports = [
+    ./hardware/amd-wb.nix
     ./disko-config-wb.nix
     ./linux-shared.nix
   ];
