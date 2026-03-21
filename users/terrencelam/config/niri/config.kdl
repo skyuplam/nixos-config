@@ -44,6 +44,9 @@ output "DP-3" {
   position x=2560 y=0
 }
 
+output "DP-4" {
+  off
+}
 
 gestures {
     hot-corners {
@@ -97,9 +100,15 @@ input {
     mouse {
         // off
         // natural-scroll
-        // accel-speed 0.2
-        // accel-profile "flat"
+        accel-speed 0.8
+        accel-profile "adaptive"
+        scroll-factor 2.0
+        // scroll-factor vertical=1.0 horizontal=-2.0
         // scroll-method "no-scroll"
+        scroll-button 274
+        scroll-button-lock
+        // left-handed
+        // middle-emulation
     }
 
     trackpoint {
@@ -118,7 +127,7 @@ input {
 
     // Focus windows and outputs automatically when moving the mouse into them.
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
-    // focus-follows-mouse max-scroll-amount="0%"
+    focus-follows-mouse max-scroll-amount="0%"
 }
 // You can configure outputs by their name, which you can find
 // by running `niri msg outputs` while inside a niri instance.
@@ -205,7 +214,11 @@ environment {
   QT_QPA_PLATFORMTHEME_QT6 "gtk3"
   TERMINAL "ghostty"
 }
-// spawn-at-startup "dms" "run"
+
+// https://wiki.archlinux.org/title/Systemd/User#Environment_variables
+// Has the same effect as systemctl --user import-environment, but also affects the D-Bus session
+spawn-sh-at-startup "dbus-update-activation-environment --systemd --all"
+
 hotkey-overlay {
     skip-at-startup
 }
