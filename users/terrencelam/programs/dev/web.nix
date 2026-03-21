@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  nodejs = pkgs.stable.nodejs_22;
+  nodejs = pkgs.nodejs_22;
   yarn = pkgs.yarn.override {inherit nodejs;};
 
   inherit (pkgs.stdenv) isLinux;

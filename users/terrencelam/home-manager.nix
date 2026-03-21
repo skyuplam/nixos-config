@@ -426,7 +426,7 @@ in {
               owner = "catppuccin";
               repo = "bat";
               rev = "6810349b28055dce54076712fc05fc68da4b8ec0";
-              hash = "sha256-9n7sH8Xo2mL1l3Zt+qj5u+0aQy7kK8n6vVh2b5i9A=";
+              hash = "sha256-lJapSgRVENTrbmpVyn+UQabC9fpV1G1e+CdlJ090uvg=";
             };
             file = "themes/Catppuccin Macchiato.tmTheme";
           };
