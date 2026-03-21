@@ -277,7 +277,6 @@ in {
           pkgs.deno
         ]
         ++ (lib.optionals (isLinux && !isWSL) [
-          pkgs.eww
           pkgs.foliate
           # pkgs.freecad
           pkgs.mesa-demos
@@ -421,13 +420,13 @@ in {
           theme = "catppuccin-macchiato";
         };
         themes = {
-          # https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-Macchiato.tmTheme
+          # https://github.com/catppuccin/bat/blob/main/themes/Catppuccin%20Mocha.tmTheme
           catppuccin-macchiato = {
             src = pkgs.fetchFromGitHub {
               owner = "catppuccin";
               repo = "bat";
-              rev = "main";
-              sha256 = "6fWoCH90IGumAMc4buLRWL0N61op+AuMNN9CAR9/OdI=";
+              rev = "6810349b28055dce54076712fc05fc68da4b8ec0";
+              hash = "sha256-9n7sH8Xo2mL1l3Zt+qj5u+0aQy7kK8n6vVh2b5i9A=";
             };
             file = "themes/Catppuccin Macchiato.tmTheme";
           };
