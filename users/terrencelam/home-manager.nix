@@ -127,13 +127,13 @@ in {
             path = ./config/mpv;
           };
         };
-        # niri = {
-        #   enable = true;
-        #   source = builtins.path {
-        #     name = "niri";
-        #     path = ./config/niri;
-        #   };
-        # };
+        niri = {
+          enable = true;
+          source = builtins.path {
+            name = "niri";
+            path = ./config/niri;
+          };
+        };
       }
       // lib.optionalAttrs isDarwin {
         skhd = {
