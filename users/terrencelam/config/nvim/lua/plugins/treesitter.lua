@@ -1,5 +1,6 @@
 return {
   'nvim-treesitter/nvim-treesitter',
+  branch = 'master',
   version = false, -- last release is way too old and doesn't work on Windows
   build = ':TSUpdate',
   event = { 'VeryLazy' },
@@ -102,6 +103,7 @@ return {
     {
       'nvim-treesitter/nvim-treesitter-textobjects',
       event = 'VeryLazy',
+      branch = 'master',
       enabled = true,
       config = function()
         -- When in diff mode, we want to use the default
