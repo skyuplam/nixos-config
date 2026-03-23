@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: {
+{config, ...}: {
   imports = [
     ./hardware/amd-wb.nix
     ./disko-config-wb.nix
@@ -24,6 +20,12 @@
   };
 
   services.libinput.enable = true;
+  # Closing the lid
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitchExternalPower = "lock";
+    HandleLidSwitchDocked = "ignore";
+  };
 
   networking = {
     hostName = "tlamwb";
@@ -60,6 +62,16 @@
   # Enables the amd cpu scaling https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html
   # On recent AMD CPUs this can be more energy efficient.
   boot.kernelModules = ["zenpower" "amd_pstate=active"];
+
+  # https://wiki.nixos.org/wiki/Power_Management
+  # swapon -s
+  boot.resumeDevice = "/persist/swap/swapfile";
+
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "1h";
+  };
+
+  powerManagement.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
