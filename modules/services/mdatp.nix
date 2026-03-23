@@ -150,14 +150,6 @@ in {
           };
         })
       ];
-
-      # Add helpful CLI aliases
-      # shellAliases = {
-      #   mdatp-health = "${cfg.package}/bin/mdatp health";
-      #   mdatp-scan = "${cfg.package}/bin/mdatp scan quick";
-      #   mdatp-status = "systemctl status mdatp";
-      #   mdatp-logs = "journalctl -u mdatp -f";
-      # };
     };
 
     # User configuration
@@ -294,16 +286,16 @@ in {
 
         # Post-start health check
         postStart = ''
-          # Wait for service to initialize
-          sleep 5
-
-          # Check if daemon is responding
-          if ${cfg.package}/bin/mdatp health --field healthy 2>/dev/null | grep -q "true"; then
-            echo "Microsoft Defender is healthy"
-          else
-            echo "WARNING: Microsoft Defender health check failed"
-            echo "Run 'mdatp health' to diagnose issues"
-          fi
+          # # Wait for service to initialize
+          # sleep 5
+          #
+          # # Check if daemon is responding
+          # if ${cfg.package}/bin/mdatp health --field healthy 2>/dev/null | grep -q "true"; then
+          #   echo "Microsoft Defender is healthy"
+          # else
+          #   echo "WARNING: Microsoft Defender health check failed"
+          #   echo "Run 'mdatp health' to diagnose issues"
+          # fi
         '';
       };
 

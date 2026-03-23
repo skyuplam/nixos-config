@@ -79,80 +79,46 @@ in {
     # systemd.tmpfiles.packages = [pkgs.intune-portal];
     services.dbus.packages = [pkgs.microsoft-identity-broker];
 
-    # Systemd user service for Intune Portal
-    systemd.user.services.intune-portal = mkIf cfg.autoStart {
-      description = "Microsoft Intune Company Portal";
-      documentation = ["https://learn.microsoft.com/en-us/intune/intune-service/user-help/microsoft-intune-app-linux"];
-
-      wantedBy = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      partOf = ["graphical-session.target"];
-
+    systemd.services.intune-daemon = {
+      description = "Intune daemon";
+      requires = ["intune-daemon.socket"]; # Socket dependency
       serviceConfig = {
-        Type = "simple";
-        ExecStart = "${cfg.package}/bin/intune-portal";
-        Restart = "on-failure";
-        RestartSec = 5;
-
-        # Security hardening following docs/PATTERNS.md
-        # Note: DynamicUser cannot be used for user services
-        PrivateTmp = true;
-        ProtectSystem = "strict";
-        ProtectHome = "read-only";
-        NoNewPrivileges = true;
-        ProtectKernelTunables = true;
-        ProtectKernelModules = true;
-        ProtectControlGroups = true;
-        RestrictSUIDSGID = true;
-
-        # Allow specific capabilities needed for network operations
-        CapabilityBoundingSet = ["CAP_NET_BIND_SERVICE"];
-
-        # Restrict system calls
-        SystemCallFilter = ["@system-service" "~@privileged"];
-        SystemCallArchitectures = "native";
-
-        # Resource limits
-        MemoryMax = "512M";
-        TasksMax = 256;
-
-        # Network access required for enrollment and compliance checks
-        PrivateNetwork = false;
-        RestrictAddressFamilies = ["AF_INET" "AF_INET6" "AF_UNIX"];
+        ExecStart = "${cfg.package}/bin/intune-daemon";
+        ExecReload = "/bin/kill -HUP $MAINPID";
+        StateDirectory = "intune";
+        StateDirectoryMode = "0700";
       };
     };
 
-    # Systemd agent and daemon services
+    systemd.sockets.intune-daemon = {
+      description = "Intune daemon socket";
+      listenStream = "/run/intune/daemon.socket";
+      socketConfig = {
+        SocketMode = "0660";
+      };
+      wantedBy = ["sockets.target"];
+    };
+
     systemd.user.services.intune-agent = {
-      description = "Microsoft Intune Agent";
-      documentation = ["https://learn.microsoft.com/en-us/intune/intune-service/fundamentals/deployment-guide-platform-linux"];
-
-      wantedBy = ["default.target"];
-      after = ["network-online.target"];
-
+      description = "Intune Agent";
       serviceConfig = {
-        Type = "simple";
+        Type = "oneshot";
         ExecStart = "${cfg.package}/bin/intune-agent";
-        Restart = "on-failure";
-        RestartSec = 10;
+        StateDirectory = "intune";
+        Slice = "background.slice";
+      };
+    };
+    systemd.user.timers.intune-agent = {
+      description = "Intune Agent scheduler";
+      partOf = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      wantedBy = ["graphical-session.target"];
 
-        # Security hardening
-        PrivateTmp = true;
-        ProtectSystem = "strict";
-        ProtectHome = "read-only";
-        NoNewPrivileges = true;
-        ProtectKernelTunables = true;
-        ProtectKernelModules = true;
-        ProtectControlGroups = true;
-        RestrictSUIDSGID = true;
-
-        # Network access required
-        PrivateNetwork = false;
-        RestrictAddressFamilies = ["AF_INET" "AF_INET6" "AF_UNIX"];
-
-        # Resource limits
-        MemoryMax = "256M";
-        TasksMax = 128;
+      timerConfig = {
+        AccuracySec = "2m";
+        OnStartupSec = "5m";
+        OnUnitActiveSec = "1h";
+        RandomizedDelaySec = "10m";
       };
     };
 

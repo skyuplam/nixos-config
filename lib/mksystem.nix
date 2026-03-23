@@ -27,7 +27,7 @@
   intuneModule = ../modules/services/intune-portal.nix;
   mdatpModule = ../modules/services/mdatp.nix;
 
-  # NixOS vs nix-darwin functionst
+  # NixOS vs nix-darwin functions
   systemFunc =
     if darwin
     then inputs.darwin.lib.darwinSystem

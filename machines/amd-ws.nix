@@ -47,6 +47,19 @@
   services.mdatp = {
     enable = true;
     onboardingFile = "/etc/opt/microsoft/mdatp/_mdatp_onboard.json";
+    managedSettings = {
+      antivirusEngine = {
+        enforcementLevel = "real_time";
+      };
+      cloudService = {
+        enabled = true;
+        automaticSampleSubmissionConsent = "none";
+        automaticDefinitionUpdateEnabled = true;
+      };
+      networkProtection = {
+        enforcementLevel = "block";
+      };
+    };
   };
 
   # Make sure systemd machine-id is available
@@ -54,7 +67,6 @@
     enable = true;
   };
 
-  programs.ssh.askPassword = pkgs.lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
   programs.seahorse.enable = true;
   # Microsoft Intune Company Portal (custom package with version control)
   services.intune.enable = true;
@@ -75,7 +87,7 @@
   environment.etc = {
     "opt/microsoft/mdatp/_mdatp_onboard.json" = {
       source = inputs.nix-secrets.mdatpLicence.source;
-      mode = "0644";
+      mode = "0600";
       user = "root";
       group = "root";
     };
