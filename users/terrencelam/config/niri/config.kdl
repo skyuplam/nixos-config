@@ -71,6 +71,7 @@ input {
             // from org.freedesktop.locale1. You can control these using
             // localectl set-x11-keymap.
             layout "us"
+            variant "altgr-intl"
             options "caps:escape"
         }
 
