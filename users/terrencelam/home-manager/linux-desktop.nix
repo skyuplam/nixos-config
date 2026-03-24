@@ -156,6 +156,13 @@ in {
   #---------------------------------------------------------------------
 
   programs = {
+    fish.functions.screenrec = {
+      description = "Screen Recording";
+      body = ''
+        set -l VIDEO "$HOME/Videos/recordings/$(date +"%Y-%m-%d_%I-%M-%S").mp4"
+        ${pkgs.wl-screenrec}/bin/wl-screenrec -g $(${pkgs.slurp}/bin/slurp) -f "$VIDEO"
+      '';
+    };
     ghostty = {
       enable = !isWSL;
       enableFishIntegration = true;
