@@ -5,13 +5,6 @@
     ./linux-shared.nix
   ];
   boot.loader.systemd-boot.enable = true;
-  # boot.initrd.luks.devices = {
-  #   crypted = {
-  #     device = "/dev/disk/by-partlabel/luks";
-  #     allowDiscards = true;
-  #     bypassWorkqueues = true;
-  #   };
-  # };
   # Enable autoScrub for btrfs
   services.btrfs.autoScrub = {
     enable = true;
@@ -72,6 +65,13 @@
   };
 
   powerManagement.enable = true;
+
+  hardware = {
+    tuxedo-drivers = {
+      enable = true;
+    };
+    tuxedo-rs.enable = true;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
