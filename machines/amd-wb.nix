@@ -54,7 +54,8 @@
   boot.blacklistedKernelModules = ["k10temp"];
   # Enables the amd cpu scaling https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html
   # On recent AMD CPUs this can be more energy efficient.
-  boot.kernelModules = ["zenpower" "amd_pstate=active"];
+  boot.kernelModules = ["zenpower"];
+  boot.kernelParams = ["amd_pstate=active" "rcu_nocbs=0-23"];
 
   # https://wiki.nixos.org/wiki/Power_Management
   # swapon -s
