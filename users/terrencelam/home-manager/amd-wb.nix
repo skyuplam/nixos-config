@@ -51,7 +51,7 @@ in {
         }
         {
           timeout = 300;
-          command = "${pkgs.systemd}/bin/systemctl suspend";
+          command = "${pkgs.systemd}/bin/systemctl suspend-then-hibernate";
         }
       ];
       events = {
