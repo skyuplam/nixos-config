@@ -78,27 +78,18 @@ in {
       NKT_ROOT_DIR = "$HOME/docs";
     };
 
-    file =
-      {
-        ".inputrc".source = builtins.path {
-          name = "inputrc-config";
-          path = ../config/inputrc;
-        };
-        "biome.json".text = builtins.toJSON {
-          formatter = {
-            enabled = true;
-            indentStyle = "space";
-          };
-        };
-      }
-      // lib.optionalAttrs (isLinux && !isWSL) {
-        ".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
-        ".mozilla/native-messaging-hosts/ff2mpv.json".source = "${pkgs.ff2mpv}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
-      }
-      // lib.optionalAttrs isDarwin {
-        "Library/Application Support/Firefox/NativeMessagingHosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
-        "Library/Application Support/Firefox/NativeMessagingHosts/ff2mpv.json".source = "${pkgs.ff2mpv}/lib/mozilla/native-messaging-hosts/ff2mpv.json";
+    file = {
+      ".inputrc".source = builtins.path {
+        name = "inputrc-config";
+        path = ../config/inputrc;
       };
+      "biome.json".text = builtins.toJSON {
+        formatter = {
+          enabled = true;
+          indentStyle = "space";
+        };
+      };
+    };
 
     packages = [
       pkgs.aspell
