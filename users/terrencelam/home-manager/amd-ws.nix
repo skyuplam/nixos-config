@@ -7,7 +7,9 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  lock = "${pkgs.systemd}/bin/systemctl --user start dms-lock.service";
+in {
   imports = [
     (import ./linux-desktop.nix {
       inherit inputs;
@@ -24,17 +26,20 @@
     stateVersion = "25.11";
   };
 
+  systemd.user.services.dms-lock = {
+    Unit.Description = "DMS lock screen";
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.dms-shell}/bin/dms ipc call lock lock";
+    };
+  };
+
   services = {
     swayidle = let
-      lock = "${pkgs.dms-shell}/bin/dms ipc call lock lock";
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
     in {
       enable = true;
       timeouts = [
-        {
-          timeout = 17; # in seconds
-          command = "${pkgs.dms-shell}/bin/dms ipc call toast warn 'Locking in 3 seconds'";
-        }
         {
           timeout = 20;
           command = lock;
