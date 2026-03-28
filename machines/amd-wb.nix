@@ -16,6 +16,8 @@
   # Closing the lid
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend-then-hibernate";
+    PowerKey = "hibernate";
+    PowerKeyLongPress = "poweroff";
     HandleLidSwitchExternalPower = "lock";
     HandleLidSwitchDocked = "ignore";
   };
@@ -79,14 +81,15 @@
   # Enables the amd cpu scaling https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html
   # On recent AMD CPUs this can be more energy efficient.
   boot.kernelModules = ["zenpower"];
-  boot.kernelParams = ["amd_pstate=active"];
+  boot.kernelParams = ["amd_pstate=active" "mem_sleep_default=deep"];
 
   # https://wiki.nixos.org/wiki/Power_Management
   # swapon -s
   boot.resumeDevice = "/persist/swap/swapfile";
 
   systemd.sleep.settings.Sleep = {
-    HibernateDelaySec = "1h";
+    HibernateDelaySec = "30m";
+    SuspendState = "mem";
   };
 
   powerManagement.enable = true;
