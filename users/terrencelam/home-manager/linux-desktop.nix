@@ -115,6 +115,7 @@ in {
       pkgs.wl-screenrec
       pkgs.xdg-utils
       pkgs.pinentry-curses # terminal-based Pinentry
+      pkgs.btop-rocm # btop with AMDGPU
     ];
 
     pointerCursor = {
