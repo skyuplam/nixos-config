@@ -46,6 +46,10 @@
     };
   };
 
+  services.upower = {
+    enable = true;
+  };
+
   networking = {
     hostName = "tlamwb";
     networkmanager.enable = true;
