@@ -80,7 +80,7 @@
 
   systemd.sleep.settings.Sleep = {
     HibernateDelaySec = "30m";
-    SuspendState = "mem";
+    SuspendState = "freeze";
   };
 
   powerManagement.enable = true;
