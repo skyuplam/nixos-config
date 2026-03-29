@@ -1,10 +1,18 @@
-{config, ...}: {
+{lib, ...}: {
   imports = [
     ./hardware/amd-wb.nix
     ./disko-config-wb.nix
     ./linux-shared.nix
   ];
-  boot.loader.systemd-boot.enable = true;
+  # Lanzaboote currently replaces the systemd-boot module.
+  # This setting is usually set to true in configuration.nix
+  # generated at installation time. So we force it to false
+  # for now.
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/var/lib/sbctl";
+  };
   # Enable autoScrub for btrfs
   services.btrfs.autoScrub = {
     enable = true;
