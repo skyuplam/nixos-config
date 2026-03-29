@@ -66,27 +66,6 @@
     memoryPercent = 50;
   };
 
-  # From https://github.com/NixOS/nixos-hardware/pull/1676
-  # Add Tuxedo InfinityBook Pro 14 Gen 10 hardware specifics
-  # Add Motorcomm YT6801 Driver if available
-  boot.extraModulePackages = with config.boot; [
-    (
-      if (kernelPackages ? yt6801)
-      then kernelPackages.yt6801
-      else null
-    )
-    # Enables the zenpower sensor in lieu of the k10temp sensor on Zen CPUs https://git.exozy.me/a/zenpower3
-    # On Zen CPUs zenpower produces much more data entries
-    # Refs. https://github.com/cguentherTUChemnitz/nixos-hardware/blob/6cdf1d899c48f7a9f16bf422b93a56271f473ea4/common/cpu/amd/zenpower.nix
-    kernelPackages.zenpower
-  ];
-
-  boot.blacklistedKernelModules = ["k10temp"];
-  # Enables the amd cpu scaling https://www.kernel.org/doc/html/latest/admin-guide/pm/amd-pstate.html
-  # On recent AMD CPUs this can be more energy efficient.
-  boot.kernelModules = ["zenpower"];
-  boot.kernelParams = ["amd_pstate=active" "mem_sleep_default=deep"];
-
   # https://wiki.nixos.org/wiki/Power_Management
   # swapon -s
   boot.resumeDevice = "/persist/swap/swapfile";
