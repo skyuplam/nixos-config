@@ -10,6 +10,10 @@
 }: let
   inherit (pkgs.stdenv) isLinux;
 in {
+  imports = [
+    inputs.noctalia.homeModules.default
+  ];
+
   xdg = {
     userDirs = {
       enable = true;
@@ -264,6 +268,9 @@ in {
         "--enable-features=Vulkan,VulkanFromANGLE"
         # "--enable-unsafe-webgpu"
       ];
+    };
+    noctalia-shell = {
+      enable = true;
     };
   };
 

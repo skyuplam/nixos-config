@@ -16,7 +16,7 @@ in {
     # Scrollable-tiling Wayland compositor
     niri.enable = true;
     dms-shell = {
-      enable = true;
+      enable = false;
 
       systemd = {
         enable = true; # Systemd service for auto-start

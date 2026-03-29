@@ -8,7 +8,7 @@
   pkgs,
   ...
 }: let
-  lock = "${pkgs.systemd}/bin/systemctl --user start dms-lock.service";
+  lock = "${pkgs.systemd}/bin/systemctl --user start screen-lock.service";
 in {
   imports = [
     (import ./linux-desktop.nix {
@@ -26,11 +26,11 @@ in {
     stateVersion = "26.05";
   };
 
-  systemd.user.services.dms-lock = {
-    Unit.Description = "DMS lock screen";
+  systemd.user.services.screen-lock = {
+    Unit.Description = "Lock screen";
     Service = {
       Type = "oneshot";
-      ExecStart = "${pkgs.dms-shell}/bin/dms ipc call lock lock";
+      ExecStart = "${pkgs.noctalia-shell}/bin/noctalia-shell ipc call lockScreen lock";
     };
   };
 

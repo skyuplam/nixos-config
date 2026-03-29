@@ -219,6 +219,7 @@ environment {
 // https://wiki.archlinux.org/title/Systemd/User#Environment_variables
 // Has the same effect as systemctl --user import-environment, but also affects the D-Bus session
 spawn-sh-at-startup "dbus-update-activation-environment --systemd --all"
+spawn-sh-at-startup "noctalia-shell"
 
 hotkey-overlay {
     skip-at-startup
