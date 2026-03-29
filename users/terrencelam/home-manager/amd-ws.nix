@@ -7,9 +7,7 @@
   lib,
   pkgs,
   ...
-}: let
-  lock = "${pkgs.systemd}/bin/systemctl --user start screen-lock.service";
-in {
+}: {
   imports = [
     (import ./linux-desktop.nix {
       inherit inputs;
@@ -26,16 +24,9 @@ in {
     stateVersion = "25.11";
   };
 
-  systemd.user.services.screen-lock = {
-    Unit.Description = "Lock screen";
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.noctalia-shell}/bin/noctalia-shell ipc call lockScreen lock";
-    };
-  };
-
   services = {
     swayidle = let
+      lock = "${config.programs.noctalia-shell.package}/bin/noctalia-shell ipc call lockScreen lock";
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
     in {
       enable = true;
