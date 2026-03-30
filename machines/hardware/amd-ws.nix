@@ -9,7 +9,6 @@
   ...
 }: let
   dns = inputs.nix-secrets.networking.dns;
-  # FIXME: Cannot use the private dns to the whole system
   dnsP = inputs.nix-secrets.networking.dnsP;
 in {
   imports = [

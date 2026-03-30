@@ -1,4 +1,11 @@
-{lib, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: let
+  dns = inputs.nix-secrets.networking.dns;
+  dnsP = inputs.nix-secrets.networking.dnsP;
+in {
   imports = [
     ./hardware/amd-wb.nix
     ./disko-config-wb.nix
@@ -62,6 +69,12 @@
     hostName = "tlamwb";
     networkmanager.enable = true;
     enableIPv6 = true;
+
+    firewall = {
+      allowedUDPPorts = [inputs.nix-secrets.networking.wireguard.wg1.listenPort];
+      # NixOS firewall will block wg traffic because of rpfilter
+      checkReversePath = "loose";
+    };
   };
 
   # Enable in-memory compressed devices and swap space provided by the zram kernel module.
