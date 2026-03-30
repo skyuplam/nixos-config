@@ -93,6 +93,10 @@
     };
   };
 
+  services.upower = {
+    enable = true;
+  };
+
   boot = {
     # This is not a complete NixOS configuration and you need to reference
     # your normal configuration here.
