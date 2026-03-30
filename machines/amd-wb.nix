@@ -4,7 +4,7 @@
   ...
 }: let
   dns = inputs.nix-secrets.networking.dns;
-  dnsP = inputs.nix-secrets.networking.dnsP;
+  #dnsP = inputs.nix-secrets.networking.dnsP;
 in {
   imports = [
     ./hardware/amd-wb.nix
@@ -68,6 +68,7 @@ in {
   networking = {
     hostName = "tlamwb";
     networkmanager.enable = true;
+    networkmanager.dns = "none";
     enableIPv6 = true;
 
     firewall = {
@@ -75,6 +76,8 @@ in {
       # NixOS firewall will block wg traffic because of rpfilter
       checkReversePath = "loose";
     };
+
+    nameservers = dns;
   };
 
   # Enable in-memory compressed devices and swap space provided by the zram kernel module.
@@ -104,6 +107,8 @@ in {
     };
     tuxedo-rs.enable = true;
   };
+
+  users.users.terrencelam.extraGroups = ["wheel" "video" "docker" "networkmanager"];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
