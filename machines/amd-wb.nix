@@ -69,7 +69,6 @@ in {
   networking = {
     hostName = "tlamwb";
     networkmanager.enable = true;
-    networkmanager.dns = "none";
     enableIPv6 = true;
 
     firewall = {
