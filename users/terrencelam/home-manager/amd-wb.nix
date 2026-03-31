@@ -24,6 +24,14 @@
     stateVersion = "26.05";
   };
 
+  xdg.configFile.kanata = {
+    enable = true;
+    source = builtins.path {
+      name = "kanata-config";
+      path = ../config/kanata;
+    };
+  };
+
   services = {
     swayidle = let
       lock = "${config.programs.noctalia-shell.package}/bin/noctalia-shell ipc call lockScreen lock";

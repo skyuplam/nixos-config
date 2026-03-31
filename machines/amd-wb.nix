@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  pkgs,
   ...
 }: let
   dns = inputs.nix-secrets.networking.dns;
@@ -106,9 +107,35 @@ in {
       enable = true;
     };
     tuxedo-rs.enable = true;
+    # kanata
+    uinput.enable = true;
   };
 
-  users.users.terrencelam.extraGroups = ["wheel" "video" "docker" "networkmanager"];
+  systemd.user.services.kanata = {
+    enable = true;
+    unitConfig = {
+      Description = "Kanata keyboard remapper";
+      Documentation = "https://github.com/jtroo/kanata";
+    };
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${lib.getExe pkgs.kanata} --cfg %h/.config/kanata/config.kbd --no-wait";
+      Restart = "on-failure";
+      RestartSec = 3;
+    };
+    wantedBy = ["default.target"];
+  };
+
+  users.users.terrencelam.extraGroups = [
+    "wheel"
+    "video"
+    "docker"
+    "networkmanager"
+
+    # kanata
+    "input"
+    "uinput"
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
