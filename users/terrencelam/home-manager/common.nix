@@ -328,10 +328,14 @@ in {
       enable = true;
       enableDefaultConfig = false;
       matchBlocks."*".hashKnownHosts = true;
-      extraConfig =
-        if isDarwin
-        then inputs.nix-secrets.ssh.extraConfigCommon + inputs.nix-secrets.ssh.extraConfigDarwin
-        else inputs.nix-secrets.ssh.extraConfigCommon + inputs.nix-secrets.ssh.extraConfigNixOS;
+      extraConfig = ''
+        ${inputs.nix-secrets.ssh.extraConfigCommon}
+        ${
+          if isDarwin
+          then inputs.nix-secrets.ssh.extraConfigDarwin
+          else inputs.nix-secrets.ssh.extraConfigNixOS
+        }
+      '';
       includes = ["./.config"];
     };
   };
