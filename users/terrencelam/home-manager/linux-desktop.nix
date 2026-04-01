@@ -278,11 +278,13 @@ in {
     gpg-agent = {
       enable = true;
       defaultCacheTtl = 1800;
+      defaultCacheTtlSsh = 1800;
       pinentry.package = pkgs.pinentry-gnome3;
       enableScDaemon = true;
       enableFishIntegration = true;
       enableSshSupport = true;
       enableExtraSocket = true;
+      sshKeys = inputs.nix-secrets.gpg-agent-sshKeys;
     };
 
     udiskie = {
