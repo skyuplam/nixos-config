@@ -287,7 +287,6 @@ in {
       enableFishIntegration = true;
       enableSshSupport = true;
       enableExtraSocket = true;
-      sshKeys = inputs.nix-secrets.gpg-agent-sshKeys;
     };
 
     udiskie = {
