@@ -138,9 +138,7 @@ in {
       pkgs.qmk
       pkgs.imagemagick
       pkgs.libsecret
-      pkgs.localsend
       pkgs.slides # TUI Present tool
-      pkgs.localsend
       pkgs.libargon2
       pkgs.libqalculate
 
