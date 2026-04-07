@@ -37,7 +37,7 @@
       lock = "${config.programs.noctalia-shell.package}/bin/noctalia-shell ipc call lockScreen lock";
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
     in {
-      enable = true;
+      enable = false;
       timeouts = [
         {
           timeout = 20;
