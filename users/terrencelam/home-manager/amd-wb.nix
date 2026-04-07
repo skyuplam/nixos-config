@@ -34,10 +34,10 @@
 
   services = {
     swayidle = let
-      lock = "${config.programs.noctalia-shell.package}/bin/noctalia-shell ipc call lockScreen lock";
+      lock = "${lib.getExe config.programs.noctalia-shell.package} ipc call lockScreen lock";
       display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
     in {
-      enable = false;
+      enable = true;
       timeouts = [
         {
           timeout = 20;
@@ -55,7 +55,7 @@
       ];
       events = {
         after-resume = display "on";
-        before-sleep = (display "off") + "; " + lock;
+        before-sleep = lock;
         lock = lock;
         unlock = display "on";
       };
