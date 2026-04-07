@@ -28,10 +28,14 @@ in {
     fileSystems = ["/"];
   };
 
+  services.chrony = {
+    enable = true;
+  };
+
   services.libinput.enable = true;
   # Closing the lid
   services.logind.settings.Login = {
-    HandleLidSwitch = "suspend-then-hibernate";
+    HandleLidSwitch = "suspend";
     PowerKey = "hibernate";
     PowerKeyLongPress = "poweroff";
     HandleLidSwitchExternalPower = "lock";
