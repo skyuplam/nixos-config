@@ -30,3 +30,7 @@ shell-integration-features = cursor,sudo,title,no-cursor,ssh-terminfo
 
 # Rando stuff
 gtk-single-instance = true
+
+# https://ghostty.org/docs/linux/systemd#starting-ghostty-at-login
+quit-after-last-window-closed = true
+quit-after-last-window-closed-delay = 5m

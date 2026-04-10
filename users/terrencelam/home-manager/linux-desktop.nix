@@ -176,9 +176,6 @@ in {
       enableFishIntegration = true;
       installBatSyntax = true;
       installVimSyntax = true;
-      systemd = {
-        enable = true;
-      };
     };
     zathura = {
       enable = true;
