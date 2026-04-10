@@ -277,6 +277,30 @@ in {
     };
   };
 
+  systemd.user.services.wlsunset = {
+    Install = {
+      WantedBy = [config.wayland.systemd.target];
+    };
+
+    Unit = {
+      ConditionEnvironment = "WAYLAND_DISPLAY";
+      Description = "Day/night gamma adjustments for Wayland compositors supporting wlr-gamma-control-unstable-v1";
+      PartOf = [config.wayland.systemd.target];
+      After = [config.wayland.systemd.target];
+    };
+
+    Service = {
+      ExecStart = let
+        args = lib.cli.toCommandLineShellGNU {} {
+          l = "59.8";
+          L = "10.8";
+        };
+      in "${lib.getExe pkgs.wlsunset} ${args}";
+      Restart = "always";
+      RestartSec = "10";
+    };
+  };
+
   services = {
     gpg-agent = {
       enable = true;
@@ -288,19 +312,8 @@ in {
       enableSshSupport = true;
       enableExtraSocket = true;
     };
-
     udiskie = {
       enable = true;
-    };
-
-    mako = {
-      enable = true;
-    };
-
-    wlsunset = {
-      enable = true;
-      latitude = "59.8";
-      longitude = "10.8";
     };
     # wallpaper
     wpaperd = {
