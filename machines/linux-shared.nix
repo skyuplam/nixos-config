@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }: {
   nix = {
@@ -51,7 +52,16 @@
   };
 
   # To set up Sway using Home Manager, first you must enable Polkit in your nix configuration
-  security = {
+  security = let
+    extraConfig = ''
+
+      # Keep terminfo database for root and %wheel.
+      Defaults:root,%wheel env_keep+=TERMINFO_DIRS
+      Defaults:root,%wheel env_keep+=TERMINFO
+    '';
+  in {
+    sudo = {inherit extraConfig;};
+    sudo-rs = {inherit extraConfig;};
     rtkit.enable = true;
     polkit = {
       enable = true;
@@ -145,17 +155,22 @@
     sbctl
     neovim
     git
+    ghostty.terminfo # Ghostty Terminfo
   ];
 
-  environment.pathsToLink = ["/share/fish"];
+  # Reference https://github.com/NixOS/nixpkgs/blob/nixos-unstable/nixos/modules/config/terminfo.nix
+  environment.pathsToLink = ["/share/fish" "/share/terminfo"];
+  environment.etc.terminfo = {
+    source = "${config.system.path}/share/terminfo";
+  };
+  environment.profileRelativeSessionVariables = {
+    TERMINFO_DIRS = ["/share/terminfo"];
+  };
+  environment.extraInit = ''
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+    # reset TERM with new TERMINFO available (if any)
+    export TERM=$TERM
+  '';
 
   services = {
     openssh = {

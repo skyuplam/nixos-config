@@ -10,9 +10,6 @@ in {
   # Add ~/.local/bin to PATH
   environment.localBinInPath = true;
 
-  # Ghostty Terminfo
-  environment.systemPackages = with pkgs; [ghostty.terminfo];
-
   # Since we're using fish as our shell
   programs = {
     fish.enable = true;
