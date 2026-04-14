@@ -58,6 +58,7 @@ in {
       Description = "swayidle (custom)";
       PartOf = ["graphical-session.target"];
       After = ["graphical-session.target"];
+      ConditionEnvironment = "WAYLAND_DISPLAY";
     };
 
     Service = {
@@ -67,6 +68,8 @@ in {
         "QS_CONFIG_PATH=${noctaliaPkg}/share/noctalia-shell"
         "PATH=/run/wrappers/bin:/etc/profiles/per-user/%u/bin:/run/current-system/sw/bin"
       ];
+      # Pull in the graphical session environment (WAYLAND_DISPLAY, XDG_RUNTIME_DIR, etc.)
+      PassEnvironment = "WAYLAND_DISPLAY XDG_RUNTIME_DIR";
       ExecStart = ''
         ${pkgs.swayidle}/bin/swayidle -w \
           timeout 20 '${lockScript}' \
