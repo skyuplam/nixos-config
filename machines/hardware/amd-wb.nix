@@ -32,7 +32,7 @@
   boot.kernelParams = [
     "amd_pstate=active"
     # sudo btrfs inspect-internal map-swapfile -r /persist/swap/swapfile
-    "resume_offset=533760"
+    # "resume_offset=533760"
   ];
 
   # From https://github.com/NixOS/nixos-hardware/pull/1676

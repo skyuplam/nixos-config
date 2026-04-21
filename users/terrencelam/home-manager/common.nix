@@ -61,7 +61,8 @@ in {
       LC_CTYPE = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
       PAGER = "less -FirSwX";
-      # VISUAL = "$EDITOR";
+      EDITOR = "nvim";
+      VISUAL = "$EDITOR";
       GIT_EDITOR = "$EDITOR";
       MANPAGER = "$EDITOR +Man!";
       SQLITE_CLIB_PATH = "${pkgs.sqlite.out}/lib/libsqlite3.${

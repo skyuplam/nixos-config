@@ -96,10 +96,10 @@ in {
 
   # https://wiki.nixos.org/wiki/Power_Management
   # swapon -s
-  boot.resumeDevice = "/persist/swap/swapfile";
+  # boot.resumeDevice = "/persist/swap/swapfile";
 
   systemd.sleep.settings.Sleep = {
-    HibernateDelaySec = "30m";
+    # HibernateDelaySec = "30m";
     SuspendState = "freeze";
   };
 
