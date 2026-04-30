@@ -263,6 +263,33 @@ animations {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
 // Work around WezTerm's initial configure bug
 // by setting an empty default-column-width.
+/* Apps: blur them all without xray for a better look */
+window-rule {
+  background-effect {
+    blur true
+    xray true
+  }
+}
+/* Noctalia: blur everywhere without xray for a better look */
+layer-rule {
+  match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+  background-effect {
+    xray false
+  }
+}
+// Make floating windows use the regular blur (if enabled),
+// while tiled windows keep using the efficient xray blur.
+//
+// Warning: non-xray blur is currently experimental and has known limitations.
+// In particular, it doesn't work during window opening and closing animations.
+window-rule {
+    match is-floating=true
+
+    background-effect {
+        xray false
+    }
+}
+
 window-rule {
     // This regular expression is intentionally made as specific as possible,
     // since this is the default config, and we want no false positives.
