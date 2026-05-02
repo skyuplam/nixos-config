@@ -220,6 +220,7 @@ environment {
 // Has the same effect as systemctl --user import-environment, but also affects the D-Bus session
 spawn-sh-at-startup "dbus-update-activation-environment --systemd --all"
 spawn-sh-at-startup "noctalia-shell"
+spawn-sh-at-startup "swayidle -w timeout 20 'noctalia-shell ipc call lockScreen lock' timeout 180 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors' before-sleep 'noctalia-shell ipc call lockScreen lock' lock 'noctalia-shell ipc call lockScreen lock' unlock 'niri msg action power-on-monitors' after-resume 'niri msg action power-on-monitors'"
 
 hotkey-overlay {
     skip-at-startup

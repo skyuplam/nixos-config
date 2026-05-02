@@ -121,6 +121,7 @@ in {
       pkgs.xdg-utils
       pkgs.pinentry-curses # terminal-based Pinentry
       pkgs.btop-rocm # btop with AMDGPU
+      pkgs.swayidle
     ];
 
     pointerCursor = {
