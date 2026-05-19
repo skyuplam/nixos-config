@@ -131,6 +131,7 @@ in {
       # pkgs.zigpkgs.master
       # pkgs.zls
       pkgs.qemu
+      pkgs.google-cloud-sdk
       pkgs.sops
       pkgs.age
       pkgs.mkpasswd

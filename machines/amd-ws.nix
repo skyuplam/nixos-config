@@ -33,6 +33,10 @@
       # TLS/SSL support
       gnutls
       openssl
+
+      # virtiofs
+      guestfs-tools
+      virtiofsd
     ];
     # Environment variables for WebKit
     sessionVariables = {
@@ -61,6 +65,16 @@
       };
     };
   };
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.swtpm.enable = true;
+  };
+
+  users.users.terrencelam.extraGroups = [
+    # To enable local user access to libvirt, for example by using virt-manager or gnome-boxes, add yourself to the libvirtd group
+    "libvirtd"
+  ];
 
   # Make sure systemd machine-id is available
   systemd.services.systemd-machine-id-setup = {
@@ -139,6 +153,7 @@
     allowedUDPPorts = [inputs.nix-secrets.networking.wireguard.wg0.listenPort];
     # NixOS firewall will block wg traffic because of rpfilter
     checkReversePath = "loose";
+    trustedInterfaces = ["virbr0"];
   };
 
   # This value determines the NixOS release from which the default
