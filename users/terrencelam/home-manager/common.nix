@@ -327,7 +327,11 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*".hashKnownHosts = true;
+      settings = {
+        "*" = {
+          hashKnownHosts = true;
+        };
+      };
       extraConfig = ''
         ${inputs.nix-secrets.ssh.extraConfigCommon}
         ${
