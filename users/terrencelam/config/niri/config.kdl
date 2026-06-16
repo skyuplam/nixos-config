@@ -220,7 +220,7 @@ environment {
 // Has the same effect as systemctl --user import-environment, but also affects the D-Bus session
 spawn-sh-at-startup "dbus-update-activation-environment --systemd --all"
 spawn-sh-at-startup "noctalia"
-spawn-sh-at-startup "swayidle -w timeout 20 'noctalia-shell ipc call lockScreen lock' timeout 180 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors' before-sleep 'noctalia-shell ipc call lockScreen lock' lock 'noctalia-shell ipc call lockScreen lock' unlock 'niri msg action power-on-monitors' after-resume 'niri msg action power-on-monitors'"
+spawn-sh-at-startup "swayidle -w timeout 20 'noctalia msg session lock' timeout 180 'niri msg action power-off-monitors' resume 'niri msg action power-on-monitors' before-sleep 'noctalia msg session lock' lock 'noctalia msg session lock' unlock 'niri msg action power-on-monitors' after-resume 'niri msg action power-on-monitors'"
 
 hotkey-overlay {
     skip-at-startup
@@ -271,13 +271,19 @@ window-rule {
     xray true
   }
 }
-/* Noctalia: blur everywhere without xray for a better look */
+/*
+  Noctalia
+  Disable xray on all our surfaces so it looks more realistic.
+  Noctalia publishes blur regions automatically when ext-background-effects is available.
+*/
 layer-rule {
-  match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
   background-effect {
     xray false
+    // blur false
   }
 }
+
 // Make floating windows use the regular blur (if enabled),
 // while tiled windows keep using the efficient xray blur.
 //
