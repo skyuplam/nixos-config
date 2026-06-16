@@ -108,7 +108,7 @@ in {
       pkgs.mesa-demos
       pkgs.grim
       pkgs.libnotify
-      pkgs.libsForQt5.qt5.qtwayland
+      pkgs.qt5.qtwayland
       pkgs.libusb1
       pkgs.libva-utils
       pkgs.qt6.qtwayland
@@ -271,7 +271,7 @@ in {
         # "--enable-unsafe-webgpu"
       ];
     };
-    noctalia-shell = {
+    noctalia = {
       enable = true;
     };
   };
