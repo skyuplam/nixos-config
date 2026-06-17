@@ -9,6 +9,7 @@ with lib; {
   imports = [
     # Service modules (specific services)
     ./services/default.nix # Service configurations
+    ./tree-sitter.nix # Neovim Tree-sitter integration
   ];
 
   # Module validation and conflict detection

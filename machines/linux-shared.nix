@@ -43,6 +43,22 @@
     };
   };
 
+  programs.nvim-treesitter-parsers = {
+    enable = true;
+    parsers = [
+      "git_config"
+      "git_rebase"
+      "gitattributes"
+      "gitcommit"
+      "gitignore"
+      "kdl"
+      "python"
+      "rust"
+      "toml"
+      "wgsl"
+    ];
+  };
+
   # Enables the systemd NTP client daemon.
   services.timesyncd.enable = true;
 

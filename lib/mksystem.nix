@@ -26,6 +26,7 @@
 
   intuneModule = ../modules/services/intune-portal.nix;
   mdatpModule = ../modules/services/mdatp.nix;
+  nvim-treesitter-parsers = ../modules/tree-sitter.nix;
 
   # NixOS vs nix-darwin functions
   systemFunc =
@@ -74,6 +75,11 @@ in
       (
         if !darwin && !isWSL
         then mdatpModule
+        else {}
+      )
+      (
+        if !darwin && !isWSL
+        then nvim-treesitter-parsers
         else {}
       )
       #inputs.mdatp.nixosModules.mdatp
