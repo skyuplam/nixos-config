@@ -36,7 +36,7 @@ in {
   # Closing the lid
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
-    PowerKey = "hibernate";
+    PowerKey = "suspend";
     PowerKeyLongPress = "poweroff";
     HandleLidSwitchExternalPower = "lock";
     HandleLidSwitchDocked = "ignore";
