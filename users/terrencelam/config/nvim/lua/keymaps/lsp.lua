@@ -13,7 +13,7 @@ local spec = {
     { "<c-k>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
     { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
     { "<leader>cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "v" }, has = "codeLens" },
-    { "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
+    { "<leader>cC", function() return vim.lsp.codelens.enable(true) end, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
     { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", mode ={"n"}, has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
     { "<leader>cA", require('utils.lsp').action.source, desc = "Source Action", has = "codeAction" },
