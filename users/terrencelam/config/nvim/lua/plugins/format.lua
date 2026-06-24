@@ -79,7 +79,6 @@ return {
       markdown = { 'prettier', 'injected' },
       yaml = { 'prettier' },
       glsl = { lsp_format = 'fallback' },
-      wgsl = { 'wgslfmt', lsp_format = 'fallback' },
       gitcommit = { 'commitmsgfmt', lsp_format = 'fallback' },
       -- Conform will run the first available formatter
       javascript = function(bufnr)
