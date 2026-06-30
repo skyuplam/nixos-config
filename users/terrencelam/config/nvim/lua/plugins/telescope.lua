@@ -1,8 +1,19 @@
 return {
   'nvim-telescope/telescope.nvim',
-  tag = '0.1.8',
+  version = '*',
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    { 'natecraddock/telescope-zf-native.nvim' },
+    {
+      'nvim-telescope/telescope-frecency.nvim',
+      version = '*',
+    },
+    { 'nvim-telescope/telescope-live-grep-args.nvim', version = '*' },
+    { 'stevearc/aerial.nvim' },
+  },
   config = function(lazy, opts)
     local telescope = require('telescope')
+    local builtin = require('telescope.builtin')
     local lga_actions = require('telescope-live-grep-args.actions')
     local lga_shortcuts = require('telescope-live-grep-args.shortcuts')
     local open_with_trouble = require('trouble.sources.telescope').open
@@ -110,49 +121,39 @@ return {
       end,
     })
     -- stylua: ignore start
-    vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope resume<CR>', { desc = 'Resume Telescope' })
+    vim.keymap.set('n', '<leader><leader>', builtin.resume, { desc = 'Resume Telescope' })
     vim.keymap.set('n', '<leader>fG', function() telescope.extensions.live_grep_args.live_grep_args({ search_dirs = { '%:p:h' } }) end, { desc = 'Grep files from current directory' })
+    vim.keymap.set('n', '<leader>fS', builtin.search_history, { desc = 'Command History' })
     vim.keymap.set('n', '<leader>fW', lga_shortcuts.grep_word_under_cursor_current_buffer, { desc = 'Grep with word under cursor for the current buffer' })
-    vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<CR>', { desc = 'Buffers' })
-    vim.keymap.set('n', '<leader>fc', '<cmd>Telescope command_history<CR>', { desc = 'Command history' })
-    vim.keymap.set('n', '<leader>fd', '<cmd>Telescope git_status<CR>', { desc = 'Git status' })
+    vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Buffers' })
+    vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Commands' })
     vim.keymap.set('n', '<leader>ff', function() telescope.extensions.frecency.frecency({ workspace = 'CWD', sorter = require('telescope.config').values.file_sorter() }) end, { desc = 'Find files (frecency)' })
     vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep_args<CR>', { desc = 'Grep files' })
-    vim.keymap.set('n', '<leader>fj', '<cmd>Telescope jumplist<CR>', { desc = 'Jump list' })
-    vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>', { desc = 'Find old files' })
-    vim.keymap.set('n', '<leader>fq', '<cmd>Telescope quickfix<CR>', { desc = 'Quickfix list' })
-    vim.keymap.set('n', '<leader>fr', '<cmd>Telescope registers<CR>', { desc = 'Registers' })
-    vim.keymap.set('n', '<leader>fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>', { desc = 'File current buffer' })
-    vim.keymap.set('n', '<leader>ft', '<cmd>Telescope filetypes<CR>', { desc = 'File types' })
+    vim.keymap.set('n', '<leader>fh', builtin.tags, { desc = 'Help tags' })
+    vim.keymap.set('n', '<leader>fj', builtin.jumplist, { desc = 'Jump list' })
+    vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'Find old files' })
+    vim.keymap.set('n', '<leader>fp', builtin.command_history, { desc = 'Command History' })
+    vim.keymap.set('n', '<leader>fq', builtin.quickfix, { desc = 'Quickfix list' })
+    vim.keymap.set('n', '<leader>fr', builtin.registers, { desc = 'Registers' })
+    vim.keymap.set('n', '<leader>fs', builtin.current_buffer_fuzzy_find, { desc = 'File current buffer' })
+    vim.keymap.set('n', '<leader>ft', builtin.filetypes, { desc = 'File types' })
     vim.keymap.set('n', '<leader>fw', lga_shortcuts.grep_word_under_cursor, { desc = 'Grep with word under cursor' })
-    vim.keymap.set('n', '<leader>fz', '<cmd>Telescope spell_suggest<CR>', { desc = 'Spell suggest' })
-    vim.keymap.set('n', '<leader>gC', '<cmd>Telescope lsp_outgoing_calls<CR>', { desc = 'List LSP outgoing calls' })
-    vim.keymap.set('n', '<leader>gD', '<cmd>Telescope lsp_references<CR>', { desc = 'List LSP references' })
+    vim.keymap.set('n', '<leader>fz', builtin.spell_suggest, { desc = 'Spell suggest' })
+    vim.keymap.set('n', '<leader>gC', builtin.lsp_outgoing_calls, { desc = 'List LSP outgoing calls' })
+    vim.keymap.set('n', '<leader>gD', builtin.lsp_references, { desc = 'List LSP references' })
+    vim.keymap.set('n', '<leader>gH', builtin.git_bcommits, { desc = 'Git Buffer Commits' })
     vim.keymap.set('n', '<leader>gL', '<cmd>Telescope diagnostics bufnr=0<CR>', { desc = 'List Disagnostics for current buffer' })
-    vim.keymap.set('n', '<leader>gc', '<cmd>Telescope lsp_incoming_calls<CR>', { desc = 'List LSP incoming calls' })
-    vim.keymap.set('n', '<leader>gd', '<cmd>Telescope lsp_definitions<CR>', { desc = 'List LSP definitions' })
-    vim.keymap.set('n', '<leader>gi', '<cmd>Telescope lsp_implementations<CR>', { desc = 'List LSP implementations' })
-    vim.keymap.set('n', '<leader>gl', '<cmd>Telescope diagnostics<CR>', { desc = 'List Disagnostics' })
+    vim.keymap.set('n', '<leader>gS', builtin.git_status, { desc = 'Git status' })
+    vim.keymap.set('n', '<leader>gc', builtin.lsp_incoming_calls, { desc = 'List LSP incoming calls' })
+    vim.keymap.set('n', '<leader>gd', builtin.lsp_definitions, { desc = 'List LSP definitions' })
+    vim.keymap.set('n', '<leader>gh', builtin.git_commits, { desc = 'Git Commits' })
+    vim.keymap.set('n', '<leader>gi', builtin.lsp_implementations, { desc = 'List LSP implementations' })
+    vim.keymap.set('n', '<leader>gl', builtin.diagnostics, { desc = 'List Disagnostics' })
     vim.keymap.set('n', '<leader>go', '<cmd>Telescope aerial<CR>', { desc = 'Outline Symbols' })
-    vim.keymap.set('n', '<leader>gt', '<cmd>Telescope lsp_type_definitions<CR>', { desc = 'List LSP Type definitions' })
+    vim.keymap.set('n', '<leader>gt', builtin.lsp_type_definitions, { desc = 'List LSP Type definitions' })
     vim.keymap.set('v', "<leader>fG", lga_shortcuts.grep_word_visual_selection_current_buffer, { desc = "Grep with selection for the current buffer" })
     vim.keymap.set('v', "<leader>fg", lga_shortcuts.grep_visual_selection, { desc = "Grep with selection" })
+    vim.keymap.set('v', '<leader>gh', builtin.git_bcommits_range, { desc = 'Git Buffer Commits' })
     -- stylua: ignore end
   end,
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-    { 'natecraddock/telescope-zf-native.nvim' },
-    {
-      'nvim-telescope/telescope-frecency.nvim',
-      -- install the latest stable version
-      version = '*',
-    },
-    { 'nvim-telescope/telescope-live-grep-args.nvim', version = '^1.0.0' },
-    {
-      'stevearc/aerial.nvim',
-      opts = {},
-      -- Optional dependencies
-      dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    },
-  },
 }
