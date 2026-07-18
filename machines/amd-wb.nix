@@ -32,6 +32,21 @@ in {
     enable = true;
   };
 
+  # Printer
+  services.printing = {
+    enable = true;
+    drivers = [
+      pkgs.gutenprint
+      pkgs.gutenprint-bin
+      pkgs.canon-cups-ufr2
+    ];
+  };
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
   services.libinput.enable = true;
   # Closing the lid
   services.logind.settings.Login = {
