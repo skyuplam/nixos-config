@@ -5,7 +5,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Core Noctalia binds
-    Mod+Return hotkey-overlay-title="Open Terminal" { spawn "ghostty"; }
+    Mod+Return hotkey-overlay-title="Open Terminal" { spawn "foot"; }
     Mod+B hotkey-overlay-title="Open Firefox" { spawn "firefox"; }
     Mod+E hotkey-overlay-title="Open File Manager" { spawn "thunar"; }
     Mod+Shift+B hotkey-overlay-title="Open Chrome" { spawn "google-chrome"; }
