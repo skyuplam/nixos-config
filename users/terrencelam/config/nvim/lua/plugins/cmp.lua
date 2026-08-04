@@ -2,6 +2,43 @@ return {
   'saghen/blink.cmp',
   -- optional: provides snippets for the snippet source
   dependencies = {
+    'saghen/blink.lib',
+    {
+      'xzbdmw/colorful-menu.nvim',
+      opts = {
+        lua_ls = {
+          -- Maybe you want to dim arguments a bit.
+          arguments_hl = '@comment',
+        },
+        ts_ls = {
+          -- false means do not include any extra info,
+          -- see https://github.com/xzbdmw/colorful-menu.nvim/issues/42
+          extra_info_hl = '@comment',
+        },
+      },
+      ['rust-analyzer'] = {
+        -- Such as (as Iterator), (use std::io).
+        extra_info_hl = '@comment',
+        -- Similar to the same setting of gopls.
+        align_type_to_right = true,
+        -- See https://github.com/xzbdmw/colorful-menu.nvim/pull/36
+        preserve_type_when_truncate = true,
+      },
+      clangd = {
+        -- Such as "From <stdio.h>".
+        extra_info_hl = '@comment',
+        -- Similar to the same setting of gopls.
+        align_type_to_right = true,
+        -- the hl group of leading dot of "•std::filesystem::permissions(..)"
+        import_dot_hl = '@comment',
+        -- See https://github.com/xzbdmw/colorful-menu.nvim/pull/36
+        preserve_type_when_truncate = true,
+      },
+      -- If true, try to highlight "not supported" languages.
+      fallback = true,
+      -- this will be applied to label description for unsupport languages
+      fallback_extra_info_hl = '@comment',
+    },
     'mikavilpas/blink-ripgrep.nvim',
     'fang2hou/blink-copilot',
     {
@@ -53,8 +90,14 @@ return {
     },
   },
 
+  build = function()
+    -- build the fuzzy matcher, optionally add a timeout to `pwait(timeout_ms)`
+    -- you can use `gb` in `:Lazy` to rebuild the plugin as needed
+    require('blink.cmp').build():pwait()
+  end,
+
   -- use a release tag to download pre-built binaries
-  version = '1.*',
+  -- version = '1.*',
   -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
   -- build = 'cargo build --release',
   -- If you use nix, you can build from source using latest nightly rust with:
@@ -93,7 +136,19 @@ return {
       ghost_text = { enabled = true },
       menu = {
         draw = {
+          -- https://github.com/xzbdmw/colorful-menu.nvim
+          -- We don't need label_description now because label and label_description are already
+          -- combined together in label by colorful-menu.nvim.
+          columns = { { 'kind_icon' }, { 'label', gap = 1 } },
           components = {
+            label = {
+              text = function(ctx)
+                return require('colorful-menu').blink_components_text(ctx)
+              end,
+              highlight = function(ctx)
+                return require('colorful-menu').blink_components_highlight(ctx)
+              end,
+            },
             -- Kind icon with mini.icon
             kind_icon = {
               text = function(ctx)
@@ -179,7 +234,7 @@ return {
     --
     -- See the fuzzy documentation for more information
     fuzzy = {
-      implementation = 'prefer_rust_with_warning',
+      implementation = 'rust',
       sorts = {
         -- 'exact',
         'score',

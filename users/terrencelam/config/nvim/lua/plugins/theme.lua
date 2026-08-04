@@ -54,13 +54,14 @@ return {
         MiniTablineVisible = { bg = C.none },
 
         Pmenu = { bg = C.none },
+        BlinkCmpMenuBorder = { bg = C.none },
       }
     end,
   },
   config = function(lazy, opts)
     require('catppuccin').setup(opts)
     -- load the colorscheme here
-    vim.cmd([[colorscheme catppuccin-nvim]])
+    vim.cmd.colorscheme('catppuccin-nvim')
   end,
   priority = 1000,
 }
