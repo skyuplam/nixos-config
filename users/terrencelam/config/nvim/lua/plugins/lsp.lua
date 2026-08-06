@@ -170,6 +170,7 @@ return {
       },
       biome = {},
       cssls = {},
+      typos_lsp = {},
       html = {},
       jsonls = {},
       yamlls = {
