@@ -35,10 +35,12 @@ in {
   # Printer
   services.printing = {
     enable = true;
-    drivers = [
-      pkgs.gutenprint
-      pkgs.gutenprint-bin
-      pkgs.canon-cups-ufr2
+    drivers = with pkgs; [
+      cups-filters
+      cups-browsed
+      gutenprint
+      gutenprint-bin
+      canon-cups-ufr2
     ];
   };
   services.avahi = {
@@ -154,6 +156,18 @@ in {
     "input"
     "uinput"
   ];
+
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      addons = with pkgs; [
+        rime-data
+        fcitx5-rime
+      ];
+      waylandFrontend = false;
+    };
+  };
 
   programs = {
     localsend.enable = true;
