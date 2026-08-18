@@ -2,7 +2,7 @@
   nodejs = pkgs.nodejs_22;
   yarn = pkgs.yarn.override {inherit nodejs;};
 
-  inherit (pkgs.stdenv) isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isLinux;
 in {
   home = {
     packages = with pkgs; [

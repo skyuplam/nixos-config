@@ -8,7 +8,7 @@
   pkgs,
   ...
 }: let
-  inherit (pkgs.stdenv) isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isLinux;
 in {
   imports = [
     inputs.noctalia.homeModules.default
