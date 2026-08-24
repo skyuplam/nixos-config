@@ -1,8 +1,4 @@
-{
-  isWSL,
-  inputs,
-  ...
-}: {
+{isWSL, ...}: {
   config,
   lib,
   pkgs,
@@ -10,10 +6,6 @@
 }: let
   inherit (pkgs.stdenv.hostPlatform) isLinux;
 in {
-  imports = [
-    inputs.noctalia.homeModules.default
-  ];
-
   xdg = {
     userDirs = {
       enable = true;
