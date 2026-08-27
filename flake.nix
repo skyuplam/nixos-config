@@ -39,6 +39,10 @@
     playwright = {
       url = "github:pietdevries94/playwright-web-flake/1.59.1";
     };
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -75,11 +79,6 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
       ];
-    };
-
-    nixosConfigurations.vm-aarch64-utm = mkSystem "vm-aarch64-utm" {
-      system = "aarch64-linux";
-      user = "terrencelam";
     };
 
     nixosConfigurations.amd-linux = mkSystem "amd-linux" {

@@ -8,6 +8,7 @@
     ./hardware/amd-ws.nix
     ./linux-shared.nix
     ./disko-config-ws.nix
+    ./sandboxvm
   ];
 
   nixpkgs.config = {

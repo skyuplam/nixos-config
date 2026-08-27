@@ -40,6 +40,15 @@
 in
   systemFunc rec {
     inherit system;
+    # These arguments must be available while module imports are evaluated.
+    # Providing them through config._module.args would cause infinite
+    # recursion when a module uses `inputs` in its imports list.
+    specialArgs = {
+      currentSystem = system;
+      currentSystemName = name;
+      currentSystemUser = user;
+      inherit inputs isWSL;
+    };
 
     modules = [
       # Apply our overlays. Overlays are keyed by system type so we have
@@ -92,18 +101,6 @@ in
             inherit inputs;
             inherit name;
           };
-        };
-      }
-
-      # We expose some extra arguments so that our modules can parameterize
-      # better based on these values.
-      {
-        config._module.args = {
-          currentSystem = system;
-          currentSystemName = name;
-          currentSystemUser = user;
-          inherit isWSL;
-          inherit inputs;
         };
       }
     ];

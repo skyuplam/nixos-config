@@ -328,17 +328,10 @@ in {
       };
     };
 
+    # Microsoft Defender requires outbound HTTPS access to its service
+    # endpoints. The NixOS firewall permits host-originated outbound traffic
+    # by default, so no explicit firewall rule is required here.
     # Firewall configuration for Microsoft Defender endpoints
-    networking.firewall.extraCommands = ''
-      # Allow outbound connections to Microsoft Defender endpoints
-      # See: https://learn.microsoft.com/en-us/defender-endpoint/configure-proxy-internet
-
-      # Note: MDE requires HTTPS (443) access to:
-      # - *.endpoint.security.microsoft.com
-      # - *.events.data.microsoft.com
-      # - *.blob.core.windows.net
-      # These are allowed by default outbound firewall rules
-    '';
   };
 
   meta = {
