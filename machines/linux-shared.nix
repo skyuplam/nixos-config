@@ -201,7 +201,7 @@
 
     dbus = {
       enable = true;
-      packages = [pkgs.gcr];
+      packages = [pkgs.gcr_4];
     };
     gnome.gnome-keyring.enable = true;
 
