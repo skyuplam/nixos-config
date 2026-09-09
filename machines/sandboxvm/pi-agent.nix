@@ -6,7 +6,6 @@
 
     overlays = [
       inputs.microvm.overlay
-      (import ../../overlays/pi-coding-agent.nix)
     ];
   };
 in {
