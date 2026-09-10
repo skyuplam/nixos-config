@@ -24,6 +24,12 @@
     stateVersion = "26.05";
   };
 
+  programs = {
+    anki = {
+      enable = true;
+    };
+  };
+
   xdg.configFile.kanata = {
     enable = true;
     source = builtins.path {
