@@ -89,6 +89,13 @@ in {
           enabled = true;
           indentStyle = "space";
         };
+        assist = {
+          actions = {
+            source = {
+              organizeImports = "on";
+            };
+          };
+        };
       };
     };
 
