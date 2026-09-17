@@ -51,6 +51,7 @@
       "gitattributes"
       "gitcommit"
       "gitignore"
+      "just"
       "kdl"
       "python"
       "rust"

@@ -16,7 +16,7 @@ in {
 
   home = {
     packages = with pkgs;
-      []
+      [just-lsp]
       ++ (lib.optionals isLinux [
         inotify-tools # File system event monitoring
         devenv

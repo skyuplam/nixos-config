@@ -157,6 +157,7 @@ return {
         },
       },
       nil_ls = {},
+      just = {},
       statix = {},
       ts_ls = {
         settings = {

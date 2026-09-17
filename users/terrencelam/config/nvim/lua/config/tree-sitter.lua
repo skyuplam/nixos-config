@@ -4,6 +4,7 @@ local treesitter_languages = {
   'gitattributes',
   'gitcommit',
   'gitignore',
+  'just',
   'kdl',
   'python',
   'rust',
