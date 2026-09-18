@@ -206,6 +206,14 @@ in {
             readOnly = false;
             cache = "never";
           }
+          {
+            proto = "virtiofs";
+            tag = "pi-config";
+            source = settings.piDir;
+            mountPoint = "/home/agent/.pi";
+            readOnly = false;
+            cache = "never";
+          }
         ];
 
         # Because /nix/store is not shared from the host, microvm.nix builds a
