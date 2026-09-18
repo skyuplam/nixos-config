@@ -16,7 +16,10 @@ in {
 
   home = {
     packages = with pkgs;
-      [just-lsp]
+      [
+        just-lsp
+        tmux
+      ]
       ++ (lib.optionals isLinux [
         inotify-tools # File system event monitoring
         devenv
