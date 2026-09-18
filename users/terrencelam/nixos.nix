@@ -18,22 +18,6 @@ in {
 
     # Scrollable-tiling Wayland compositor
     niri.enable = true;
-    dms-shell = {
-      enable = false;
-
-      systemd = {
-        enable = true; # Systemd service for auto-start
-        restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
-      };
-
-      # Core features
-      enableSystemMonitoring = true; # System monitoring widgets (dgop)
-      enableVPN = false; # VPN management widget
-      enableDynamicTheming = false; # Wallpaper-based theming (matugen)
-      enableAudioWavelength = true; # Audio visualizer (cava)
-      enableCalendarEvents = false; # Calendar integration (khal)
-      enableClipboardPaste = false; # Pasting from the clipboard history (wtype)
-    };
 
     # thunar file manager(part of xfce) related options
     thunar = {
