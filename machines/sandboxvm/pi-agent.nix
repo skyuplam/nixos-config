@@ -72,7 +72,7 @@ in {
         users = {
           agent = {
             isNormalUser = true;
-            uid = 1000;
+            uid = settings.agentUid;
             group = "agent";
             home = "/home/agent";
             createHome = true;
@@ -85,7 +85,7 @@ in {
 
           root.openssh.authorizedKeys.keys = [settings.authorizedKey];
         };
-        groups.agent.gid = 1000;
+        groups.agent.gid = settings.agentGid;
       };
 
       security.sudo.enable = false;
@@ -153,8 +153,8 @@ in {
         fsType = "tmpfs";
         options = [
           "mode=0700"
-          "uid=1000"
-          "gid=1000"
+          "uid=${toString settings.agentUid}"
+          "gid=${toString settings.agentGid}"
           "nosuid"
           "nodev"
         ];
@@ -203,7 +203,7 @@ in {
             tag = "pi-input";
             source = settings.inputDir;
             mountPoint = "/input";
-            readOnly = true;
+            readOnly = false;
             cache = "never";
           }
         ];

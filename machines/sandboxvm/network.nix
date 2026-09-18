@@ -52,17 +52,6 @@ in {
     };
   };
 
-  # The microvm host module also creates share directories. Creating this
-  # one first keeps it under the host user's control rather than making it
-  # a general writable workspace.
-  systemd.tmpfiles.settings."05-pi-agent-microvm" = {
-    "${settings.inputDir}".d = {
-      user = "terrencelam";
-      group = "kvm";
-      mode = "0750";
-    };
-  };
-
   networking = {
     nftables.enable = true;
 
