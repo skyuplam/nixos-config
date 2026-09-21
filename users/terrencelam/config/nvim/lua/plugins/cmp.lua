@@ -176,7 +176,10 @@ return {
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
-      default = { 'lsp', 'path', 'buffer', 'ripgrep', 'copilot', 'cmdline', 'omni' },
+      default = { 'lsp', 'path', 'buffer', 'ripgrep', 'copilot', 'omni' },
+      per_filetype = {
+        gitcommit = { 'buffer', 'ripgrep', 'path' },
+      },
       providers = {
         -- Buffer completion from all open buffers
         buffer = {
