@@ -160,6 +160,11 @@ in {
         ];
       };
 
+      nix.settings.experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+
       systemd.tmpfiles.rules = [
         "d /work/repo 0700 agent agent -"
         "d /var/lib/ssh 0700 root root -"
