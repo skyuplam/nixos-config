@@ -17,7 +17,6 @@
 
   home = {
     packages = with pkgs; [
-      quickemu
       samba
     ];
     # This value determines the Home Manager release that your configuration is compatible with. This
