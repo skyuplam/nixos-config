@@ -136,6 +136,9 @@ in {
           nodejs
           yarn
           neovim
+          zoxide
+          rustup
+          just
         ];
 
         variables = {
