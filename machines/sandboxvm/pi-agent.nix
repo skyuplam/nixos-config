@@ -135,10 +135,6 @@ in {
           gnumake
           nodejs
           yarn
-          neovim
-          zoxide
-          rustup
-          just
         ];
 
         variables = {
@@ -146,6 +142,18 @@ in {
           PI_SKIP_VERSION_CHECK = "1";
           EDITOR = "nvim";
           VISUAL = "nvim";
+        };
+      };
+
+      programs = {
+        zoxide = {
+          enable = true;
+          enableFishIntegration = true;
+        };
+
+        neovim = {
+          enable = true;
+          defaultEditor = true;
         };
       };
 
@@ -182,6 +190,8 @@ in {
         socket = "control.socket";
         vsock.cid = settings.vsockCid;
 
+        writableStoreOverlay = "/nix/.rw-store";
+
         interfaces = [
           {
             type = "tap";
@@ -203,6 +213,11 @@ in {
             size = settings.workDiskMiB;
             fsType = "ext4";
           }
+          {
+            image = "nix-store-overlay.img";
+            mountPoint = config.microvm.writableStoreOverlay;
+            size = 32768;
+          }
         ];
 
         shares = [
@@ -212,7 +227,10 @@ in {
             source = settings.inputDir;
             mountPoint = "/input";
             readOnly = false;
-            cache = "never";
+            # libgit2 (used by Nix flakes) mmaps Git pack indexes. With
+            # cache = "never", virtiofs rejects mmap with ENODEV, which
+            # libgit2 reports as missing Git objects.
+            cache = "auto";
           }
           {
             proto = "virtiofs";
@@ -222,11 +240,13 @@ in {
             readOnly = false;
             cache = "never";
           }
+          {
+            proto = "virtiofs";
+            tag = "rw-store";
+            source = "/nix/store";
+            mountPoint = "/nix/.ro-store";
+          }
         ];
-
-        # Because /nix/store is not shared from the host, microvm.nix builds a
-        # store disk containing only the guest closure.
-        storeOnDisk = true;
       };
 
       system.stateVersion = "26.05";
