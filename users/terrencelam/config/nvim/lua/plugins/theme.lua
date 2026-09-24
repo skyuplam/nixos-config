@@ -10,14 +10,13 @@ return {
     },
     default_integrations = false,
     integrations = {
-      telescope = {
-        enabled = true,
-      },
+      telescope = { enabled = true },
       which_key = true,
       gitsigns = true,
       blink_cmp = { style = 'bordered' },
       treesitter = true,
       diffview = true,
+      render_markdown = true,
       snacks = {
         enabled = true,
         indent_scope_color = '', -- catppuccin color (eg. `lavender`) Default: text

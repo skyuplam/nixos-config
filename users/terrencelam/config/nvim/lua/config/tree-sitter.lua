@@ -6,6 +6,8 @@ local treesitter_languages = {
   'gitignore',
   'just',
   'kdl',
+  'markdown',
+  'markdown_inline',
   'python',
   'rust',
   'toml',
