@@ -99,64 +99,61 @@ in {
       };
     };
 
-    packages = [
-      pkgs.aspell
-      pkgs.bottom # fancy version of `top` with ASCII graphs
-      pkgs.browsh # in terminal browser
-      pkgs.coreutils
-      pkgs.codespell
-      pkgs.curl
-      pkgs.chafa
-      pkgs.dust # fancy version of `du`
-      pkgs.fd # fancy version of `find`
-      pkgs.unzip
+    packages = with pkgs; [
+      aspell
+      bottom # fancy version of `top` with ASCII graphs
+      browsh # in terminal browser
+      coreutils
+      codespell
+      neovim
+      curl
+      chafa
+      dust # fancy version of `du`
+      fd # fancy version of `find`
+      unzip
 
       # Fonts
-      pkgs.nerd-fonts.noto
-      pkgs.nerd-fonts.jetbrains-mono
-      pkgs.noto-fonts
-      pkgs.noto-fonts-cjk-sans
-      pkgs.noto-fonts-color-emoji
+      nerd-fonts.noto
+      nerd-fonts.jetbrains-mono
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
 
-      pkgs.libiconv
-      pkgs.go
-      pkgs.nb
-      pkgs.luajitPackages.luarocks
-      pkgs.lnav
-      pkgs.ripgrep # better version of `grep`
-      pkgs.rsync
-      pkgs.sqlite
-      pkgs.stow
-      pkgs.tig
-      pkgs.tree-sitter
-      pkgs.units
-      pkgs.wget
-      pkgs.wasm-pack
-      pkgs.nmap
-      # # https://github.com/mitchellh/zig-overlay
-      # # latest nightly release
-      # pkgs.zigpkgs.master
-      # pkgs.zls
-      pkgs.qemu
-      pkgs.google-cloud-sdk
-      pkgs.sops
-      pkgs.age
-      pkgs.mkpasswd
-      pkgs.socat
-      pkgs.ldns
-      pkgs.qmk
-      pkgs.imagemagick
-      pkgs.libsecret
-      pkgs.slides # TUI Present tool
-      pkgs.libargon2
-      pkgs.libqalculate
+      libiconv
+      go
+      nb
+      luajitPackages.luarocks
+      lnav
+      ripgrep # better version of `grep`
+      rsync
+      sqlite
+      stow
+      tig
+      tree-sitter
+      units
+      wget
+      wasm-pack
+      nmap
+      qemu
+      google-cloud-sdk
+      sops
+      age
+      mkpasswd
+      socat
+      ldns
+      qmk
+      imagemagick
+      libsecret
+      slides # TUI Present tool
+      libargon2
+      libqalculate
 
       # Dev stuff
-      pkgs.jq
-      pkgs.gitlint
-      pkgs.dotenv-linter
-      pkgs.gnumake
-      pkgs.gcc
+      jq
+      gitlint
+      dotenv-linter
+      gnumake
+      gcc
     ];
   };
 

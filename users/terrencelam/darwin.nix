@@ -16,7 +16,6 @@
       "signal"
       "stats"
       "syncthing-app"
-      "waterfox"
     ];
     taps = [
       "jackielii/tap"
@@ -68,6 +67,9 @@
       }
     }
   '';
+  environment.variables = {
+    LIBRARY_PATH = "$LIBRARY_PATH:${pkgs.libiconv}/lib";
+  };
   system.primaryUser = "terrencelam";
 
   services = {
