@@ -139,7 +139,7 @@ in {
     };
     gtk4 = {
       theme = {
-        name = "Catppuccin-Mocha-Compact-Sky-Dark";
+        name = "catppuccin-mocha-sky-compact+rimless,black";
         # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/data/themes/catppuccin-gtk/default.nix
         package = pkgs.catppuccin-gtk.override {
           accents = ["sky"];

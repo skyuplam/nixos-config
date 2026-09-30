@@ -53,8 +53,8 @@ in {
   # Closing the lid
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
-    PowerKey = "suspend";
-    PowerKeyLongPress = "poweroff";
+    HandlePowerKey = "suspend";
+    HandlePowerKeyLongPress = "poweroff";
     HandleLidSwitchExternalPower = "lock";
     HandleLidSwitchDocked = "ignore";
   };
@@ -119,6 +119,8 @@ in {
     # HibernateDelaySec = "30m";
     SuspendState = "freeze";
   };
+
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   powerManagement.enable = true;
 
