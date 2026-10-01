@@ -52,6 +52,14 @@ in {
           path = ../config/mpv;
         };
       };
+      "tmux/plugins/catppuccin" = {
+        source = "${pkgs.tmuxPlugins.catppuccin}/share/tmux-plugins/catppuccin";
+        recursive = true;
+      };
+      "tmux/plugins/cpu" = {
+        source = "${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu";
+        recursive = true;
+      };
     };
   };
 
@@ -96,6 +104,10 @@ in {
             };
           };
         };
+      };
+      ".tmux.conf".source = builtins.path {
+        name = "tmux-config";
+        path = ../config/tmux/.tmux.conf;
       };
     };
 
