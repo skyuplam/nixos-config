@@ -37,7 +37,7 @@
       url = "git+file:./../nix-secrets?shadow=1&ref=main";
     };
     playwright = {
-      url = "github:pietdevries94/playwright-web-flake/1.59.1";
+      url = "github:pietdevries94/playwright-web-flake/1.62.1";
     };
     microvm = {
       url = "github:microvm-nix/microvm.nix";
