@@ -12,7 +12,7 @@
   libuuid,
   libx11,
   nixosTests,
-  openssl_3,
+  openssl_3_6,
   p11-kit,
   pam,
   pango,
@@ -24,7 +24,7 @@
   openjdk11, # CRITICAL: OpenJDK 11 required, NOT default-jre (Java 21)
 }: let
   curlMinimal_openssl_3 = curlMinimal.override {
-    openssl = openssl_3;
+    openssl = openssl_3_6;
   };
 in
   stdenv.mkDerivation rec {
@@ -47,7 +47,7 @@ in
           libuuid
           libx11
           curlMinimal_openssl_3
-          openssl_3
+          openssl_3_6
           libsecret
           webkitgtk_4_1
           libsoup_3

@@ -92,6 +92,60 @@ in {
 
       programs.fish.enable = true;
 
+      programs.tmux = {
+        enable = true;
+        plugins = with pkgs; [
+          tmuxPlugins.catppuccin
+          tmuxPlugins.cpu
+        ];
+        extraConfigBeforePlugins = ''
+          # Options to make tmux more pleasant
+          set -g mouse on
+          set -g default-terminal "tmux-256color"
+          # Enable extended keys
+          set -g extended-keys on
+          set -g extended-keys-format csi-u
+
+          setw -g aggressive-resize on
+
+          set -s set-clipboard on
+
+          # Better pane splitting (and keep current path)
+          bind s split-window -h -c "#{pane_current_path}"
+          bind v split-window -v -c "#{pane_current_path}"
+          bind c new-window -c "#{pane_current_path}"
+
+          # Vim-style pane navigation
+          bind h select-pane -L
+          bind j select-pane -D
+          bind k select-pane -U
+          bind l select-pane -R
+
+          # Vim-style pane resizing
+          bind -r H resize-pane -L 5
+          bind -r J resize-pane -D 5
+          bind -r K resize-pane -U 5
+          bind -r L resize-pane -R 5
+
+          # Configure the catppuccin plugin
+          set -g @catppuccin_flavor "mocha"
+          set -g @catppuccin_window_status_style "rounded"
+          set -g @catppuccin_status_background "none"
+        '';
+        extraConfig = ''
+          # Make the status line pretty and add some modules
+          set -g status-right-length 100
+          set -g status-left-length 100
+          set -g status-left ""
+          set -g status-right "#{E:@catppuccin_status_application}"
+          set -agF status-right "#{E:@catppuccin_status_cpu}"
+          set -agF status-right "#{E:@catppuccin_status_ram}"
+          set -ag status-right "#{E:@catppuccin_status_session}"
+          set -ag status-right "#{E:@catppuccin_status_uptime}"
+          #set -agF status-right "#{E:@catppuccin_status_battery}"
+        '';
+      };
+
       services.openssh = {
         enable = true;
 
@@ -122,18 +176,18 @@ in {
         yarn = pkgs.yarn.override {inherit nodejs;};
       in {
         systemPackages = with pkgs; [
-          pi-coding-agent
-          git
-          ripgrep
-          fd
-          jq
-          curl
           cacert
           coreutils
+          curl
+          fd
+          git
+          gnumake
           gnutar
           gzip
-          gnumake
+          jq
           nodejs
+          pi-coding-agent
+          ripgrep
           yarn
         ];
 
