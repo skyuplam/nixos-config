@@ -15,12 +15,18 @@
 
   parserPackages =
     map
-    (parserName: {
-      name = parserName;
+    (parserName: let
       package =
         if builtins.hasAttr parserName parserSet
         then builtins.getAttr parserName parserSet
         else throw "Unknown nvim-treesitter parser: ${parserName}";
+    in {
+      name = parserName;
+      inherit package;
+      # Keep queries and parsers from the same nixpkgs revision. Queries from
+      # an independently updated nvim-treesitter checkout may target a
+      # different grammar and fail with "Invalid node type".
+      queryPackage = package.associatedQuery or null;
     })
     cfg.parsers;
 
@@ -28,6 +34,7 @@
     group = user.group or "users";
     parserName = parser.name;
     parserPkg = parser.package;
+    queryPkg = parser.queryPackage;
   in ''
     home=${lib.escapeShellArg user.home}
     owner=${lib.escapeShellArg userName}
@@ -41,7 +48,8 @@
 
     if [ -d "$home" ]; then
       install -d -o "$owner" -g "$group" \
-        "$nvim_config/parser"
+        "$nvim_config/parser" \
+        "$nvim_config/nix-treesitter/queries"
 
       # Nixpkgs tree-sitter grammars install the compiled parser as:
       #   $out/parser
@@ -53,6 +61,18 @@
       else
         echo "warning: ${parserPkg}/parser not found"
       fi
+
+      ${lib.optionalString (queryPkg != null) ''
+        # Put the matching nixpkgs query first on runtimepath. In particular,
+        # this prevents lazy.nvim's independently updated nvim-treesitter
+        # queries from being used with an incompatible Nix-provided parser.
+        if [ -d "${queryPkg}/queries/${parserName}" ]; then
+          ln -sfnT "${queryPkg}/queries/${parserName}" "$nvim_config/nix-treesitter/queries/${parserName}"
+          chown -h "$owner:$group" "$nvim_config/nix-treesitter/queries/${parserName}"
+        else
+          echo "warning: ${queryPkg}/queries/${parserName} not found"
+        fi
+      ''}
     fi
   '';
 

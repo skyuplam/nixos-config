@@ -1,7 +1,12 @@
 return {
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },
+    dependencies = {
+      -- Parsers and queries are provisioned together from nixpkgs. Use the
+      -- current branch so stale master queries cannot shadow those queries.
+      { 'nvim-treesitter/nvim-treesitter', branch = 'main', lazy = false },
+      'nvim-mini/mini.nvim',
+    },
     ---@module 'render-markdown'
     ---@type render.md.UserConfig
     opts = {

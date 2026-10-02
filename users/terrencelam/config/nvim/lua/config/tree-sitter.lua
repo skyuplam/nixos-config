@@ -1,3 +1,7 @@
+-- Keep Nix-managed queries isolated from directories created by plugins or
+-- local query overrides, while giving the parser-matched queries priority.
+vim.opt.runtimepath:prepend(vim.fn.stdpath('config') .. '/nix-treesitter')
+
 local treesitter_languages = {
   'git_config',
   'git_rebase',
