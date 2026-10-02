@@ -204,6 +204,7 @@ in {
 
       environment = {
         systemPackages = with pkgs; [
+          biome
           cacert
           coreutils
           curl
