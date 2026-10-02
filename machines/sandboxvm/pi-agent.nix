@@ -6,8 +6,30 @@
 
     overlays = [
       inputs.microvm.overlay
+      (final: _prev: let
+        callPlaywrightPackage = package: args: let
+          drv = final.callPackage package args;
+        in
+          if final.stdenv.hostPlatform.isLinux && builtins.baseNameOf (toString package) == "webkit.nix"
+          then
+            drv.overrideAttrs (oldAttrs: {
+              # Playwright 1.63's WPE MiniBrowser gained this dependency, but
+              # playwright-web-flake does not include it yet.
+              buildInputs = (oldAttrs.buildInputs or []) ++ [final.libmanette];
+            })
+          else drv;
+        playwrightPackages = final.callPackage (inputs.playwright.outPath + "/playwright-driver/driver.nix") {
+          callPackage = callPlaywrightPackage;
+        };
+      in {
+        playwright-test = playwrightPackages.playwright-test;
+        playwright-driver = playwrightPackages.playwright-core;
+      })
     ];
   };
+
+  nodejs = guestPkgs.nodejs_22;
+  yarn = guestPkgs.yarn.override {inherit nodejs;};
 in {
   microvm.vms.${settings.name} = {
     pkgs = guestPkgs;
@@ -91,7 +113,15 @@ in {
       security.sudo.enable = false;
       programs.nix-ld.enable = true;
 
-      programs.fish.enable = true;
+      programs.fish = {
+        enable = true;
+        shellInit = ''
+          set -x PLAYWRIGHT_NODEJS_PATH ${nodejs}/bin/node
+          set -x PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD 1
+          set -x PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS true
+          set -x PLAYWRIGHT_BROWSERS_PATH ${pkgs.playwright-driver.browsers}
+        '';
+      };
 
       programs.tmux = {
         enable = true;
@@ -172,10 +202,7 @@ in {
         };
       };
 
-      environment = let
-        nodejs = pkgs.nodejs_22;
-        yarn = pkgs.yarn.override {inherit nodejs;};
-      in {
+      environment = {
         systemPackages = with pkgs; [
           cacert
           coreutils

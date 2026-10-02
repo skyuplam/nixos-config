@@ -37,7 +37,8 @@
       url = "git+file:./../nix-secrets?shadow=1&ref=main";
     };
     playwright = {
-      url = "github:pietdevries94/playwright-web-flake/1.62.1";
+      url = "github:pietdevries94/playwright-web-flake/1.63.0";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     microvm = {
       url = "github:microvm-nix/microvm.nix";
@@ -54,7 +55,25 @@
       (final: prev: {customPkgs = import ./pkgs {pkgs = final;};})
       (_final: prev: {stable = import nixpkgs-stable {inherit (prev.stdenv.hostPlatform) system;};})
       (_final: prev: {nil = inputs.nil.packages.${prev.stdenv.hostPlatform.system}.default;})
-      (_final: prev: {inherit (inputs.playwright.packages.${prev.stdenv.hostPlatform.system}) playwright-test playwright-driver;})
+      (final: _prev: let
+        callPlaywrightPackage = package: args: let
+          drv = final.callPackage package args;
+        in
+          if final.stdenv.hostPlatform.isLinux && builtins.baseNameOf (toString package) == "webkit.nix"
+          then
+            drv.overrideAttrs (oldAttrs: {
+              # Playwright 1.63's WPE MiniBrowser gained this dependency, but
+              # playwright-web-flake does not include it yet.
+              buildInputs = (oldAttrs.buildInputs or []) ++ [final.libmanette];
+            })
+          else drv;
+        playwrightPackages = final.callPackage (inputs.playwright.outPath + "/playwright-driver/driver.nix") {
+          callPackage = callPlaywrightPackage;
+        };
+      in {
+        playwright-test = playwrightPackages.playwright-test;
+        playwright-driver = playwrightPackages.playwright-core;
+      })
       # Custom package: intune-portal - Microsoft Intune Company Portal with version control
       (final: _prev: {
         intune-portal = final.callPackage ./pkgs/intune-portal/package.nix {};
