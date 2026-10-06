@@ -25,6 +25,7 @@
         playwright-test = playwrightPackages.playwright-test;
         playwright-driver = playwrightPackages.playwright-core;
       })
+      (_final: prev: {pi = inputs.pi-agent.packages.${prev.stdenv.hostPlatform.system}.default;})
     ];
   };
 
@@ -215,7 +216,7 @@ in {
           gzip
           jq
           nodejs
-          pi-coding-agent
+          pi
           ripgrep
           yarn
         ];
