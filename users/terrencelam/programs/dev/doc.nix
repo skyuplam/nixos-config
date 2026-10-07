@@ -5,6 +5,7 @@
       marksman # Markdown language server
       markdown-oxide # PKM Markdown Language Server
       commitmsgfmt
+      tombi # toml tools
     ];
   };
 }

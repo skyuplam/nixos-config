@@ -159,6 +159,7 @@ return {
       nil_ls = {},
       just = {},
       statix = {},
+      tombi = {},
       ts_ls = {
         settings = {
           typescript = {

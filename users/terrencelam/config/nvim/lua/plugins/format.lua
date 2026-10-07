@@ -78,6 +78,7 @@ return {
       jsonc = { 'prettier', lsp_format = 'fallback' },
       markdown = { 'prettier', 'injected' },
       yaml = { 'prettier' },
+      toml = { 'tombi', lsp_format = 'fallback' },
       glsl = { lsp_format = 'fallback' },
       gitcommit = { 'commitmsgfmt', lsp_format = 'fallback' },
       -- Conform will run the first available formatter
