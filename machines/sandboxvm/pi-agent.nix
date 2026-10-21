@@ -42,9 +42,39 @@ in {
 
     config = {
       config,
+      lib,
       pkgs,
+      utils,
       ...
-    }: {
+    }: let
+      disposableVolumes = [
+        {
+          image = "var.img";
+          serial = "pi-agent-var";
+          mountPoint = "/var";
+          size = settings.varDiskMiB;
+          fsType = "ext4";
+        }
+        {
+          image = "work.img";
+          serial = "pi-agent-work";
+          mountPoint = "/work";
+          size = settings.workDiskMiB;
+          fsType = "ext4";
+        }
+        {
+          image = "nix-store-overlay.img";
+          serial = "pi-agent-nix";
+          mountPoint = config.microvm.writableStoreOverlay;
+          size = 32768;
+          fsType = "ext4";
+        }
+      ];
+      volumeDevice = volume: "/dev/disk/by-id/virtio-${volume.serial}";
+      volumeDevices = map volumeDevice disposableVolumes;
+      volumeDeviceUnits = map (device: "${utils.escapeSystemdPath device}.device") volumeDevices;
+      mkfsExt4 = "${pkgs.e2fsprogs}/bin/mkfs.ext4";
+    in {
       networking = {
         hostName = settings.name;
         useDHCP = false;
@@ -181,8 +211,8 @@ in {
       services.openssh = {
         enable = true;
 
-        # Store host keys on the VM-local /var volume. They are not copied
-        # from the physical host.
+        # Generate VM-local host keys on the disposable /var volume.
+        # They change on every boot and are never copied from the host.
         hostKeys = [
           {
             path = "/var/lib/ssh/ssh_host_ed25519_key";
@@ -241,18 +271,61 @@ in {
         };
       };
 
-      # The account home, including Pi's sessions and configuration, vanishes
-      # whenever the VM stops. Do not place long-lived API credentials here.
-      fileSystems."/home/agent" = {
-        device = "tmpfs";
-        fsType = "tmpfs";
-        options = [
-          "mode=0700"
-          "uid=${toString settings.agentUid}"
-          "gid=${toString settings.agentGid}"
-          "nosuid"
-          "nodev"
-        ];
+      fileSystems =
+        lib.listToAttrs (map (volume:
+          lib.nameValuePair volume.mountPoint {
+            # Mount by the same serial-based path the reset formats, rather
+            # than MicroVM's positional /dev/vdX, so the two cannot diverge.
+            device = lib.mkForce (volumeDevice volume);
+            # Freshly formatted before mounting; do not race the reset
+            # service with filesystem checks in the initrd.
+            noCheck = true;
+          })
+        disposableVolumes)
+        // {
+          # The home is ephemeral EXCEPT for the host-backed .pi share below.
+          # Pi's credentials, sessions and configuration in that share persist.
+          "/home/agent" = {
+            device = "tmpfs";
+            fsType = "tmpfs";
+            options = [
+              "mode=0700"
+              "uid=${toString settings.agentUid}"
+              "gid=${toString settings.agentGid}"
+              "nosuid"
+              "nodev"
+            ];
+          };
+        };
+
+      boot.initrd.systemd = {
+        enable = true;
+
+        # The initrd builder copies only listed paths (plus ELF libraries),
+        # not tools a script merely names, so ship mkfs.ext4 explicitly.
+        storePaths = [mkfsExt4];
+
+        # Reset inside the initrd, not just in the host's preStart hook: a
+        # guest-initiated reboot must also discard all VM-local filesystem
+        # state. Serial-based paths keep the read-only store image out of
+        # this list.
+        services.reset-agent-volumes = {
+          description = "Reset disposable Pi agent filesystems";
+          requiredBy = ["sysroot.mount"];
+          before = ["sysroot.mount"];
+          requires = volumeDeviceUnits;
+          after = volumeDeviceUnits;
+          unitConfig.DefaultDependencies = false;
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+          script =
+            lib.concatMapStringsSep "\n" (device: ''
+              ${mkfsExt4} -F ${lib.escapeShellArg device}
+            '')
+            volumeDevices;
+        };
       };
 
       nix.settings.experimental-features = [
@@ -274,6 +347,9 @@ in {
         socket = "control.socket";
         vsock.cid = settings.vsockCid;
 
+        # Ship only the guest's closure, never the physical host's /nix/store.
+        # Newly built/downloaded paths live in the disposable overlay.
+        storeOnDisk = true;
         writableStoreOverlay = "/nix/.rw-store";
 
         interfaces = [
@@ -284,25 +360,7 @@ in {
           }
         ];
 
-        volumes = [
-          {
-            image = "var.img";
-            mountPoint = "/var";
-            size = settings.varDiskMiB;
-            fsType = "ext4";
-          }
-          {
-            image = "work.img";
-            mountPoint = "/work";
-            size = settings.workDiskMiB;
-            fsType = "ext4";
-          }
-          {
-            image = "nix-store-overlay.img";
-            mountPoint = config.microvm.writableStoreOverlay;
-            size = 32768;
-          }
-        ];
+        volumes = disposableVolumes;
 
         shares = [
           {
@@ -323,12 +381,6 @@ in {
             mountPoint = "/home/agent/.pi";
             readOnly = false;
             cache = "never";
-          }
-          {
-            proto = "virtiofs";
-            tag = "rw-store";
-            source = "/nix/store";
-            mountPoint = "/nix/.ro-store";
           }
         ];
       };
