@@ -87,6 +87,24 @@
           inherit (final) buildFHSEnv;
         };
       })
+      # Pin rustup to 1.29.2 while retaining nixpkgs' patches and build settings.
+      # To bump: update version and both hashes. Drop once nixpkgs catches up.
+      (final: prev: {
+        rustup = prev.rustup.overrideAttrs (finalAttrs: oldAttrs: {
+          version = "1.29.2";
+          src = oldAttrs.src.override {
+            tag = finalAttrs.version;
+            hash = "sha256-vtfZNMkUAmbdXv0sv7wdm62AjCkYJY188jLx8RrmO2M=";
+          };
+          cargoHash = "sha256-UL6nS3SbxKXFWftJLeFY622VQEyAimhNz+YJgZsLHJc=";
+          # This nixpkgs revision retains the original cargoHash internally,
+          # so regenerate cargoDeps explicitly from the overridden source.
+          cargoDeps = final.rustPlatform.fetchCargoVendor {
+            inherit (finalAttrs) pname version src;
+            hash = finalAttrs.cargoHash;
+          };
+        });
+      })
     ];
     mkSystem = import ./lib/mksystem.nix {
       inherit overlays nixpkgs inputs;
