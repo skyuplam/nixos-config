@@ -299,8 +299,6 @@ in {
         };
 
       boot.initrd.systemd = {
-        enable = true;
-
         # The initrd builder copies only listed paths (plus ELF libraries),
         # not tools a script merely names, so ship mkfs.ext4 explicitly.
         storePaths = [mkfsExt4];

@@ -117,7 +117,6 @@
     # your normal configuration here.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    initrd.systemd.enable = true;
   };
 
   fonts = {
