@@ -12,6 +12,61 @@ in {
     ./disko-config-wb.nix
     ./linux-shared.nix
   ];
+  # Work around tuxedo-drivers expanding MAKEFLAGS into a shell command.
+  # Recursive make inherits these flags without re-parsing cmd_sign in Bash.
+  boot.kernelPackages = lib.mkForce (
+    pkgs.linuxPackages.extend (_final: prev: {
+      yt6801 = prev.yt6801.overrideAttrs (_old: {
+        # Strip before signing; stripping afterward invalidates the signature.
+        dontStrip = true;
+
+        installPhase = ''
+          runHook preInstall
+
+          mapfile -d "" moduleFiles < <(
+            find . -type f -name 'yt6801.ko' -print0
+          )
+          if [ "''${#moduleFiles[@]}" -ne 1 ]; then
+            echo "Expected exactly one built yt6801.ko" >&2
+            exit 1
+          fi
+
+          moduleDir="$out/lib/modules/${prev.kernel.modDirVersion}/kernel/drivers/net/ethernet/motorcomm"
+          install -Dm644 "''${moduleFiles[0]}" "$moduleDir/yt6801.ko"
+
+          "''${STRIP:-strip}" --strip-debug "$moduleDir/yt6801.ko"
+          ${lib.getExe pkgs.buildPackages.kmodigest} "$moduleDir/yt6801.ko"
+
+          test -s "$moduleDir/yt6801.ko.cer"
+
+          runHook postInstall
+        '';
+        postFixup =
+          (_old.postFixup or "")
+          + ''
+            # Remove kernel-wide metadata after installation and fixup.
+            # This does not match yt6801.ko or yt6801.ko.cer.
+            find "$out/lib/modules" \
+              -mindepth 2 -maxdepth 2 \
+              \( -type f -o -type l \) \
+              -name 'modules.*' \
+              -print -delete
+
+            test -s "$out/lib/modules/${prev.kernel.modDirVersion}/kernel/drivers/net/ethernet/motorcomm/yt6801.ko.cer"
+          '';
+      });
+      tuxedo-drivers = prev.tuxedo-drivers.overrideAttrs (old: {
+        postPatch =
+          (old.postPatch or "")
+          + ''
+            substituteInPlace Makefile \
+              --replace-fail '$(MAKEFLAGS)' "" \
+              --replace-fail 'make -C' '$(MAKE) -C'
+          '';
+      });
+    })
+  );
+
   # Lanzaboote currently replaces the systemd-boot module.
   # This setting is usually set to true in configuration.nix
   # generated at installation time. So we force it to false
