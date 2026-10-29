@@ -7,5 +7,8 @@
     bash = {
       enable = true;
     };
+    gh = {
+      enable = true;
+    };
   };
 }
