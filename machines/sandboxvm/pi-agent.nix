@@ -249,6 +249,7 @@ in {
           pi
           ripgrep
           yarn
+          gh # github cli
         ];
 
         variables = {
