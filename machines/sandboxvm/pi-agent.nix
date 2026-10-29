@@ -1,5 +1,21 @@
-{inputs, ...}: let
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}: let
   settings = inputs.nix-secrets.sandboxvm;
+
+  # Stable SSH host identity for the guest. The private key is held in sops
+  # (nix-secrets/secrets.yaml); the matching public key is pinned in
+  # nix-secrets (sandboxvm.sshHostPublicKey) and in the host's known_hosts.
+  hostKeySecret = "pi-agent-ssh-host-key";
+  hostKeyRuntimeDir = "pi-agent-ssh-host-key";
+  hostKeyShareDir = "/run/${hostKeyRuntimeDir}";
+  hostKeyFile = "ssh_host_ed25519_key";
+  # Guest-side mount point of the read-only host-key share.
+  guestHostKeyDir = "/var/lib/ssh";
 
   guestPkgs = import inputs.nixpkgs {
     system = "x86_64-linux";
@@ -32,6 +48,79 @@
   nodejs = guestPkgs.nodejs_22;
   yarn = guestPkgs.yarn.override {inherit nodejs;};
 in {
+  sops.secrets.${hostKeySecret} = {
+    owner = "root";
+    group = "root";
+    mode = "0400";
+    restartUnits = ["pi-agent-ssh-host-key.service"];
+  };
+
+  # Pin the guest's host key system-wide so SSH never needs TOFU and any
+  # change is reported as a hard failure instead of being silently accepted.
+  programs.ssh.knownHosts.${settings.name} = {
+    hostNames = [
+      settings.name
+      settings.guestAddress
+    ];
+    publicKey = settings.sshHostPublicKey;
+  };
+
+  # Stage exactly one file (the guest host key) in a root-only tmpfs
+  # directory that is exported to the guest read-only. A copy is needed
+  # because sops-nix paths are symlinks into /run/secrets.d, which would not
+  # resolve inside the guest, and exporting /run/secrets.d would leak every
+  # other host secret.
+  systemd.services.pi-agent-ssh-host-key = {
+    description = "Stage SSH host key for MicroVM ${settings.name}";
+    requiredBy = ["microvm-virtiofsd@${settings.name}.service"];
+    before = ["microvm-virtiofsd@${settings.name}.service"];
+    after = ["sops-install-secrets.service"];
+    path = [
+      pkgs.coreutils
+      pkgs.openssh
+    ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      UMask = "0077";
+      RuntimeDirectory = hostKeyRuntimeDir;
+      RuntimeDirectoryMode = "0700";
+      # virtiofsd holds the directory open; do not delete it underneath it.
+      RuntimeDirectoryPreserve = "yes";
+
+      CapabilityBoundingSet = "";
+      NoNewPrivileges = true;
+      PrivateNetwork = true;
+      PrivateTmp = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectControlGroups = true;
+      RestrictAddressFamilies = "AF_UNIX";
+      SystemCallArchitectures = "native";
+    };
+    script = ''
+      set -euo pipefail
+      dest="$RUNTIME_DIRECTORY/${hostKeyFile}"
+      tmp="$dest.tmp"
+      trap 'rm -f "$tmp"' EXIT
+
+      install -m 0400 ${lib.escapeShellArg config.sops.secrets.${hostKeySecret}.path} "$tmp"
+
+      # Fail closed unless the secret is a valid key that matches the
+      # public key pinned in known_hosts.
+      derived="$(ssh-keygen -y -f "$tmp" | cut -d' ' -f1,2)"
+      expected="$(printf '%s\n' ${lib.escapeShellArg settings.sshHostPublicKey} | cut -d' ' -f1,2)"
+      if [ "$derived" != "$expected" ]; then
+        echo "pi-agent SSH host key does not match pinned public key" >&2
+        exit 1
+      fi
+
+      mv -f "$tmp" "$dest"
+    '';
+  };
+
   microvm.vms.${settings.name} = {
     pkgs = guestPkgs;
     autostart = false;
@@ -211,11 +300,14 @@ in {
       services.openssh = {
         enable = true;
 
-        # Generate VM-local host keys on the disposable /var volume.
-        # They change on every boot and are never copied from the host.
+        # The host key is a dedicated, VM-only key provided by the host on a
+        # read-only share, so it survives the /var reset and the guest
+        # cannot alter it. Never generate a replacement: if the share is
+        # missing, sshd must fail rather than present a new identity.
+        generateHostKeys = false;
         hostKeys = [
           {
-            path = "/var/lib/ssh/ssh_host_ed25519_key";
+            path = "${guestHostKeyDir}/${hostKeyFile}";
             type = "ed25519";
           }
         ];
@@ -284,6 +376,15 @@ in {
           })
         disposableVolumes)
         // {
+          # virtiofsd already enforces read-only on the host side; also
+          # mount it read-only and inert in the guest (defense in depth).
+          ${guestHostKeyDir}.options = [
+            "ro"
+            "nosuid"
+            "nodev"
+            "noexec"
+          ];
+
           # The home is ephemeral EXCEPT for the host-backed .pi share below.
           # Pi's credentials, sessions and configuration in that share persist.
           "/home/agent" = {
@@ -334,8 +435,9 @@ in {
 
       systemd.tmpfiles.rules = [
         "d /work/repo 0700 agent agent -"
-        "d /var/lib/ssh 0700 root root -"
       ];
+
+      systemd.services.sshd.unitConfig.RequiresMountsFor = [guestHostKeyDir];
 
       systemd.settings.Manager.DefaultTimeoutStopSec = "10s";
 
@@ -362,6 +464,14 @@ in {
         volumes = disposableVolumes;
 
         shares = [
+          {
+            proto = "virtiofs";
+            tag = "pi-ssh-host-key";
+            source = hostKeyShareDir;
+            mountPoint = guestHostKeyDir;
+            readOnly = true;
+            cache = "never";
+          }
           {
             proto = "virtiofs";
             tag = "pi-input";
