@@ -104,6 +104,9 @@ in {
     openFirewall = true;
   };
 
+  # VPN
+  services.netbird.enable = true;
+
   services.libinput.enable = true;
   # Closing the lid
   services.logind.settings.Login = {
