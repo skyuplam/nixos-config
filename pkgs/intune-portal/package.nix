@@ -12,7 +12,7 @@
   libuuid,
   libx11,
   nixosTests,
-  openssl_3_6,
+  openssl_3_5,
   p11-kit,
   pam,
   pango,
@@ -23,8 +23,10 @@
   zlib,
   openjdk11, # CRITICAL: OpenJDK 11 required, NOT default-jre (Java 21)
 }: let
+  # Prebuilt Ubuntu binary links against libssl.so.3; pin to the OpenSSL 3.5 LTS
+  # branch (openssl_3_6 was removed from nixpkgs after its upstream EOL).
   curlMinimal_openssl_3 = curlMinimal.override {
-    openssl = openssl_3_6;
+    openssl = openssl_3_5;
   };
 in
   stdenv.mkDerivation rec {
@@ -47,7 +49,7 @@ in
           libuuid
           libx11
           curlMinimal_openssl_3
-          openssl_3_6
+          openssl_3_5
           libsecret
           webkitgtk_4_1
           libsoup_3

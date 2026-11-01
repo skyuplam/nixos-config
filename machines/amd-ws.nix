@@ -35,8 +35,10 @@
       gnutls
       openssl
 
-      # virtiofs
-      guestfs-tools
+      # virtiofs (microvm.nix shares for sandboxvm)
+      # NOTE: guestfs-tools removed — libguestfs is marked broken in
+      # nixos-unstable (stuck on fuse2) and is not needed for virtiofs.
+      # If you need virt-customize/guestfish, use pkgs.stable.guestfs-tools.
       virtiofsd
     ];
     # Environment variables for WebKit

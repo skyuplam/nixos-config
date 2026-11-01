@@ -14,7 +14,6 @@
   systemd,
   python3,
   glibc,
-  pcre,
   libmnl,
   libnfnetlink,
   libnetfilter_queue,
@@ -26,11 +25,11 @@
   pkgs,
 }: let
   pname = "mdatp";
-  version = "101.25102.0003-insiderfast";
+  version = "101.26101.0000-insiderfast";
 
   src = fetchurl {
     url = "https://packages.microsoft.com/ubuntu/24.04/prod/pool/main/m/${pname}/${pname}_${version}_amd64.deb";
-    sha256 = "7723720b990d1e890eeba5e2a6beb4c92b04bde011359a96e2537ad85af5c9b2";
+    hash = "sha256-wzP12qgvs3naHnvOjwl8MMwF+em4hkPFTEuh9tkRmRg=";
   };
 
   mdatp-unwrapped = stdenv.mkDerivation {
@@ -93,7 +92,6 @@
         openssl
         curl
         glib
-        pcre
         pcre2
         zlib
         libxml2
