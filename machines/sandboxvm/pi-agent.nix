@@ -155,7 +155,7 @@ in {
           image = "nix-store-overlay.img";
           serial = "pi-agent-nix";
           mountPoint = config.microvm.writableStoreOverlay;
-          size = 32768;
+          size = settings.nixStoreMiB;
           fsType = "ext4";
         }
       ];
