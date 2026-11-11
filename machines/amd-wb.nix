@@ -12,8 +12,6 @@ in {
     ./disko-config-wb.nix
     ./linux-shared.nix
   ];
-  # Work around tuxedo-drivers expanding MAKEFLAGS into a shell command.
-  # Recursive make inherits these flags without re-parsing cmd_sign in Bash.
   boot.kernelPackages = lib.mkForce (
     pkgs.linuxPackages.extend (_final: prev: {
       yt6801 = prev.yt6801.overrideAttrs (_old: {
@@ -53,15 +51,6 @@ in {
               -print -delete
 
             test -s "$out/lib/modules/${prev.kernel.modDirVersion}/kernel/drivers/net/ethernet/motorcomm/yt6801.ko.cer"
-          '';
-      });
-      tuxedo-drivers = prev.tuxedo-drivers.overrideAttrs (old: {
-        postPatch =
-          (old.postPatch or "")
-          + ''
-            substituteInPlace Makefile \
-              --replace-fail '$(MAKEFLAGS)' "" \
-              --replace-fail 'make -C' '$(MAKE) -C'
           '';
       });
     })
