@@ -196,3 +196,5 @@
   file-decoration-style = none
 [delta "decorations"]
   keep-plus-minus-markers = false
+[worktree]
+  useRelativePaths = true
