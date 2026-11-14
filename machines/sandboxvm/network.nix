@@ -1,9 +1,26 @@
 {
-  inputs,
+  config,
   lib,
   ...
 }: let
-  settings = inputs.nix-secrets.sandboxvm;
+  settings = config.sandboxvm.network;
+  vms = lib.attrValues config.sandboxvm.vms;
+
+  # Per bridge port: only the VM's own MAC and IPv4 address, and only IPv4
+  # and ARP. Bridged (layer 2) frames never traverse the inet tables below,
+  # so this is what stops a guest from spoofing the host or another guest.
+  antiSpoofRules =
+    lib.concatMap (vm: let
+      mac = lib.toLower vm.mac;
+      port = "iifname \"${vm.tap}\"";
+    in [
+      "${port} ether saddr != ${mac} counter drop comment \"${vm.id}: spoofed MAC\""
+      "${port} ether type != { ip, arp } counter drop comment \"${vm.id}: non-IPv4 frame\""
+      "${port} ether type ip ip saddr != ${vm.guestAddress} counter drop comment \"${vm.id}: spoofed IPv4 source\""
+      "${port} ether type arp arp saddr ether != ${mac} counter drop comment \"${vm.id}: spoofed ARP sender MAC\""
+      "${port} ether type arp arp saddr ip != ${vm.guestAddress} counter drop comment \"${vm.id}: spoofed ARP sender IP\""
+    ])
+    vms;
 in {
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
 
@@ -13,43 +30,51 @@ in {
       Name = settings.bridge;
     };
 
-    networks = {
-      "20-${settings.bridge}" = {
-        matchConfig.Name = settings.bridge;
+    networks =
+      {
+        "20-${settings.bridge}" = {
+          matchConfig.Name = settings.bridge;
 
-        address = [
-          "${settings.hostAddress}/${toString settings.prefixLength}"
-        ];
+          address = [
+            "${settings.hostAddress}/${toString settings.prefixLength}"
+          ];
 
-        routingPolicyRules = [
-          {
-            From = settings.subnet;
-            Table = 254;
-            Priority = 8;
-          }
-        ];
+          routingPolicyRules = [
+            {
+              From = settings.subnet;
+              Table = 254;
+              Priority = 8;
+            }
+          ];
 
-        networkConfig = {
-          ConfigureWithoutCarrier = true;
-          IPv4Forwarding = true;
-          IPv6AcceptRA = false;
-          LinkLocalAddressing = "no";
+          networkConfig = {
+            ConfigureWithoutCarrier = true;
+            IPv4Forwarding = true;
+            IPv6AcceptRA = false;
+            LinkLocalAddressing = "no";
+          };
+
+          linkConfig.RequiredForOnline = "no";
         };
+      }
+      // lib.listToAttrs (map (vm:
+        lib.nameValuePair "21-${vm.tap}" {
+          matchConfig.Name = vm.tap;
 
-        linkConfig.RequiredForOnline = "no";
-      };
+          networkConfig = {
+            Bridge = settings.bridge;
+            LinkLocalAddressing = "no";
+          };
 
-      "21-${settings.tap}" = {
-        matchConfig.Name = settings.tap;
+          # Isolated ports cannot forward to each other, only to the
+          # (non-isolated) bridge device itself, so guests have no layer 2
+          # path between them. The inet forward chain only sees routed
+          # traffic and cannot enforce this.
+          bridgeConfig.Isolated = true;
 
-        networkConfig = {
-          Bridge = settings.bridge;
-          LinkLocalAddressing = "no";
-        };
-
-        linkConfig.RequiredForOnline = "no";
-      };
-    };
+          linkConfig.RequiredForOnline = "no";
+        })
+      vms);
   };
 
   networking = {
@@ -81,6 +106,20 @@ in {
     };
 
     nftables.tables = {
+      "sandboxvm-antispoof" = {
+        family = "bridge";
+        content =
+          ''
+            chain prerouting {
+              type filter hook prerouting priority -200; policy accept;
+
+          ''
+          + lib.concatMapStrings (rule: "    ${rule}\n") antiSpoofRules
+          + ''
+            }
+          '';
+      };
+
       # This table runs before the normal NixOS firewall input/forward chains.
       # Drop verdicts are final across later base chains.
       "pi-agent-isolation" = {

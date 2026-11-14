@@ -1,21 +1,24 @@
+# NixOS guests of the sandbox: microvm.nix + Cloud Hypervisor.
 {
   config,
   inputs,
   lib,
-  pkgs,
   ...
 }: let
-  settings = inputs.nix-secrets.sandboxvm;
+  cfg = config.sandboxvm;
+  nixosVms = lib.filterAttrs (_: vm: vm.os == "nixos") cfg.vms;
 
-  # Stable SSH host identity for the guest. The private key is held in sops
-  # (nix-secrets/secrets.yaml); the matching public key is pinned in
-  # nix-secrets (sandboxvm.sshHostPublicKey) and in the host's known_hosts.
-  hostKeySecret = "pi-agent-ssh-host-key";
-  hostKeyRuntimeDir = "pi-agent-ssh-host-key";
-  hostKeyShareDir = "/run/${hostKeyRuntimeDir}";
   hostKeyFile = "ssh_host_ed25519_key";
   # Guest-side mount point of the read-only host-key share.
   guestHostKeyDir = "/var/lib/ssh";
+
+  # The host user's git configuration, i.e. the same files home-manager
+  # installs as ~/.config/git on the host. Copied from this repo into the
+  # guest's store, so nothing from the live host home is exposed.
+  sharedGitConfig = builtins.path {
+    name = "git-config";
+    path = ../../users/terrencelam/config/git;
+  };
 
   guestPkgs = import inputs.nixpkgs {
     system = "x86_64-linux";
@@ -47,81 +50,18 @@
 
   nodejs = guestPkgs.nodejs_22;
   yarn = guestPkgs.yarn.override {inherit nodejs;};
-in {
-  sops.secrets.${hostKeySecret} = {
-    owner = "root";
-    group = "root";
-    mode = "0400";
-    restartUnits = ["pi-agent-ssh-host-key.service"];
-  };
 
-  # Pin the guest's host key system-wide so SSH never needs TOFU and any
-  # change is reported as a hard failure instead of being silently accepted.
-  programs.ssh.knownHosts.${settings.name} = {
-    hostNames = [
-      settings.name
-      settings.guestAddress
-    ];
-    publicKey = settings.sshHostPublicKey;
-  };
-
-  # Stage exactly one file (the guest host key) in a root-only tmpfs
-  # directory that is exported to the guest read-only. A copy is needed
-  # because sops-nix paths are symlinks into /run/secrets.d, which would not
-  # resolve inside the guest, and exporting /run/secrets.d would leak every
-  # other host secret.
-  systemd.services.pi-agent-ssh-host-key = {
-    description = "Stage SSH host key for MicroVM ${settings.name}";
-    requiredBy = ["microvm-virtiofsd@${settings.name}.service"];
-    before = ["microvm-virtiofsd@${settings.name}.service"];
-    after = ["sops-install-secrets.service"];
-    path = [
-      pkgs.coreutils
-      pkgs.openssh
-    ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      UMask = "0077";
-      RuntimeDirectory = hostKeyRuntimeDir;
-      RuntimeDirectoryMode = "0700";
-      # virtiofsd holds the directory open; do not delete it underneath it.
-      RuntimeDirectoryPreserve = "yes";
-
-      CapabilityBoundingSet = "";
-      NoNewPrivileges = true;
-      PrivateNetwork = true;
-      PrivateTmp = true;
-      ProtectSystem = "strict";
-      ProtectHome = true;
-      ProtectKernelTunables = true;
-      ProtectKernelModules = true;
-      ProtectControlGroups = true;
-      RestrictAddressFamilies = "AF_UNIX";
-      SystemCallArchitectures = "native";
+  mkVm = name: vm: let
+    # Flat view with the field names this guest definition has always used.
+    settings = {
+      inherit name;
+      inherit (vm) tap mac guestAddress vcpu memoryMiB inputDir piDir;
+      inherit (vm.nixos) authorizedKey agentUid agentGid vsockCid varDiskMiB workDiskMiB nixStoreMiB;
+      inherit (cfg.network) hostAddress prefixLength;
     };
-    script = ''
-      set -euo pipefail
-      dest="$RUNTIME_DIRECTORY/${hostKeyFile}"
-      tmp="$dest.tmp"
-      trap 'rm -f "$tmp"' EXIT
-
-      install -m 0400 ${lib.escapeShellArg config.sops.secrets.${hostKeySecret}.path} "$tmp"
-
-      # Fail closed unless the secret is a valid key that matches the
-      # public key pinned in known_hosts.
-      derived="$(ssh-keygen -y -f "$tmp" | cut -d' ' -f1,2)"
-      expected="$(printf '%s\n' ${lib.escapeShellArg settings.sshHostPublicKey} | cut -d' ' -f1,2)"
-      if [ "$derived" != "$expected" ]; then
-        echo "pi-agent SSH host key does not match pinned public key" >&2
-        exit 1
-      fi
-
-      mv -f "$tmp" "$dest"
-    '';
-  };
-
-  microvm.vms.${settings.name} = {
+    # Staged by ./host-keys.nix.
+    hostKeyShareDir = "/run/${vm.id}-ssh-host-key";
+  in {
     pkgs = guestPkgs;
     autostart = false;
 
@@ -139,21 +79,21 @@ in {
       disposableVolumes = [
         {
           image = "var.img";
-          serial = "pi-agent-var";
+          serial = "${vm.id}-var";
           mountPoint = "/var";
           size = settings.varDiskMiB;
           fsType = "ext4";
         }
         {
           image = "work.img";
-          serial = "pi-agent-work";
+          serial = "${vm.id}-work";
           mountPoint = "/work";
           size = settings.workDiskMiB;
           fsType = "ext4";
         }
         {
           image = "nix-store-overlay.img";
-          serial = "pi-agent-nix";
+          serial = "${vm.id}-nix";
           mountPoint = config.microvm.writableStoreOverlay;
           size = settings.nixStoreMiB;
           fsType = "ext4";
@@ -185,7 +125,7 @@ in {
       systemd.network = {
         enable = true;
 
-        networks."10-pi-agent" = {
+        networks."10-${vm.id}" = {
           matchConfig.MACAddress = settings.mac;
 
           address = [
@@ -232,6 +172,12 @@ in {
 
       security.sudo.enable = false;
       programs.nix-ld.enable = true;
+
+      # Mesa software drivers (llvmpipe GL, lavapipe Vulkan) so browsers take
+      # their GPU code path (Chromium: ANGLE + GPU process) instead of the
+      # deprecated SwiftShader fallback. The guest has no GPU device; nothing
+      # from the host is exposed.
+      hardware.graphics.enable = true;
 
       programs.fish = {
         enable = true;
@@ -331,6 +277,7 @@ in {
           cacert
           coreutils
           curl
+          delta # core.pager in the shared git config
           fd
           git
           gnumake
@@ -347,6 +294,11 @@ in {
         variables = {
           PI_TELEMETRY = "0";
           PI_SKIP_VERSION_CHECK = "1";
+          # Playwright's Chromium bundles its own Vulkan loader, which does not
+          # search /run/opengl-driver, so point it at lavapipe explicitly.
+          # Launch with --use-angle=vulkan --enable-features=Vulkan
+          # --ignore-gpu-blocklist to use it.
+          VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/lvp_icd.x86_64.json";
           EDITOR = "nvim";
           VISUAL = "nvim";
         };
@@ -361,6 +313,27 @@ in {
         neovim = {
           enable = true;
           defaultEditor = true;
+        };
+
+        git = {
+          enable = true;
+          # The shared config declares the LFS filter as required.
+          lfs.enable = true;
+          # System-level (/etc/gitconfig). The list keeps the include before
+          # the overrides, so the overrides win.
+          config = [
+            {include.path = "${sharedGitConfig}/config";}
+            {
+              # The GPG signing key stays on the host and its agent is not
+              # forwarded, so the agent cannot sign as the user. Explicit
+              # `-S` still fails rather than producing a bogus signature.
+              commit.gpgSign = false;
+              tag.gpgSign = false;
+              # The shared value (~/.gitignore_global) does not exist in the
+              # ephemeral guest home; use the shared ignore list instead.
+              core.excludesFile = "${sharedGitConfig}/ignore";
+            }
+          ];
         };
       };
 
@@ -497,4 +470,20 @@ in {
       system.stateVersion = "26.05";
     };
   };
+in {
+  assertions = lib.concatLists (lib.mapAttrsToList (name: vm: [
+      {
+        assertion = lib.all (v: v != null) (lib.attrValues vm.nixos);
+        message = "sandboxvm: NixOS VM ${name} needs every sandboxvm.vms.${name}.nixos.* option set.";
+      }
+      {
+        # virtio-blk serials are limited to 20 bytes; "<id>-work" must fit or
+        # the guest's /dev/disk/by-id paths would not match.
+        assertion = lib.stringLength vm.id <= 15;
+        message = "sandboxvm: NixOS VM id ${vm.id} must be at most 15 characters.";
+      }
+    ])
+    nixosVms);
+
+  microvm.vms = lib.mapAttrs mkVm nixosVms;
 }
