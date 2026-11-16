@@ -32,8 +32,8 @@ in {
           networkConfig = {
             # start a DHCP Client for IPv4 Addressing/Routing
             DHCP = "ipv4";
-            LinkLocalAddressing = "ipv4";
-            IPv6AcceptRA = false;
+            LinkLocalAddressing = "yes";
+            IPv6AcceptRA = true;
             DNSOverTLS = true;
             DNSSEC = true;
             DNS = dns;
@@ -115,10 +115,10 @@ in {
           domains = ["~."];
           networkConfig = {
             # start a DHCP Client for IPv4 Addressing/Routing
-            DHCP = "ipv4";
+            DHCP = "yes";
             DNSDefaultRoute = "no";
-            LinkLocalAddressing = "ipv4";
-            IPv6AcceptRA = "no";
+            LinkLocalAddressing = "yes";
+            IPv6AcceptRA = "yes";
             DNSOverTLS = "yes";
             DNSSEC = "yes";
             DNS = dns;
@@ -148,6 +148,7 @@ in {
               InvertRule = "yes";
               Table = 1000;
               Priority = 10;
+              Family = "both";
             }
           ];
           # routes = [
