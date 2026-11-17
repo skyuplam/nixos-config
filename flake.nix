@@ -142,5 +142,13 @@
       user = "terrencelam";
       darwin = true;
     };
+
+    # macOS guest for Tart on the MacBook (agent sandbox); see
+    # machines/tart-agent.md. Deliberately not built with mkSystem: no
+    # home-manager, sops or personal configuration inside the VM.
+    darwinConfigurations.tart-agent = inputs.darwin.lib.darwinSystem {
+      specialArgs = {inherit inputs;};
+      modules = [./machines/tart-agent.nix];
+    };
   };
 }
