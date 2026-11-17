@@ -22,6 +22,7 @@
 
     packages = [
       pkgs.iina # media player
+      pkgs.tart # vm
     ];
   };
 }
