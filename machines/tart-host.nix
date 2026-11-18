@@ -60,8 +60,12 @@
           ssh_opts+=(-i "$identity" -o IdentitiesOnly=yes)
         fi
 
-        # Requires `trusted-users = root ${adminUser}` in the guest's Nix config.
-        NIX_SSHOPTS="''${ssh_opts[*]}" nix copy --to "ssh-ng://${adminUser}@$ip" "$sys"
+        # Requires `extra-trusted-users = ${adminUser}` in the guest's Nix config.
+        # `nix copy` checks signatures by default even for trusted users, and
+        # locally built paths are unsigned. The guest daemon honours
+        # --no-check-sigs only for trusted users; the transport is SSH with a
+        # pinned host key and the paths come from this machine's own store.
+        NIX_SSHOPTS="''${ssh_opts[*]}" nix copy --no-check-sigs --to "ssh-ng://${adminUser}@$ip" "$sys"
         ssh -t "''${ssh_opts[@]}" -- "${adminUser}@$ip" \
           "sudo nix-env -p /nix/var/nix/profiles/system --set $sys && sudo $sys/activate"
       '';

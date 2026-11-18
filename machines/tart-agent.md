@@ -27,7 +27,7 @@ never goes into the VM.
 
 ```sh
 ssh-keygen -t ed25519 -f ~/.ssh/tart_agent_ed25519 -C tart-agent
-ssh-keygen -t ed25519 -f ~/.ssh/tart_admin_ed25519 -C tart-admin
+ssh-keygen -t ed25519 -f ~/.ssh/tart_<adminUser>_ed25519 -C tart-admin   # helpers look for this exact name
 ```
 
 Add to `nix-secrets`:
@@ -37,7 +37,7 @@ tartAgent = {
   adminUser = "admin";            # account you create in Setup Assistant
   agentUid = 550;                 # unused uid in the VM (>= 501)
   authorizedKey = "ssh-ed25519 AAAA... tart-agent";      # ~/.ssh/tart_agent_ed25519.pub
-  adminAuthorizedKey = "ssh-ed25519 AAAA... tart-admin"; # ~/.ssh/tart_admin_ed25519.pub
+  adminAuthorizedKey = "ssh-ed25519 AAAA... tart-admin"; # ~/.ssh/tart_<adminUser>_ed25519.pub
   # sshHostPublicKey = "ssh-ed25519 AAAA...";            # added in step 2
 };
 ```
@@ -65,7 +65,7 @@ tart run tahoe-vanilla
    the admin account to import store paths (use your `adminUser` name):
 
    ```sh
-   echo 'trusted-users = root admin' | sudo tee -a /etc/nix/nix.custom.conf
+   echo 'extra-trusted-users = admin' | sudo tee -a /etc/nix/nix.custom.conf
    ```
 
    Shut the VM down.
