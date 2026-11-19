@@ -16,6 +16,12 @@
   nodejs = pkgs.nodejs_22;
   yarn = pkgs.yarn.override {inherit nodejs;};
 
+  # Reuse the NixOS guest's repo-tracked Git settings, not the live host home.
+  sharedGitConfig = builtins.path {
+    name = "git-config";
+    path = ../users/terrencelam/config/git;
+  };
+
   # Tart mounts every --dir share under this directory in macOS guests.
   shareRoot = "/Volumes/My Shared Files";
 in {
@@ -76,6 +82,22 @@ in {
   };
 
   environment.etc = {
+    gitconfig.text = ''
+      [include]
+        # Preserve Nixpkgs Git's macOS Keychain helper.
+        path = ${pkgs.git}/etc/gitconfig
+        path = ${sharedGitConfig}/config
+      # The signing key stays on the host. Override the shared defaults.
+      [commit]
+        gpgSign = false
+      [tag]
+        gpgSign = false
+      [core]
+        excludesFile = ${sharedGitConfig}/ignore
+      [filter "lfs"]
+        process = git-lfs filter-process
+    '';
+
     # sshd uses the first value it reads and includes sshd_config.d/* in
     # lexical order, so this file must sort before macOS's 100-macos.conf
     # and nix-darwin's 100-/101- files to take precedence.
@@ -129,7 +151,12 @@ in {
     fi
   '';
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      ${lib.getExe pkgs.zoxide} init fish | source
+    '';
+  };
   environment.shells = [pkgs.fish];
 
   programs.tmux = {
@@ -154,10 +181,12 @@ in {
       cacert
       coreutils
       curl
+      delta # core.pager in the shared Git config
       fd
       gh
       ghostty-bin.terminfo # xterm-ghostty for SSH sessions
       git
+      git-lfs # required by the shared Git config
       gnumake
       gnutar
       gzip
@@ -173,8 +202,10 @@ in {
     variables = {
       PI_TELEMETRY = "0";
       PI_SKIP_VERSION_CHECK = "1";
-      EDITOR = "nvim";
-      VISUAL = "nvim";
+      # Nixpkgs Git on Darwin defaults to its store-local gitconfig.
+      GIT_CONFIG_SYSTEM = "/etc/gitconfig";
+      EDITOR = lib.getExe pkgs.neovim;
+      VISUAL = lib.getExe pkgs.neovim;
     };
   };
 
