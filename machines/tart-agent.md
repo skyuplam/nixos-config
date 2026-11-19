@@ -100,8 +100,9 @@ tart-agent-ssh tahoe-vanilla            # as agent
 tart-agent-ssh tahoe-vanilla admin      # maintenance
 ```
 
-Inside the VM, `PI_CODING_AGENT_DIR` points at
-`/Volumes/My Shared Files/pi/agent`.
+Inside the VM, `~agent/.pi` is a symlink to `/Volumes/My Shared Files/pi`,
+so pi uses its default config dir `~/.pi/agent` on the share. Without
+`--dir=pi:…` the link dangles and pi cannot save state.
 
 Until you switch to disposable clones, anything the agent does persists in
 `tahoe-vanilla`. Once it is configured, `tart clone tahoe-vanilla

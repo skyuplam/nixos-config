@@ -115,6 +115,18 @@ in {
     # pmset works over SSH; nix-darwin's power.sleep uses systemsetup, which
     # needs Full Disk Access there.
     /usr/bin/pmset -a sleep 0 displaysleep 0 disksleep 0
+
+    # pi uses its default config dir ~/.pi/agent. Point ~/.pi at the
+    # persistent share (`tart run --dir=pi:...`); without that share the
+    # link dangles and pi state stays out of the VM. Never follow or replace
+    # a real directory the agent may have created there.
+    pi_link=/Users/agent/.pi
+    if [ -L "$pi_link" ] || [ ! -e "$pi_link" ]; then
+      /bin/ln -sfn "${shareRoot}/pi" "$pi_link"
+      /usr/sbin/chown -h agent:staff "$pi_link"
+    else
+      echo "warning: $pi_link exists and is not a symlink; not linking it to the pi share" >&2
+    fi
   '';
 
   programs.fish.enable = true;
@@ -161,8 +173,6 @@ in {
     variables = {
       PI_TELEMETRY = "0";
       PI_SKIP_VERSION_CHECK = "1";
-      # The persistent pi config share (`tart run --dir=pi:...`).
-      PI_CODING_AGENT_DIR = "${shareRoot}/pi/agent";
       EDITOR = "nvim";
       VISUAL = "nvim";
     };
