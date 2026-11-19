@@ -279,6 +279,7 @@
           curl
           delta # core.pager in the shared git config
           fd
+          ghostty.terminfo # xterm-ghostty for SSH sessions
           git
           gnumake
           gnutar

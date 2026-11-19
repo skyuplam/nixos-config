@@ -144,6 +144,7 @@ in {
       curl
       fd
       gh
+      ghostty-bin.terminfo # xterm-ghostty for SSH sessions
       git
       gnumake
       gnutar
