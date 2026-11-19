@@ -56,7 +56,10 @@ tart run tahoe-vanilla
    password. Skip Apple Account sign-in, and turn off Location, Analytics and
    Siri.
 2. System Settings → General → Sharing → **Remote Login: on**, *Allow full
-   disk access for remote users*: off.
+   disk access for remote users*: off, *Allow access for*: **All users**.
+   With "Only these users: Administrators", macOS PAM rejects `agent` even
+   with a valid key ("Access denied … by PAM account configuration").
+   sshd's `AllowUsers` and key-only auth still restrict who can log in.
 3. Terminal in the VM: `cat /etc/ssh/ssh_host_ed25519_key.pub`. Copy that
    line into `tartAgent.sshHostPublicKey` and rebuild the MacBook. The key
    is read from the VM's own screen, so no trust-on-first-use is involved.
@@ -67,6 +70,10 @@ tart run tahoe-vanilla
    ```sh
    echo 'extra-trusted-users = admin' | sudo tee -a /etc/nix/nix.custom.conf
    ```
+
+   Use `extra-trusted-users`, not `trusted-users`: a later `trusted-users`
+   line in `nix.conf` would replace it. Check after a reboot with
+   `nix store info --store daemon` (must show `Trusted: 1`).
 
    Shut the VM down.
 
