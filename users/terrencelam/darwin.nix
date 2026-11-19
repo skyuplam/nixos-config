@@ -5,7 +5,7 @@
   # https://daiderd.com/nix-darwin/manual/index.html#opt-homebrew.brews
   homebrew = {
     enable = true;
-    brews = ["kanata" "skhd-zig" "pinentry-mac" "nkt"];
+    brews = ["kanata" "pinentry-mac" "nkt"];
     casks = [
       "1password"
       "google-chrome"
@@ -16,9 +16,9 @@
       "signal"
       "stats"
       "syncthing-app"
+      "jackielii/tap/skhd-zig"
     ];
     taps = [
-      "jackielii/tap"
       "krtirtho/apps"
       "neurosnap/tap"
     ];
