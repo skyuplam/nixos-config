@@ -95,25 +95,26 @@ in {
       WEBKIT_DISABLE_DMABUF_RENDERER = "1";
     };
 
-    packages = [
-      pkgs.foliate
-      pkgs.mesa-demos
-      pkgs.grim
-      pkgs.libnotify
-      pkgs.qt5.qtwayland
-      pkgs.libusb1
-      pkgs.libva-utils
-      pkgs.qt6.qtwayland
-      pkgs.slurp
-      pkgs.sound-theme-freedesktop
-      pkgs.testdisk # data recovery
-      pkgs.usbutils
-      pkgs.wl-clipboard
-      pkgs.wl-screenrec
-      pkgs.xdg-utils
-      pkgs.pinentry-curses # terminal-based Pinentry
-      pkgs.btop-rocm # btop with AMDGPU
-      pkgs.swayidle
+    packages = with pkgs; [
+      btop-rocm # btop with AMDGPU
+      foliate
+      grim
+      libnotify
+      libusb1
+      libva-utils
+      mesa-demos
+      pinentry-curses # terminal-based Pinentry
+      qt5.qtwayland
+      qt6.qtwayland
+      remmina
+      slurp
+      sound-theme-freedesktop
+      swayidle
+      testdisk # data recovery
+      usbutils
+      wl-clipboard
+      wl-screenrec
+      xdg-utils
     ];
 
     pointerCursor = {
