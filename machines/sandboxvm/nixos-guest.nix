@@ -290,6 +290,7 @@
           ripgrep
           yarn
           gh # github cli
+          google-cloud-sdk
         ];
 
         variables = {
@@ -409,6 +410,7 @@
 
       systemd.tmpfiles.rules = [
         "d /work/repo 0700 agent agent -"
+        "d /home/agent/.config 0700 agent agent -"
       ];
 
       systemd.services.sshd.unitConfig.RequiresMountsFor = [guestHostKeyDir];
