@@ -37,7 +37,7 @@ in {
           os = "nixos";
           id = "pi-agent";
           sshHostKeySecret = "pi-agent-ssh-host-key";
-          inherit (linux) tap mac guestAddress vcpu memoryMiB sshHostPublicKey inputDir piDir;
+          inherit (linux) tap mac guestAddress vcpu memoryMiB sshHostPublicKey inputDir piDir gcloudDir;
           nixos = {
             inherit (linux) authorizedKey agentUid agentGid vsockCid varDiskMiB workDiskMiB nixStoreMiB;
           };
@@ -46,7 +46,7 @@ in {
       // lib.optionalAttrs (windows != null) {
         ${windows.name} = {
           os = "windows";
-          inherit (windows) id tap mac guestAddress vcpu memoryMiB sshHostPublicKey inputDir piDir;
+          inherit (windows) id tap mac guestAddress vcpu memoryMiB sshHostPublicKey inputDir piDir gcloudDir;
           windows =
             lib.optionalAttrs (windows ? goldenImage) {inherit (windows) goldenImage;}
             // lib.optionalAttrs (windows ? maxPhysBits) {inherit (windows) maxPhysBits;};
@@ -79,10 +79,6 @@ in {
       {
         assertion = lib.all (vm: vm.guestAddress != cfg.network.hostAddress) vmList;
         message = "sandboxvm: a guest address equals the host bridge address.";
-      }
-      {
-        assertion = allUnique (map (vm: vm.piDir) vmList);
-        message = "sandboxvm: each VM needs its own piDir (concurrent pi writers are unsupported).";
       }
       {
         assertion = allUnique (map (vm: vm.sshHostPublicKey) vmList);

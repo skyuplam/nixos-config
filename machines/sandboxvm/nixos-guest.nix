@@ -55,7 +55,7 @@
     # Flat view with the field names this guest definition has always used.
     settings = {
       inherit name;
-      inherit (vm) tap mac guestAddress vcpu memoryMiB inputDir piDir;
+      inherit (vm) tap mac guestAddress vcpu memoryMiB inputDir piDir gcloudDir;
       inherit (vm.nixos) authorizedKey agentUid agentGid vsockCid varDiskMiB workDiskMiB nixStoreMiB;
       inherit (cfg.network) hostAddress prefixLength;
     };
@@ -463,6 +463,14 @@
             source = settings.piDir;
             mountPoint = "/home/agent/.pi";
             readOnly = false;
+            cache = "never";
+          }
+          {
+            proto = "virtiofs";
+            tag = "gcloud-config";
+            source = settings.gcloudDir;
+            mountPoint = "/home/agent/.config/gcloud";
+            readOnly = true;
             cache = "never";
           }
         ];

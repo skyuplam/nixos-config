@@ -43,7 +43,7 @@
       name = "pi";
       tag = "sandbox-pi";
       source = vm.piDir;
-      readOnly = false;
+      readOnly = true;
       cache = "never";
     }
   ];

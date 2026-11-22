@@ -87,6 +87,15 @@
         '';
       };
 
+      gcloudDir = mkOption {
+        type = absPathType;
+        description = ''
+          Host directory holding gcloud's configuration and credentials,
+          shared read-only with the guest. Use a separate directory per
+          VM: concurrent writers from different guests are not supported.
+        '';
+      };
+
       nixos = {
         authorizedKey = mkOption {
           type = types.nullOr types.str;
