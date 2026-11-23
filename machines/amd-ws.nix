@@ -19,6 +19,10 @@
 
   environment = {
     systemPackages = with pkgs; [
+      # QEMU + swtpm + Secure Boot OVMF for building the Windows golden
+      # image; see machines/sandboxvm/windows/README.md.
+      (import ./sandboxvm/windows/install-vm.nix {inherit pkgs;})
+
       # Core dependencies
       libsecret
       seahorse
@@ -77,6 +81,8 @@
   users.users.terrencelam.extraGroups = [
     # To enable local user access to libvirt, for example by using virt-manager or gnome-boxes, add yourself to the libvirtd group
     "libvirtd"
+    # /dev/kvm for sandboxvm-win-install (QEMU without sudo)
+    "kvm"
   ];
 
   # Make sure systemd machine-id is available

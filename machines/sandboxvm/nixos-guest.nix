@@ -410,6 +410,9 @@
 
       systemd.tmpfiles.rules = [
         "d /work/repo 0700 agent agent -"
+        # The gcloud-config share's mount unit creates the missing parent
+        # ~/.config as root:root 0755, leaving the agent unable to create
+        # ~/.config/fish etc. "d" also fixes ownership/mode of an existing dir.
         "d /home/agent/.config 0700 agent agent -"
       ];
 

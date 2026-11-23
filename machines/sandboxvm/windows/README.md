@@ -48,23 +48,27 @@ taps, MACs, addresses, piDirs or host keys.
 
 Cloud Hypervisor has no VGA, so install with QEMU and boot with CH only
 afterwards (see [CH docs/windows.md]). Use a UEFI install, a raw image and
-virtio disk/net. Windows Server 2025 or Windows 11 IoT Enterprise LTSC do
-not need a TPM. Windows 11 Pro/Enterprise does, and this module does not
-wire up swtpm.
+virtio disk/net.
+
+`sandboxvm-win-install` (`./install-vm.nix`, installed on amd-ws) runs QEMU
+as your user, so you don't need sudo or X11 access for root. It adds what
+Windows 11 Setup checks for: swtpm TPM 2.0, and Secure Boot OVMF with the
+Microsoft keys enrolled. It needs the `kvm` group, which amd-ws adds.
+Log out and back in after switching.
 
 ```sh
-# after switching to a config with sandboxvmWindows set, which creates the
-# sandboxvm-win-agent user and /var/lib/sandboxvm/win-agent
-sudo qemu-img create -f raw /var/lib/sandboxvm/win-agent/golden.raw 64G
-OVMF=$(nix build --no-link --print-out-paths nixpkgs#OVMF.fd)/FV/OVMF.fd
-sudo qemu-system-x86_64 -machine q35,accel=kvm -cpu host -smp 4 -m 8G \
-  -bios "$OVMF" \
-  -drive if=none,id=root,format=raw,file=/var/lib/sandboxvm/win-agent/golden.raw \
-  -device virtio-blk-pci,drive=root,disable-legacy=on \
-  -cdrom Win.iso -drive file=virtio-win.iso,media=cdrom,index=3 \
-  -device virtio-net-pci,netdev=n0,disable-legacy=on,mac=02:00:00:00:83:03 \
-  -netdev user,id=n0 -vga std
+mkdir -p ~/qemu/windows-11/build
+sandboxvm-win-install --image ~/qemu/windows-11/build/golden.raw \
+  --iso ~/qemu/windows-11/windows-11.iso \
+  --virtio-iso ~/qemu/windows-11/virtio-win.iso \
+  --size 64G --cpus 8 --mem 16G
 ```
+
+The UEFI vars (`golden.raw.vars.fd`) and TPM state (`golden.raw.tpm/`)
+sit next to the image. Keep them until the golden image is done; rerun
+without `--iso` to boot from disk. CH uses neither, so BitLocker/device
+encryption must stay **off** in the guest, or the image won't boot
+under CH. Press a key at "Press any key to boot from CD".
 
 Load `viostor` from the virtio-win ISO during setup. Once Windows is
 installed:
@@ -87,9 +91,12 @@ installed:
    `inputDir`/`piDir`. Use your host user's uid/gid.
 3. Activate/license Windows. Don't put a product key in any Nix file,
    because the store is world-readable.
-4. Shut down (not reboot), then lock the image down:
+4. Shut down (not reboot), then install the image and lock it down. The
+   copy must land on the `/var/lib/sandboxvm` filesystem:
 
    ```sh
+   sudo cp --sparse=always ~/qemu/windows-11/build/golden.raw \
+     /var/lib/sandboxvm/win-agent/golden.raw
    sudo chown root:root /var/lib/sandboxvm/win-agent/golden.raw
    sudo chmod 0400 /var/lib/sandboxvm/win-agent/golden.raw
    ```
@@ -137,7 +144,8 @@ failure it leaves sshd stopped.
 
 - A guest-initiated reboot keeps the disk. Only restarting the unit
   restores the golden image. On Server SKUs only Administrators can reboot.
-- No TPM and no display. RDP is not enabled, and SSH forwarding is
+- No TPM and no display under CH (the TPM exists only in the QEMU install
+  VM). RDP is not enabled, and SSH forwarding is
   disabled in the provided sshd_config.
 - Anything in the golden image (installed tools, cached credentials) is in
   every session. Never sign in to personal accounts while preparing it.
