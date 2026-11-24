@@ -96,10 +96,11 @@ if ($existingUser) {
 } else {
   New-LocalUser -Name $AgentUser -Password $pw -PasswordNeverExpires -AccountNeverExpires -Description 'Sandbox coding agent' | Out-Null
 }
-$agentSid = (Get-LocalUser -Name $AgentUser).SID
+$agentAccount = Get-LocalUser -Name $AgentUser
+$agentSid = $agentAccount.SID
 $usersGroup = Get-LocalGroup -SID 'S-1-5-32-545'
 if (-not (Get-LocalGroupMember -Group $usersGroup | Where-Object { $_.SID -eq $agentSid })) {
-  Add-LocalGroupMember -Group $usersGroup -Member $agentSid
+  Add-LocalGroupMember -Group $usersGroup -Member $agentAccount
 }
 if (Get-LocalGroupMember -Group (Get-LocalGroup -SID 'S-1-5-32-544') | Where-Object { $_.SID -eq $agentSid }) {
   throw "$AgentUser must not be an Administrator"
