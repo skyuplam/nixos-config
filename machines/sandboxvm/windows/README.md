@@ -61,6 +61,7 @@ mkdir -p ~/qemu/windows-11/build
 sandboxvm-win-install --image ~/qemu/windows-11/build/golden.raw \
   --iso ~/qemu/windows-11/windows-11.iso \
   --virtio-iso ~/qemu/windows-11/virtio-win.iso \
+  --mac 02:00:00:00:83:03 \
   --size 64G --cpus 8 --mem 16G
 ```
 

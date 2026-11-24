@@ -22,19 +22,22 @@ in
       usage() {
         cat >&2 <<'EOF'
       usage: sandboxvm-win-install --image FILE [--iso WIN.iso --virtio-iso VIRTIO.iso]
-                                   [--size 64G] [--cpus 4] [--mem 8G] [--clipboard]
+                                   [--size 64G] [--cpus 4] [--mem 8G]
+                                   [--mac AA:BB:CC:DD:EE:FF] [--clipboard]
 
         --image       raw disk image to create or reuse (must not exist under /nix/store)
         --iso         Windows installer ISO (omit after setup to boot from disk)
         --virtio-iso  virtio-win driver ISO
         --size        size when creating the image (default 64G)
+        --mac         MAC address for the virtio NIC (colon-separated hex; match
+                      sandboxvmWindows.mac when running provision.ps1)
         --clipboard   enable QEMU vdagent clipboard sharing (requires spice-guest-tools
                       or virtio-win-guest-tools with vioserial + vdagent in the guest)
       EOF
         exit 2
       }
 
-      image="" iso="" virtio="" size="64G" cpus="4" mem="8G" clipboard=0
+      image="" iso="" virtio="" size="64G" cpus="4" mem="8G" mac="" clipboard=0
       while [ $# -gt 0 ]; do
         case "$1" in
           --image) image="''${2:?}"; shift 2 ;;
@@ -43,6 +46,7 @@ in
           --size) size="''${2:?}"; shift 2 ;;
           --cpus) cpus="''${2:?}"; shift 2 ;;
           --mem) mem="''${2:?}"; shift 2 ;;
+          --mac) mac="''${2:?}"; shift 2 ;;
           --clipboard) clipboard=1; shift ;;
           -h|--help) usage ;;
           *) echo "unknown argument: $1" >&2; usage ;;
@@ -53,6 +57,13 @@ in
       [[ "$size" =~ ^[0-9]+[GT]$ ]] || { echo "bad --size: $size" >&2; exit 2; }
       [[ "$cpus" =~ ^[0-9]{1,3}$ ]] || { echo "bad --cpus: $cpus" >&2; exit 2; }
       [[ "$mem" =~ ^[0-9]+[MG]$ ]] || { echo "bad --mem: $mem" >&2; exit 2; }
+      if [ -n "$mac" ]; then
+        [[ "$mac" =~ ^([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$ ]] || { echo "bad --mac: $mac" >&2; exit 2; }
+        if (( (16#''${mac%%:*} & 1) != 0 )); then
+          echo "bad --mac (must be unicast): $mac" >&2; exit 2
+        fi
+        mac="''${mac,,}"
+      fi
       for f in "$image" "$iso" "$virtio"; do
         # QEMU splits -drive options on commas.
         case "$f" in *,*) echo "path must not contain a comma: $f" >&2; exit 2 ;; esac
@@ -111,6 +122,11 @@ in
       done
       [ -S "$sock" ] || { echo "swtpm did not start" >&2; exit 1; }
 
+      netdev_opts="virtio-net-pci,netdev=n0,disable-legacy=on"
+      if [ -n "$mac" ]; then
+        netdev_opts+=",mac=$mac"
+      fi
+
       args=(
         -machine q35,smm=on,accel=kvm
         -global driver=cfi.pflash01,property=secure,value=on
@@ -122,7 +138,7 @@ in
         -device tpm-crb,tpmdev=tpm0
         -drive if=none,id=root,format=raw,file="$image"
         -device virtio-blk-pci,drive=root,disable-legacy=on
-        -device virtio-net-pci,netdev=n0,disable-legacy=on
+        -device "$netdev_opts"
         -netdev user,id=n0
         -vga std
       )
