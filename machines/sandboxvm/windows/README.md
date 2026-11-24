@@ -88,7 +88,10 @@ installed:
    ```
 
    `HostOwnerUid/Gid` set the host owner of files the guest creates in
-   `inputDir`/`piDir`. Use your host user's uid/gid.
+   `inputDir`/`piDir`. Use your host user's uid/gid. The script creates a
+   non-administrator `pi-agent` account (override with `-AgentUser`), which
+   must be distinct from the initial administrator account you created during
+   Windows Setup.
 3. Activate/license Windows. Don't put a product key in any Nix file,
    because the store is world-readable.
 4. Shut down (not reboot), then install the image and lock it down. The
@@ -112,7 +115,7 @@ replace `golden.raw` atomically.
 
 ```sh
 sudo systemctl start sandboxvm-win-agent
-ssh agent@win-agent          # host key is pinned; any mismatch is fatal
+ssh pi-agent@win-agent       # host key is pinned; any mismatch is fatal
 sudo systemctl stop sandboxvm-win-agent   # ACPI shutdown, disk discarded
 ```
 

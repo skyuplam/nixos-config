@@ -12,7 +12,8 @@
       `sandbox-hostkey` virtiofs share, checked against the pinned public
       key, and the share is unmounted again before sshd starts (fail closed:
       no valid key, no sshd);
-    * a non-administrator `agent` account accepts only the given SSH key;
+    * a non-administrator `pi-agent` (or `-AgentUser`) account accepts only
+      the given SSH key;
     * the `sandbox-input` and `sandbox-pi` shares are mounted as I: and P:.
 
   Prerequisites (install before running): virtio-win guest tools (NetKVM,
@@ -32,6 +33,7 @@ param(
   [Parameter(Mandatory)][ValidatePattern('^ssh-ed25519 [A-Za-z0-9+/=]+( .*)?$')][string]$PinnedHostPublicKey,
   [Parameter(Mandatory)][ValidateRange(1, 4294967294)][long]$HostOwnerUid,
   [Parameter(Mandatory)][ValidateRange(1, 4294967294)][long]$HostOwnerGid,
+  [ValidatePattern('^[a-z][a-z0-9_-]{0,19}$')][string]$AgentUser = 'pi-agent',
   [string[]]$DnsServers = @('1.1.1.1', '9.9.9.9')
 )
 
@@ -80,20 +82,27 @@ Set-DnsClientServerAddress -InterfaceIndex $nic.ifIndex -ServerAddresses $DnsSer
 Disable-NetAdapterBinding -Name $nic.Name -ComponentID ms_tcpip6
 
 # --- Agent account: non-admin, random password nobody knows ---------------
+$existingUser = Get-LocalUser -Name $AgentUser -ErrorAction SilentlyContinue
+if ($existingUser) {
+  if (Get-LocalGroupMember -Group (Get-LocalGroup -SID 'S-1-5-32-544') | Where-Object { $_.SID -eq $existingUser.SID }) {
+    throw "$AgentUser must not be an Administrator"
+  }
+}
 $bytes = New-Object byte[] 48
 [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
 $pw = ConvertTo-SecureString ([Convert]::ToBase64String($bytes)) -AsPlainText -Force
-if (Get-LocalUser -Name 'agent' -ErrorAction SilentlyContinue) {
-  Set-LocalUser -Name 'agent' -Password $pw -PasswordNeverExpires $true
+if ($existingUser) {
+  Set-LocalUser -Name $AgentUser -Password $pw -PasswordNeverExpires $true
 } else {
-  New-LocalUser -Name 'agent' -Password $pw -PasswordNeverExpires -AccountNeverExpires -Description 'Sandbox coding agent' | Out-Null
+  New-LocalUser -Name $AgentUser -Password $pw -PasswordNeverExpires -AccountNeverExpires -Description 'Sandbox coding agent' | Out-Null
 }
+$agentSid = (Get-LocalUser -Name $AgentUser).SID
 $usersGroup = Get-LocalGroup -SID 'S-1-5-32-545'
-if (-not (Get-LocalGroupMember -Group $usersGroup | Where-Object { $_.Name -like '*\agent' })) {
-  Add-LocalGroupMember -Group $usersGroup -Member 'agent'
+if (-not (Get-LocalGroupMember -Group $usersGroup | Where-Object { $_.SID -eq $agentSid })) {
+  Add-LocalGroupMember -Group $usersGroup -Member $agentSid
 }
-if (Get-LocalGroupMember -Group (Get-LocalGroup -SID 'S-1-5-32-544') | Where-Object { $_.Name -like '*\agent' }) {
-  throw 'agent must not be an Administrator'
+if (Get-LocalGroupMember -Group (Get-LocalGroup -SID 'S-1-5-32-544') | Where-Object { $_.SID -eq $agentSid }) {
+  throw "$AgentUser must not be an Administrator"
 }
 $pw = $null; [Array]::Clear($bytes, 0, $bytes.Length)
 
@@ -118,7 +127,7 @@ HostKey __PROGRAMDATA__/ssh/ssh_host_ed25519_key
 PubkeyAuthentication yes
 PasswordAuthentication no
 KbdInteractiveAuthentication no
-AllowUsers agent
+AllowUsers $AgentUser
 AuthorizedKeysFile __PROGRAMDATA__/ssh/agent_authorized_keys
 AllowAgentForwarding no
 AllowTcpForwarding no
