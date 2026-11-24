@@ -197,6 +197,7 @@ in {
       ripgrep
       yarn
       zoxide
+      google-cloud-sdk
     ];
 
     variables = {
