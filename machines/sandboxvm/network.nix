@@ -78,6 +78,8 @@ in {
   };
 
   networking = {
+    hosts = lib.mapAttrs' (name: vm: lib.nameValuePair vm.guestAddress [name]) config.sandboxvm.vms;
+
     nftables.enable = true;
 
     firewall = {

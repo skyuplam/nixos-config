@@ -34,7 +34,7 @@ param(
   [Parameter(Mandatory)][ValidateRange(1, 4294967294)][long]$HostOwnerUid,
   [Parameter(Mandatory)][ValidateRange(1, 4294967294)][long]$HostOwnerGid,
   [ValidatePattern('^[a-z][a-z0-9_-]{0,19}$')][string]$AgentUser = 'pi-agent',
-  [string[]]$DnsServers = @('1.1.1.1', '9.9.9.9')
+  [ValidatePattern('^\d{1,3}(\.\d{1,3}){3}$')][string[]]$DnsServers = @('1.1.1.1', '9.9.9.9')
 )
 
 Set-StrictMode -Version Latest
@@ -67,19 +67,10 @@ function Set-AdminOnlyAcl([string]$Path) {
   Set-Acl -LiteralPath $Path -AclObject $acl
 }
 
-# --- Network: static address on the NIC with the bridge-enforced MAC -------
+# Normalize MAC for boot-time NIC matching. Static IPv4 is applied in
+# boot.ps1 rather than here because Windows ties static IP config to a NIC's
+# PCI slot, which differs between QEMU (image build) and Cloud Hypervisor.
 $mac = ($MacAddress -replace ':', '-').ToUpperInvariant()
-$nic = Get-NetAdapter -Physical | Where-Object { $_.MacAddress -eq $mac }
-if (@($nic).Count -ne 1) { throw "Expected exactly one adapter with MAC $mac" }
-Set-NetIPInterface -InterfaceIndex $nic.ifIndex -Dhcp Disabled
-Get-NetIPAddress -InterfaceIndex $nic.ifIndex -AddressFamily IPv4 -ErrorAction SilentlyContinue |
-  Remove-NetIPAddress -Confirm:$false
-Get-NetRoute -InterfaceIndex $nic.ifIndex -DestinationPrefix '0.0.0.0/0' -ErrorAction SilentlyContinue |
-  Remove-NetRoute -Confirm:$false
-New-NetIPAddress -InterfaceIndex $nic.ifIndex -IPAddress $GuestAddress -PrefixLength $PrefixLength -DefaultGateway $HostAddress | Out-Null
-Set-DnsClientServerAddress -InterfaceIndex $nic.ifIndex -ServerAddresses $DnsServers
-# The host drops all non-IPv4 frames from the guest anyway.
-Disable-NetAdapterBinding -Name $nic.Name -ComponentID ms_tcpip6
 
 # --- Agent account: non-admin, random password nobody knows ---------------
 $existingUser = Get-LocalUser -Name $AgentUser -ErrorAction SilentlyContinue
@@ -142,7 +133,14 @@ Subsystem sftp sftp-server.exe
 Get-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue | Remove-NetFirewallRule
 Get-NetFirewallRule -Name 'sandboxvm-ssh' -ErrorAction SilentlyContinue | Remove-NetFirewallRule
 New-NetFirewallRule -Name 'sandboxvm-ssh' -DisplayName 'SSH from sandbox host only' -Direction Inbound `
-  -Protocol TCP -LocalPort 22 -RemoteAddress $HostAddress -Action Allow | Out-Null
+  -Profile Any -Protocol TCP -LocalPort 22 -RemoteAddress $HostAddress -Action Allow | Out-Null
+
+# Windows 11 client SKUs need the EMS-SAC Tools capability for a live SAC>
+# serial console; on Server SKUs SAC is built in and this capability is absent.
+$sacCap = Get-WindowsCapability -Online -Name 'Windows.Desktop.EMS-SAC.Tools*' | Select-Object -First 1
+if ($sacCap -and $sacCap.State -ne 'Installed') {
+  Add-WindowsCapability -Online -Name $sacCap.Name | Out-Null
+}
 
 # --- virtiofs: WinFsp launcher entry (multiple instances) ------------------
 Set-Service -Name VirtioFsSvc -StartupType Manual -ErrorAction SilentlyContinue
@@ -157,6 +155,7 @@ if ($LASTEXITCODE -ne 0) { throw 'fsreg.bat failed' }
 
 # --- Boot task -----------------------------------------------------------
 $pinned = ($PinnedHostPublicKey -split ' ')[0..1] -join ' '
+$dnsArrayLiteral = ($DnsServers | ForEach-Object { "'$_'" }) -join ', '
 $bootScript = Join-Path $sandboxDir 'boot.ps1'
 Set-Content -LiteralPath $bootScript -Encoding ascii -Value @"
 Set-StrictMode -Version Latest
@@ -165,6 +164,11 @@ Set-StrictMode -Version Latest
 `$sshDir = '$sshDir'
 `$dest = Join-Path `$sshDir 'ssh_host_ed25519_key'
 `$pinned = '$pinned'
+`$mac = '$mac'
+`$guestAddress = '$GuestAddress'
+`$prefixLength = $PrefixLength
+`$hostAddress = '$HostAddress'
+`$dnsServers = @($dnsArrayLiteral)
 function Invoke-Launchctl([string[]]`$LaunchArgs) {
   & `$launchctl @LaunchArgs | Out-Null
   if (`$LASTEXITCODE -ne 0) { throw "launchctl `$(`$LaunchArgs -join ' ') failed: `$LASTEXITCODE" }
@@ -197,6 +201,27 @@ try {
   if (`$LASTEXITCODE -ne 0 -or `$derived -ne `$pinned) {
     throw 'host key does not match the pinned public key'
   }
+
+  # Configure static IPv4 on the NIC with the bridge-enforced MAC. Done at
+  # boot (after host-key verification) because Windows binds static IP config
+  # to the NIC's PCI slot, which differs between QEMU and Cloud Hypervisor,
+  # and keeping it after host-key check leaves QEMU DHCP intact during maintenance.
+  `$matchedNics = @()
+  for (`$i = 0; `$i -lt 30 -and `$matchedNics.Count -eq 0; `$i++) {
+    `$matchedNics = @(Get-NetAdapter -Physical | Where-Object { `$_.MacAddress -eq `$mac })
+    if (`$matchedNics.Count -eq 0) { Start-Sleep -Seconds 1 }
+  }
+  if (`$matchedNics.Count -ne 1) { throw "Expected exactly one adapter with MAC `$mac (found `$(`$matchedNics.Count))" }
+  `$nic = `$matchedNics[0]
+  Set-NetIPInterface -InterfaceIndex `$nic.ifIndex -AddressFamily IPv4 -Dhcp Disabled
+  Get-NetIPAddress -InterfaceIndex `$nic.ifIndex -AddressFamily IPv4 -ErrorAction SilentlyContinue |
+    Remove-NetIPAddress -Confirm:`$false
+  Get-NetRoute -InterfaceIndex `$nic.ifIndex -DestinationPrefix '0.0.0.0/0' -ErrorAction SilentlyContinue |
+    Remove-NetRoute -Confirm:`$false
+  New-NetIPAddress -InterfaceIndex `$nic.ifIndex -IPAddress `$guestAddress -PrefixLength `$prefixLength -DefaultGateway `$hostAddress | Out-Null
+  Set-DnsClientServerAddress -InterfaceIndex `$nic.ifIndex -ServerAddresses `$dnsServers
+  # The host drops all non-IPv4 frames from the guest anyway.
+  Disable-NetAdapterBinding -Name `$nic.Name -ComponentID ms_tcpip6
 
   Invoke-Launchctl @('start', 'virtiofs', 'viofsI', 'sandbox-input', '\\.\I:')
   Invoke-Launchctl @('start', 'virtiofs', 'viofsP', 'sandbox-pi', '\\.\P:')
