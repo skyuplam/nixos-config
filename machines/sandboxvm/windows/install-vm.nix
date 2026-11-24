@@ -22,17 +22,19 @@ in
       usage() {
         cat >&2 <<'EOF'
       usage: sandboxvm-win-install --image FILE [--iso WIN.iso --virtio-iso VIRTIO.iso]
-                                   [--size 64G] [--cpus 4] [--mem 8G]
+                                   [--size 64G] [--cpus 4] [--mem 8G] [--clipboard]
 
         --image       raw disk image to create or reuse (must not exist under /nix/store)
         --iso         Windows installer ISO (omit after setup to boot from disk)
         --virtio-iso  virtio-win driver ISO
         --size        size when creating the image (default 64G)
+        --clipboard   enable QEMU vdagent clipboard sharing (requires spice-guest-tools
+                      or virtio-win-guest-tools with vioserial + vdagent in the guest)
       EOF
         exit 2
       }
 
-      image="" iso="" virtio="" size="64G" cpus="4" mem="8G"
+      image="" iso="" virtio="" size="64G" cpus="4" mem="8G" clipboard=0
       while [ $# -gt 0 ]; do
         case "$1" in
           --image) image="''${2:?}"; shift 2 ;;
@@ -41,6 +43,7 @@ in
           --size) size="''${2:?}"; shift 2 ;;
           --cpus) cpus="''${2:?}"; shift 2 ;;
           --mem) mem="''${2:?}"; shift 2 ;;
+          --clipboard) clipboard=1; shift ;;
           -h|--help) usage ;;
           *) echo "unknown argument: $1" >&2; usage ;;
         esac
@@ -123,6 +126,14 @@ in
         -netdev user,id=n0
         -vga std
       )
+      if [ "$clipboard" -eq 1 ]; then
+        args+=(
+          -display gtk,clipboard=on
+          -device virtio-serial-pci,disable-legacy=on
+          -chardev qemu-vdagent,id=chvdagent,name=vdagent,clipboard=on
+          -device virtserialport,chardev=chvdagent,name=com.redhat.spice.0
+        )
+      fi
       if [ -n "$iso" ]; then
         args+=(-drive media=cdrom,readonly=on,index=2,file="$iso")
       fi

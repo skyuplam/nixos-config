@@ -66,7 +66,10 @@ sandboxvm-win-install --image ~/qemu/windows-11/build/golden.raw \
 
 The UEFI vars (`golden.raw.vars.fd`) and TPM state (`golden.raw.tpm/`)
 sit next to the image. Keep them until the golden image is done; rerun
-without `--iso` to boot from disk. CH uses neither, so BitLocker/device
+without `--iso` to boot from disk. Pass `--clipboard` once
+`virtio-win-guest-tools` (which includes `vioserial` and the SPICE vdagent)
+is installed in the guest to enable host/guest copy-paste in QEMU's GTK
+window. CH uses neither UEFI vars/TPM nor vdagent, so BitLocker/device
 encryption must stay **off** in the guest, or the image won't boot
 under CH. Press a key at "Press any key to boot from CD".
 
