@@ -14,7 +14,7 @@ host key staging (`../host-keys.nix`) from the Linux agent VM.
 | NixOS closure built by Nix           | Hand-prepared golden image (`golden.raw`)               |
 | `/var`, `/work`, store overlay reset | Whole disk is a fresh reflink copy on every start       |
 | Reset also on guest reboot           | **Not** reset on guest reboot; restart the unit instead |
-| virtiofs `/input`, `~/.pi`           | virtiofs drives `I:` and `P:` (WinFsp + viofs)          |
+| virtiofs `/input`, `~/.pi`, `~/.config/gcloud` | virtiofs drives `I:`, `P:` and `G:` (WinFsp + viofs) |
 | sshd host key from read-only share   | Same, copied in by a boot task, share then unmounted    |
 
 ## 1. nix-secrets
@@ -32,6 +32,7 @@ sandboxvmWindows = {
   memoryMiB = 8192;
   inputDir = "/home/<user>/sandbox/win-input";
   piDir = "/home/<user>/sandbox/win-pi"; # NOT the Linux VM's piDir
+  gcloudDir = "/home/<user>/.config/gcloud";
   sshHostPublicKey = "ssh-ed25519 AAAA... win-agent";
   # optional:
   # goldenImage = "/var/lib/sandboxvm/win-agent/golden.raw";
@@ -78,7 +79,8 @@ Load `viostor` from the virtio-win ISO during setup. Once Windows is
 installed:
 
 1. Install the virtio-win guest tools (NetKVM, viostor, viofs, VirtIO-FS
-   service), [WinFsp] ("Core"), Git for Windows, Node.js LTS and pi
+   service), [WinFsp] ("Core"), Git for Windows, Node.js LTS, Google Cloud
+   CLI (`gcloud`, installed for all users / on machine `PATH`) and pi
    (`npm install -g ...`). Download them from their official publishers and
    check signatures.
 2. Copy `provision.ps1` into the guest and run it in an elevated PowerShell:

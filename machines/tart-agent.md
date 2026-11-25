@@ -16,7 +16,7 @@ running on the MacBook with Apple's Virtualization.framework.
 | Non-root `agent`, no sudo, key-only SSH, no forwarding | Same: standard hidden user, `050-sandbox.conf`, `AuthorizedKeysFile none` |
 | Pinned SSH host key, no trust-on-first-use (TOFU) | Same: `tart-agent` alias in `/etc/ssh/ssh_known_hosts` |
 | Tools from Nix (pi, node 22, git, rg, …) | Same, except no Playwright browsers |
-| `/input` and `~/.pi` virtiofs shares | `--dir=input:…`, `--dir=pi:…` under `/Volumes/My Shared Files` |
+| `/input`, `~/.pi`, and `~/.config/gcloud` virtiofs shares | `--dir=input:…`, `--dir=pi:…`, `--dir=gcloud:…:ro` under `/Volumes/My Shared Files` |
 | nftables: only the public Internet, no host, no LAN | Softnet: public Internet + **host gateway**, no LAN, no other VMs, anti-spoofing |
 | Disk reset on every boot | **Not yet**: comes with disposable `tart clone` sessions |
 
@@ -94,7 +94,9 @@ type it when prompted. After activation only the admin key works. Run
 ```sh
 mkdir -p ~/sandbox/mac-input ~/sandbox/mac-pi   # separate from pi-agent's piDir
 tart run --no-graphics --no-audio --no-clipboard --net-softnet \
-  --dir=input:"$HOME/sandbox/mac-input" --dir=pi:"$HOME/sandbox/mac-pi" \
+  --dir=input:"$HOME/sandbox/mac-input" \
+  --dir=pi:"$HOME/sandbox/mac-pi" \
+  --dir=gcloud:"$HOME/.config/gcloud":ro \
   tahoe-vanilla &
 tart-agent-ssh tahoe-vanilla            # as agent
 tart-agent-ssh tahoe-vanilla admin      # maintenance
@@ -102,7 +104,13 @@ tart-agent-ssh tahoe-vanilla admin      # maintenance
 
 Inside the VM, `~agent/.pi` is a symlink to `/Volumes/My Shared Files/pi`,
 so pi uses its default config dir `~/.pi/agent` on the share. Without
-`--dir=pi:…` the link dangles and pi cannot save state.
+`--dir=pi:…` the link dangles and pi cannot save state. Similarly,
+`~agent/.config/gcloud` is a symlink to `/Volumes/My Shared Files/gcloud`;
+mount `~/.config/gcloud` read-only (`:ro`) so the agent cannot modify your
+host gcloud config or credentials (note that the agent can still read any
+credentials present in that directory—use a separate, least-privilege
+directory instead of your live `~/.config/gcloud` if you do not want the VM
+to have your full host GCP access).
 
 Until you switch to disposable clones, anything the agent does persists in
 `tahoe-vanilla`. Once it is configured, `tart clone tahoe-vanilla

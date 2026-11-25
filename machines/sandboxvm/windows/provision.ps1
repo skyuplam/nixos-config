@@ -14,11 +14,13 @@
       no valid key, no sshd);
     * a non-administrator `pi-agent` (or `-AgentUser`) account accepts only
       the given SSH key;
-    * the `sandbox-input` and `sandbox-pi` shares are mounted as I: and P:.
+    * the `sandbox-input`, `sandbox-pi` and `sandbox-gcloud` shares are
+      mounted as I:, P: and G:.
 
   Prerequisites (install before running): virtio-win guest tools (NetKVM,
   viostor, viofs drivers and the VirtIO-FS service), WinFsp with the "Core"
-  feature, Git for Windows (pi's bash tool needs it) and Node.js LTS.
+  feature, Git for Windows (pi's bash tool needs it), Node.js LTS and
+  Google Cloud CLI (gcloud).
 
   The script never receives or stores a private key or a password. It ends
   by deleting any SSH host key so none is baked into the image.
@@ -148,10 +150,13 @@ Stop-Service VirtioFsSvc -ErrorAction SilentlyContinue
 & (Join-Path $winfspBin 'fsreg.bat') virtiofs $virtiofsExe "-t %1 -m %2 -o $HostOwnerUid`:$HostOwnerGid"
 if ($LASTEXITCODE -ne 0) { throw 'fsreg.bat failed' }
 
-# pi reads its configuration from the persistent P: share.
+# pi reads its configuration from the persistent P: share; gcloud and ADC
+# read credentials/config from the read-only G: share.
 [Environment]::SetEnvironmentVariable('PI_CODING_AGENT_DIR', 'P:\agent', 'Machine')
 [Environment]::SetEnvironmentVariable('PI_TELEMETRY', '0', 'Machine')
 [Environment]::SetEnvironmentVariable('PI_SKIP_VERSION_CHECK', '1', 'Machine')
+[Environment]::SetEnvironmentVariable('CLOUDSDK_CONFIG', 'G:\', 'Machine')
+[Environment]::SetEnvironmentVariable('GOOGLE_APPLICATION_CREDENTIALS', 'G:\application_default_credentials.json', 'Machine')
 
 # --- Boot task -----------------------------------------------------------
 $pinned = ($PinnedHostPublicKey -split ' ')[0..1] -join ' '
@@ -225,6 +230,7 @@ try {
 
   Invoke-Launchctl @('start', 'virtiofs', 'viofsI', 'sandbox-input', '\\.\I:')
   Invoke-Launchctl @('start', 'virtiofs', 'viofsP', 'sandbox-pi', '\\.\P:')
+  Invoke-Launchctl @('start', 'virtiofs', 'viofsG', 'sandbox-gcloud', '\\.\G:')
 
   Start-Service sshd
   `$ok = `$true

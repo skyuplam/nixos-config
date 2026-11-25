@@ -149,6 +149,30 @@ in {
     else
       echo "warning: $pi_link exists and is not a symlink; not linking it to the pi share" >&2
     fi
+
+    # gcloud uses ~/.config/gcloud by default. Point it at the gcloud share
+    # (`tart run --dir=gcloud:"$HOME/.config/gcloud":ro`); without that share
+    # the link dangles. Ensure ~/.config is owned by agent:staff (not root)
+    # and never follow or replace a real directory or symlink at ~/.config or
+    # a real directory at ~/.config/gcloud.
+    agent_config=/Users/agent/.config
+    if [ -L "$agent_config" ]; then
+      echo "warning: $agent_config is a symlink; not creating gcloud share link inside it" >&2
+    elif [ ! -e "$agent_config" ]; then
+      /usr/bin/install -d -m 0700 -o agent -g staff "$agent_config"
+    elif [ ! -d "$agent_config" ]; then
+      echo "warning: $agent_config exists and is not a directory; not creating gcloud share link" >&2
+    fi
+
+    if [ ! -L "$agent_config" ] && [ -d "$agent_config" ]; then
+      gcloud_link="$agent_config/gcloud"
+      if [ -L "$gcloud_link" ] || [ ! -e "$gcloud_link" ]; then
+        /bin/ln -sfn "${shareRoot}/gcloud" "$gcloud_link"
+        /usr/sbin/chown -h agent:staff "$gcloud_link"
+      else
+        echo "warning: $gcloud_link exists and is not a symlink; not linking it to the gcloud share" >&2
+      fi
+    fi
   '';
 
   programs.fish = {

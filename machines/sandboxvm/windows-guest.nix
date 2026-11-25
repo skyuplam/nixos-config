@@ -46,6 +46,13 @@
       readOnly = true;
       cache = "never";
     }
+    {
+      name = "gcloud";
+      tag = "sandbox-gcloud";
+      source = vm.gcloudDir;
+      readOnly = true;
+      cache = "never";
+    }
   ];
 
   # Systemd hardening shared by the per-VM helper units.
